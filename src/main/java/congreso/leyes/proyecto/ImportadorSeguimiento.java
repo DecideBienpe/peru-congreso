@@ -14,7 +14,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 
-public class ImportadorProyectoSeguimiento {
+public class ImportadorSeguimiento {
 
   public static void main(String[] args) throws IOException {
     var consumerConfig = new Properties();

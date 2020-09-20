@@ -31,9 +31,9 @@ public class Importador {
     var numero = values.get(0).text();
     var actualizacion = values.get(1).text().isBlank() ? Optional.<LocalDate>empty() :
         Optional
-            .of(LocalDate.parse(values.get(1).text(), DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+            .of(parseDate(values.get(1)));
     var presentacion =
-        LocalDate.parse(values.get(2).text(), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+        parseDate(values.get(2));
     var estado = values.get(3).text();
     var titulo = values.get(4).text();
     var referencia = values.get(0).getElementsByTag("a").attr("href");
@@ -60,14 +60,150 @@ public class Importador {
     return proyectosAll;
   }
 
-  ProyectoSeguimientoImportado getProyectoSeguimiento(ProyectoImportado proyectoImportado)
-      throws IOException {
-    var url = baseUrl + proyectoImportado.getReferencia();
+  ExpedienteImportado getProyectoExpediente(
+      SeguimientoImportado seguimientoImportado) {
+    var url = baseUrl + seguimientoImportado.getEnlaceExpedienteDigital();
     try {
-      ProyectoSeguimientoImportado proyectoSeguimiento = new ProyectoSeguimientoImportado();
+      var expediente = new ExpedienteImportado();
       var doc = Jsoup.connect(url).get();
       var scripts = doc.head().getElementsByTag("script");
       if (scripts.size() != 2) {
+        throw new IllegalStateException("Unexpected number of tables");
+      }
+      var tables = doc.body().select("table[width=500]");
+      if (tables.size() != 1) {
+        LOG.error("Unexpected number of tables url={}", url);
+        throw new IllegalStateException("Unexpected number of tables");
+      }
+      var payload = tables.first().children().first().children().get(1).children();
+      var expedienteContent = payload.first().children().first().children().first().children()
+          .first().children();
+
+      var headers = expedienteContent.first().getElementsByTag("div").first().children().first()
+          .getElementsByTag("b");
+      var numeroTexto = headers.get(0).text();
+      expediente.setNumero(numeroTexto);
+      var titulo = headers.get(1).text();
+      expediente.setTitulo(titulo);
+      var expedienteRows = expedienteContent.first().getElementsByTag("table");
+
+      if (expedienteRows.size() == 3) { //contiene dictamenes
+        var leyTable = expedienteRows.first();
+        var docsLey = getDocumentos(leyTable);
+        expediente.setDocumentosLey(docsLey);
+
+        var proyectoLeyTable = expedienteRows.get(1);
+        var docsProyecto = getLeyProyectoDocumentos(proyectoLeyTable);
+        expediente.setDocumentosProyectosLey(docsProyecto);
+
+        var anexosTable = expedienteRows.get(2);
+        var anexos = getDocumentos(anexosTable);
+        expediente.setDocumentosAnexos(anexos);
+      }
+
+      if (expedienteRows.size() == 2) {
+        var proyectoLeyTable = expedienteRows.get(0);
+        var docsProyecto = getLeyProyectoDocumentos(proyectoLeyTable);
+        expediente.setDocumentosProyectosLey(docsProyecto);
+
+        var anexosTable = expedienteRows.get(1);
+        var anexos = getDocumentos(anexosTable);
+        expediente.setDocumentosAnexos(anexos);
+      }
+
+      if (expedienteRows.size() == 1) {
+        var proyectoLeyTable = expedienteRows.get(0);
+        var docsProyecto = getLeyProyectoDocumentos(proyectoLeyTable);
+        expediente.setDocumentosProyectosLey(docsProyecto);
+      }
+
+      var expedienteOpiniones = payload.get(1).select("table[width=100]");
+
+      if (expedienteOpiniones.size() == 2) {
+        var presentarOpinionUrl = getEnlacePresentarOpinion(doc, expedienteOpiniones.get(0));
+        expediente.setEnlacePresentarOpinion(presentarOpinionUrl);
+        var opinionesUrl = getEnlaceOpinionesPresentadas(doc, expedienteOpiniones.get(1));
+        expediente.setEnlaceOpinionesRecibidos(opinionesUrl);
+      }
+      if (expedienteOpiniones.size() == 1) {
+        var opinionesUrl = getEnlaceOpinionesPresentadas(doc, expedienteOpiniones.get(0));
+        expediente.setEnlaceOpinionesRecibidos(opinionesUrl);
+      }
+
+      return expediente;
+    } catch (Throwable e) {
+      e.printStackTrace();
+      return null;
+    }
+  }
+
+  private String getEnlaceOpinionesPresentadas(org.jsoup.nodes.Document doc, Element opinionTable) {
+
+    var scripts = doc.head().getElementsByTag("script");
+//    var first = scripts.get(0);
+    var html = scripts.get(0).html();
+    var linkScript = Arrays.stream(html.split("\\r"))
+        .filter(s -> s.strip().startsWith("window.open"))
+        .findFirst();
+    var urlPatternPre = linkScript.map(l -> l.substring(l.indexOf("(") + 1, l.lastIndexOf(")")))
+        .map(l -> l.split(",")[0]).get();
+    var urlPattern = urlPatternPre
+        .substring(urlPatternPre.indexOf("\"") + 1, urlPatternPre.lastIndexOf("\""));
+    var idElement = doc.select("input[name=IdO]");
+    var variable = idElement.first().attr("value");
+    return urlPattern.replace("\" + num + \"", variable);
+  }
+
+
+  private String getEnlacePresentarOpinion(org.jsoup.nodes.Document doc, Element opinionTable) {
+    var onclick = opinionTable.getElementsByTag("a").attr("onclick");
+    var i = onclick.indexOf("ruta3 =") + 7;
+    var urlPatternPre = onclick.substring(i, onclick.indexOf(";", i));
+    var urlPattern = urlPatternPre
+        .substring(urlPatternPre.indexOf("\"" ) + 1, urlPatternPre.lastIndexOf("\""));
+    var idElement = doc.select("input[name=IdO]");
+    var variable = idElement.first().attr("value");
+    return urlPattern.replace("\"+ids+\"", variable);
+  }
+
+  private List<Documento> getDocumentos(Element table) {
+    return table.getElementsByTag("tr").stream()
+        .dropWhile(e -> e.getElementsByTag("td").first().text().equals("Fecha"))
+        .dropWhile(e -> e.getElementsByTag("td").first().text().equals("Número de Proyecto"))
+        .map(row -> {
+          var values = row.getElementsByTag("td");
+          var element = values.get(1);
+          var nombreDocumento = element.text();
+          var referenciaDocumento = element.getElementsByTag("a").attr("href");
+          return new Documento(parseDate2(values.get(0)), nombreDocumento, referenciaDocumento);
+        })
+        .collect(Collectors.toList());
+  }
+
+  private List<Documento> getLeyProyectoDocumentos(Element table) {
+    return table.getElementsByTag("tr").stream()
+        .dropWhile(e -> e.getElementsByTag("td").first().text().equals("Número de Proyecto"))
+        .map(row -> {
+          var values = row.getElementsByTag("td");
+          var numeroProyecto = values.get(0).text();
+          var element = values.get(2);
+          var nombreDocumento = element.text();
+          var referenciaDocumento = element.getElementsByTag("a").attr("href");
+          return new Documento(parseDate2(values.get(1)), nombreDocumento, numeroProyecto,
+              referenciaDocumento);
+        })
+        .collect(Collectors.toList());
+  }
+
+  SeguimientoImportado getProyectoSeguimiento(ProyectoImportado proyectoImportado)
+      throws IOException {
+    var url = baseUrl + proyectoImportado.getReferencia();
+    try {
+      SeguimientoImportado proyectoSeguimiento = new SeguimientoImportado();
+      var doc = Jsoup.connect(url).get();
+      var scripts = doc.head().getElementsByTag("script");
+      if (scripts.size() != 2) {
+        LOG.error("Unexpected number of tables url={}", url);
         throw new IllegalStateException("Unexpected number of tables");
       }
 //    var first = scripts.get(0);
@@ -75,9 +211,10 @@ public class Importador {
           .filter(s -> s.strip().startsWith("var url="))
           .findFirst();
       var expedienteBaseUrl = linkScript
-          .map(s -> s.substring(s.indexOf("\""), s.lastIndexOf("\"")));
+          .map(s -> s.substring(s.indexOf("\"") + 1, s.lastIndexOf("\"")));
       var tables = doc.body().getElementsByTag("table");
       if (tables.size() != 2) {
+        LOG.error("Unexpected number of tables url={}", url);
         throw new IllegalStateException("Unexpected number of tables");
       }
       var a = tables.get(0).getElementsByTag("a").first();
@@ -95,8 +232,8 @@ public class Importador {
             switch (field) {
               case "Período:" -> proyectoSeguimiento.setPeriodo(tds.get(1).text());
               case "Legislatura:" -> proyectoSeguimiento.setLegislatura(tds.get(1).text());
-              case "Fecha Presentación:" -> proyectoSeguimiento.setPresentacion(
-                  LocalDate.parse(tds.get(1).text(), DateTimeFormatter.ofPattern("MM/dd/yyyy")));
+              case "Fecha Presentación:" -> proyectoSeguimiento.setPresentacionLocalDate(
+                  parseDate(tds.get(1)));
               case "Número:" -> proyectoSeguimiento.setNumero(tds.get(1).text());
               case "Proponente:" -> proyectoSeguimiento.setProponente(tds.get(1).text());
               case "Grupo Parlamentario:" -> proyectoSeguimiento
@@ -124,6 +261,14 @@ public class Importador {
     }
   }
 
+  private static LocalDate parseDate(Element td) {
+    return LocalDate.parse(td.text(), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
+  }
+
+  private static LocalDate parseDate2(Element td) {
+    return LocalDate.parse(td.text(), DateTimeFormatter.ofPattern("dd/MM/yy"));
+  }
+
   private List<Congresista> parseCongresistasAutores(Element element) {
     return
         element.getElementsByTag("a").stream()
@@ -140,9 +285,11 @@ public class Importador {
   }
 
   List<ProyectoImportado> getPage(String proyectosUrl, int index) throws IOException {
-    var doc = Jsoup.connect(baseUrl + proyectosUrl + index).get();
+    var url = baseUrl + proyectosUrl + index;
+    var doc = Jsoup.connect(url).get();
     var tables = doc.body().getElementsByTag("table");
     if (tables.size() != 3) {
+      LOG.error("Unexpected number of tables url={}", url);
       throw new IllegalStateException("Unexpected number of tables");
     }
     var table = tables.get(1);

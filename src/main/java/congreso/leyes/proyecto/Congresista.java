@@ -5,6 +5,9 @@ public class Congresista {
   private String email;
   private String nombreCompleto;
 
+  public Congresista() {
+  }
+
   public Congresista(String email, String nombreCompleto) {
     this.email = email;
     this.nombreCompleto = nombreCompleto;
