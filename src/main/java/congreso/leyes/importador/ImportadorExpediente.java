@@ -139,7 +139,9 @@ public class ImportadorExpediente {
       var headers = contenidoExperiente.first().getElementsByTag("div")
           .first().children()
           .first().getElementsByTag("b");
-      expediente.setTitulo1(headers.get(0).text());
+      if (!headers.isEmpty()) {
+        expediente.setTitulo1(headers.get(0).text());
+      }
       if (headers.size() > 1) {
         var titulo = headers.get(1).text();
         expediente.setTitulo2(titulo);
@@ -190,7 +192,7 @@ public class ImportadorExpediente {
 
       return expediente;
     } catch (Throwable e) {
-      LOG.error("Error procesando expediente {}", url);
+      LOG.error("Error procesando expediente {}", url, e);
       throw new IllegalStateException("Error procesando expediente");
     }
   }
@@ -239,13 +241,22 @@ public class ImportadorExpediente {
         for (int i = 1; i < rows.size(); i++) {
           var row = rows.get(i);
           var values = row.getElementsByTag("td");
-          var numeroProyecto = values.get(0).text();
-          var element = values.get(2);
-          var nombreDocumento = element.text();
-          var referenciaDocumento = element.getElementsByTag("a").attr("href");
-          var doc = new Documento(parseDate(values.get(1)), nombreDocumento, numeroProyecto,
-              referenciaDocumento);
-          docs.add(doc);
+          if (values.size() == 3) {
+            var numeroProyecto = values.get(0).text();
+            var element = values.get(2);
+            var nombreDocumento = element.text();
+            var referenciaDocumento = element.getElementsByTag("a").attr("href");
+            var doc = new Documento(parseDate(values.get(1)), nombreDocumento, numeroProyecto,
+                referenciaDocumento);
+            docs.add(doc);
+          } else if (values.size() == 1) {
+            var element = values.get(0);
+            var referenciaDocumento = element.getElementsByTag("a").attr("href");
+            var doc = new Documento(null, null, null, referenciaDocumento);
+            docs.add(doc);
+          } else {
+            LOG.warn("Numero de columnas no esperado {}", values.size());
+          }
         }
         return docs;
       } else if (th.size() == 2 || headers.size() == 2) { //extraer documentos de proyecto
@@ -277,12 +288,13 @@ public class ImportadorExpediente {
         }
         return docs;
       } else {
-        LOG.error("Unexpected number of columns {}", table.html());
-        return new ArrayList<>();
+        LOG.error("Numero de columnas {} y cabeceras {} no es esperado. \n {}",
+            th.size(), headers.size(), table.html());
+        throw new IllegalStateException("Numero de cabeceras de documentos inespeado");
       }
     } catch (Throwable e) {
-      LOG.error("Error getting docs {}", table.html());
-      return new ArrayList<>();
+      LOG.error("Error obteniendo documentos {}", table.html(), e);
+      throw new IllegalStateException("Error obteniendo documentos");
     }
   }
 
@@ -290,10 +302,30 @@ public class ImportadorExpediente {
     if (td.text().isBlank()) {
       return null;
     }
-    return LocalDate.parse(td.text()
-            .replaceAll("\\s+", "")
-            .replaceAll("\\+", "")
-            .replaceAll("//", "/"),
-        DateTimeFormatter.ofPattern("dd/MM/yy"));
+    //agregar cualquier condicion para arreglar inconsistencias en fechas
+    if (td.text().length() == 10) {
+      return LocalDate.parse(td.text(),
+          DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+    } else {
+      return LocalDate.parse(td.text()
+              .replaceAll("\\s+", "")
+              .replaceAll("011", "11")
+              .replaceAll("119", "19")
+              .replaceAll("240", "24")
+              .replaceAll("178", "18")
+              .replaceAll("187", "18")
+              .replaceAll("182", "18")
+              .replaceAll("0708", "07/18")
+              .replaceAll("0617", "06/17")
+              .replaceAll("1710", "17/10")
+              .replaceAll("1018", "10/18")
+              .replaceAll("0208", "02/08")
+              .replaceAll("1907", "19/07")
+              .replaceAll("23/03/18/", "23/03/18")
+              .replaceAll("-", "")
+              .replaceAll("\\+", "")
+              .replaceAll("//", "/"),
+          DateTimeFormatter.ofPattern("dd/MM/yy"));
+    }
   }
 }
