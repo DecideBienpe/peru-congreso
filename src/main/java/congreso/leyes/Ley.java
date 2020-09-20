@@ -1,4 +1,4 @@
-package congreso.leyes.proyecto;
+package congreso.leyes;
 
 public class Ley {
 

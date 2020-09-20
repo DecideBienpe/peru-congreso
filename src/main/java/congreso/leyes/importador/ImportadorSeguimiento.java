@@ -1,11 +1,11 @@
-package congreso.leyes.proyecto.importador;
+package congreso.leyes.importador;
 
 import com.typesafe.config.ConfigFactory;
-import congreso.leyes.proyecto.Congresista;
-import congreso.leyes.proyecto.Proyecto;
-import congreso.leyes.proyecto.Seguimiento;
-import congreso.leyes.proyecto.internal.ProyectoSerde;
-import congreso.leyes.proyecto.internal.SeguimientoSerde;
+import congreso.leyes.Congresista;
+import congreso.leyes.Proyecto;
+import congreso.leyes.Seguimiento;
+import congreso.leyes.internal.ProyectoSerde;
+import congreso.leyes.internal.SeguimientoSerde;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.LocalDate;

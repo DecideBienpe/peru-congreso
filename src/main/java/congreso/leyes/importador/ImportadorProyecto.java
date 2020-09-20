@@ -1,8 +1,8 @@
-package congreso.leyes.proyecto.importador;
+package congreso.leyes.importador;
 
 import com.typesafe.config.ConfigFactory;
-import congreso.leyes.proyecto.Proyecto;
-import congreso.leyes.proyecto.internal.ProyectoSerde;
+import congreso.leyes.Proyecto;
+import congreso.leyes.internal.ProyectoSerde;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

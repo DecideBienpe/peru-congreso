@@ -1,8 +1,8 @@
-package congreso.leyes.proyecto.internal;
+package congreso.leyes.internal;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import congreso.leyes.proyecto.Seguimiento;
+import congreso.leyes.Seguimiento;
 import java.io.IOException;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.Serde;

@@ -1,4 +1,4 @@
-package congreso.leyes.proyecto;
+package congreso.leyes;
 
 import java.util.List;
 
