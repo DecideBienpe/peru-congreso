@@ -38,7 +38,7 @@ public class ImportadorProyecto {
 
     var importador = new ImportadorProyecto(baseUrl);
 
-    LOG.info("Iniciando proyecto");
+    LOG.info("Iniciando importacion de proyectos");
 
     var proyectos = importador.leerProyectos(proyectosUrl);
 
@@ -117,8 +117,8 @@ public class ImportadorProyecto {
     var numero = campos.get(0).text();
     var fechaActualizacion = campos.get(1).text().isBlank() ?
         Optional.<LocalDate>empty() :
-        Optional.of(parseDate(campos.get(1)));
-    var fechaPresentacion = parseDate(campos.get(2));
+        Optional.of(parsearFecha(campos.get(1)));
+    var fechaPresentacion = parsearFecha(campos.get(2));
     var estado = campos.get(3).text();
     var titulo = campos.get(4).text();
     var enlaceSeguimiento = campos.get(0).getElementsByTag("a").attr("href");
@@ -131,7 +131,7 @@ public class ImportadorProyecto {
         enlaceSeguimiento);
   }
 
-  private LocalDate parseDate(Element td) {
+  private LocalDate parsearFecha(Element td) {
     return LocalDate.parse(td.text(), DateTimeFormatter.ofPattern("MM/dd/yyyy"));
   }
 }
