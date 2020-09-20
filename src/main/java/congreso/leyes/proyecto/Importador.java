@@ -60,8 +60,9 @@ public class Importador {
     return proyectosAll;
   }
 
-  ExpedienteImportado getProyectoExpediente(
+  ExpedienteImportado getExpediente(
       SeguimientoImportado seguimientoImportado) {
+    if (seguimientoImportado.getEnlaceExpedienteDigital() == null) return null;
     var url = baseUrl + seguimientoImportado.getEnlaceExpedienteDigital();
     try {
       var expediente = new ExpedienteImportado();
@@ -82,38 +83,40 @@ public class Importador {
       var headers = expedienteContent.first().getElementsByTag("div").first().children().first()
           .getElementsByTag("b");
       var numeroTexto = headers.get(0).text();
-      expediente.setNumero(numeroTexto);
-      var titulo = headers.get(1).text();
-      expediente.setTitulo(titulo);
-      var expedienteRows = expedienteContent.first().getElementsByTag("table");
+      expediente.setTitulo1(numeroTexto);
+      if (headers.size() > 1) {
+        var titulo = headers.get(1).text();
+        expediente.setTitulo2(titulo);
+      }
+      var expedienteTables = expedienteContent.first().getElementsByTag("table");
 
-      if (expedienteRows.size() == 3) { //contiene dictamenes
-        var leyTable = expedienteRows.first();
+      if (expedienteTables.size() == 3) { //contiene dictamenes
+        var leyTable = expedienteTables.first();
         var docsLey = getDocumentos(leyTable);
         expediente.setDocumentosLey(docsLey);
 
-        var proyectoLeyTable = expedienteRows.get(1);
-        var docsProyecto = getLeyProyectoDocumentos(proyectoLeyTable);
+        var proyectoLeyTable = expedienteTables.get(1);
+        var docsProyecto = getDocumentos(proyectoLeyTable);
         expediente.setDocumentosProyectosLey(docsProyecto);
 
-        var anexosTable = expedienteRows.get(2);
+        var anexosTable = expedienteTables.get(2);
         var anexos = getDocumentos(anexosTable);
         expediente.setDocumentosAnexos(anexos);
       }
 
-      if (expedienteRows.size() == 2) {
-        var proyectoLeyTable = expedienteRows.get(0);
-        var docsProyecto = getLeyProyectoDocumentos(proyectoLeyTable);
+      if (expedienteTables.size() == 2) {
+        var proyectoLeyTable = expedienteTables.get(0);
+        var docsProyecto = getDocumentos(proyectoLeyTable);
         expediente.setDocumentosProyectosLey(docsProyecto);
 
-        var anexosTable = expedienteRows.get(1);
+        var anexosTable = expedienteTables.get(1);
         var anexos = getDocumentos(anexosTable);
         expediente.setDocumentosAnexos(anexos);
       }
 
-      if (expedienteRows.size() == 1) {
-        var proyectoLeyTable = expedienteRows.get(0);
-        var docsProyecto = getLeyProyectoDocumentos(proyectoLeyTable);
+      if (expedienteTables.size() == 1) {
+        var proyectoLeyTable = expedienteTables.get(0);
+        var docsProyecto = getDocumentos(proyectoLeyTable);
         expediente.setDocumentosProyectosLey(docsProyecto);
       }
 
@@ -160,39 +163,67 @@ public class Importador {
     var i = onclick.indexOf("ruta3 =") + 7;
     var urlPatternPre = onclick.substring(i, onclick.indexOf(";", i));
     var urlPattern = urlPatternPre
-        .substring(urlPatternPre.indexOf("\"" ) + 1, urlPatternPre.lastIndexOf("\""));
+        .substring(urlPatternPre.indexOf("\"") + 1, urlPatternPre.lastIndexOf("\""));
     var idElement = doc.select("input[name=IdO]");
     var variable = idElement.first().attr("value");
     return urlPattern.replace("\"+ids+\"", variable);
   }
 
   private List<Documento> getDocumentos(Element table) {
-    return table.getElementsByTag("tr").stream()
-        .dropWhile(e -> e.getElementsByTag("td").first().text().equals("Fecha"))
-        .dropWhile(e -> e.getElementsByTag("td").first().text().equals("Número de Proyecto"))
-        .map(row -> {
-          var values = row.getElementsByTag("td");
-          var element = values.get(1);
-          var nombreDocumento = element.text();
-          var referenciaDocumento = element.getElementsByTag("a").attr("href");
-          return new Documento(parseDate2(values.get(0)), nombreDocumento, referenciaDocumento);
-        })
-        .collect(Collectors.toList());
-  }
-
-  private List<Documento> getLeyProyectoDocumentos(Element table) {
-    return table.getElementsByTag("tr").stream()
-        .dropWhile(e -> e.getElementsByTag("td").first().text().equals("Número de Proyecto"))
-        .map(row -> {
+    try {
+      var rows = table.getElementsByTag("tr");
+      var th = rows.first().getElementsByTag("th");
+      var headers = rows.first().getElementsByTag("b");
+      if (th.size() == 3 || headers.size() == 5) {
+        var docs = new ArrayList<Documento>();
+        for (int i = 1; i < rows.size(); i++) {
+          var row = rows.get(i);
           var values = row.getElementsByTag("td");
           var numeroProyecto = values.get(0).text();
           var element = values.get(2);
           var nombreDocumento = element.text();
           var referenciaDocumento = element.getElementsByTag("a").attr("href");
-          return new Documento(parseDate2(values.get(1)), nombreDocumento, numeroProyecto,
+          var doc = new Documento(parseDate2(values.get(1)), nombreDocumento, numeroProyecto,
               referenciaDocumento);
-        })
-        .collect(Collectors.toList());
+          docs.add(doc);
+        }
+        return docs;
+      } else if (th.size() == 2 || headers.size() == 2) {
+        var docs = new ArrayList<Documento>();
+        for (int i = 1; i < rows.size(); i++) {
+          var row = rows.get(i);
+          var values = row.getElementsByTag("td");
+          var element = values.get(1);
+          var nombreDocumento = element.text();
+          var referenciaDocumento = element.getElementsByTag("a").attr("href");
+          var doc = new Documento(parseDate2(values.get(0)), nombreDocumento, referenciaDocumento);
+          docs.add(doc);
+        }
+        return docs;
+      } else if (th.size() == 0) {
+        var docs = new ArrayList<Documento>();
+        var start = 0;
+        if (headers.size() > 0) {
+          start = 1;
+        }
+        for (int i = start; i < rows.size(); i++) {
+          var row = rows.get(i);
+          var values = row.getElementsByTag("td");
+          var element = values.get(1);
+          var nombreDocumento = element.text();
+          var referenciaDocumento = element.getElementsByTag("a").attr("href");
+          var doc = new Documento(parseDate2(values.get(0)), nombreDocumento, referenciaDocumento);
+          docs.add(doc);
+        }
+        return docs;
+      } else {
+        LOG.error("Unexpected number of columns {}", table.html());
+        return new ArrayList<>();
+      }
+    } catch (Throwable e) {
+      LOG.error("Error getting docs {}", table.html());
+      return new ArrayList<>();
+    }
   }
 
   SeguimientoImportado getProyectoSeguimiento(ProyectoImportado proyectoImportado)
@@ -266,7 +297,14 @@ public class Importador {
   }
 
   private static LocalDate parseDate2(Element td) {
-    return LocalDate.parse(td.text(), DateTimeFormatter.ofPattern("dd/MM/yy"));
+    if (td.text().isBlank()) {
+      return null;
+    }
+    return LocalDate.parse(td.text()
+            .replaceAll("\\s+", "")
+            .replaceAll("\\+", "")
+            .replaceAll("//", "/"),
+        DateTimeFormatter.ofPattern("dd/MM/yy"));
   }
 
   private List<Congresista> parseCongresistasAutores(Element element) {

@@ -24,7 +24,7 @@ public class ImportadorExpediente {
     consumerConfig.put(ConsumerConfig.ENABLE_AUTO_COMMIT_CONFIG, "false");
     var consumer = new KafkaConsumer<>(consumerConfig, new StringDeserializer(),
         new StringDeserializer());
-    consumer.subscribe(List.of("congreso.leyes.proyecto-seguimiento-importado-v1"));
+    consumer.subscribe(List.of("congreso.leyes.seguimiento-importado-v1"));
 
     var objectMapper = new ObjectMapper();
 
@@ -37,20 +37,20 @@ public class ImportadorExpediente {
 
     var importador = new Importador(baseUrl);
 
-    var topic = "congreso.leyes.proyecto-expediente-importado-v1";
+    var topic = "congreso.leyes.expediente-importado-v1";
 
     while(!Thread.interrupted()) {
       var records = consumer.poll(Duration.ofSeconds(5));
       for (var record : records) {
         String value = record.value();
         var seguimiento = objectMapper.readValue(value, SeguimientoImportado.class);
-        var expediente = importador.getProyectoExpediente(seguimiento);
+        var expediente = importador.getExpediente(seguimiento);
 
-//        var valueSeguimiento = objectMapper.writeValueAsString(expediente);
-//        var recordSeguimiento = new ProducerRecord<>(topic, expediente.getNumero(), valueSeguimiento);
-//        producer.send(recordSeguimiento, (recordMetadata, e) -> {
-//          if (e != null) e.printStackTrace();
-//        });
+        var valueSeguimiento = objectMapper.writeValueAsString(expediente);
+        var recordSeguimiento = new ProducerRecord<>(topic, seguimiento.getNumero(), valueSeguimiento);
+        producer.send(recordSeguimiento, (recordMetadata, e) -> {
+          if (e != null) e.printStackTrace();
+        });
       }
     }
   }

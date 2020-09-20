@@ -3,29 +3,29 @@ package congreso.leyes.proyecto;
 import java.util.List;
 
 public class ExpedienteImportado {
-  private String numero;
-  private String titulo;
+  private String titulo1;
+  private String titulo2;
   private List<Documento> documentosLey;
   private List<Documento> documentosProyectosLey;
   private List<Documento> documentosAnexos;
   private String enlacePresentarOpinion;
   private String enlaceOpinionesRecibidos;
 
-  public String getNumero() {
-    return numero;
+  public String getTitulo1() {
+    return titulo1;
   }
 
-  public ExpedienteImportado setNumero(String numero) {
-    this.numero = numero;
+  public ExpedienteImportado setTitulo1(String titulo1) {
+    this.titulo1 = titulo1;
     return this;
   }
 
-  public String getTitulo() {
-    return titulo;
+  public String getTitulo2() {
+    return titulo2;
   }
 
-  public ExpedienteImportado setTitulo(String titulo) {
-    this.titulo = titulo;
+  public ExpedienteImportado setTitulo2(String titulo2) {
+    this.titulo2 = titulo2;
     return this;
   }
 

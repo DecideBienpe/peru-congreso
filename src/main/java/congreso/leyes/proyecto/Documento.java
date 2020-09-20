@@ -14,7 +14,9 @@ public class Documento {
   }
 
   public Documento(LocalDate fecha, String titulo, String url) {
-    this.fecha = fecha.atStartOfDay().toEpochSecond(ZoneOffset.ofHours(-5));
+    if (fecha != null) {
+      this.fecha = fecha.atStartOfDay().toEpochSecond(ZoneOffset.ofHours(-5));
+    }
     this.titulo = titulo;
     this.url = url;
   }

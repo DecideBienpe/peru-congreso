@@ -37,7 +37,7 @@ public class ImportadorSeguimiento {
 
     var importador = new Importador(baseUrl);
 
-    var topic = "congreso.leyes.proyecto-seguimiento-importado-v1";
+    var topic = "congreso.leyes.seguimiento-importado-v1";
 
     while(!Thread.interrupted()) {
       var records = consumer.poll(Duration.ofSeconds(5));
