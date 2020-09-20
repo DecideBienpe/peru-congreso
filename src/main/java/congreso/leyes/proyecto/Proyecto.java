@@ -4,28 +4,28 @@ import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.Optional;
 
-public class ProyectoImportado {
+public class Proyecto {
 
   private String numero;
-  private Long actualizacion;
-  private Long presentacion;
+  private Long fechaActualizacion;
+  private Long fechaPresentacion;
   private String estado;
   private String titulo;
   private String referencia;
 
-  ProyectoImportado() {
+  Proyecto() {
   }
 
-  public ProyectoImportado(String numero,
-      Optional<LocalDate> actualizacion,
-      LocalDate presentacion,
+  public Proyecto(String numero,
+      Optional<LocalDate> fechaActualizacion,
+      LocalDate fechaPresentacion,
       String estado,
       String titulo,
       String referencia) {
     this.numero = numero;
-    this.actualizacion = actualizacion
+    this.fechaActualizacion = fechaActualizacion
         .map(d -> d.atStartOfDay().toEpochSecond(ZoneOffset.ofHours(-5))).orElse(-1L);
-    this.presentacion = presentacion.atStartOfDay().toEpochSecond(ZoneOffset.ofHours(-5));
+    this.fechaPresentacion = fechaPresentacion.atStartOfDay().toEpochSecond(ZoneOffset.ofHours(-5));
     this.estado = estado;
     this.titulo = titulo;
     this.referencia = referencia;
@@ -35,26 +35,26 @@ public class ProyectoImportado {
     return numero;
   }
 
-  public ProyectoImportado setNumero(String numero) {
+  public Proyecto setNumero(String numero) {
     this.numero = numero;
     return this;
   }
 
-  public Long getActualizacion() {
-    return actualizacion;
+  public Long getFechaActualizacion() {
+    return fechaActualizacion;
   }
 
-  public ProyectoImportado setActualizacion(Long actualizacion) {
-    this.actualizacion = actualizacion;
+  public Proyecto setFechaActualizacion(Long fechaActualizacion) {
+    this.fechaActualizacion = fechaActualizacion;
     return this;
   }
 
-  public Long getPresentacion() {
-    return presentacion;
+  public Long getFechaPresentacion() {
+    return fechaPresentacion;
   }
 
-  public ProyectoImportado setPresentacion(Long presentacion) {
-    this.presentacion = presentacion;
+  public Proyecto setFechaPresentacion(Long fechaPresentacion) {
+    this.fechaPresentacion = fechaPresentacion;
     return this;
   }
 
@@ -62,7 +62,7 @@ public class ProyectoImportado {
     return estado;
   }
 
-  public ProyectoImportado setEstado(String estado) {
+  public Proyecto setEstado(String estado) {
     this.estado = estado;
     return this;
   }
@@ -71,7 +71,7 @@ public class ProyectoImportado {
     return titulo;
   }
 
-  public ProyectoImportado setTitulo(String titulo) {
+  public Proyecto setTitulo(String titulo) {
     this.titulo = titulo;
     return this;
   }
@@ -80,7 +80,7 @@ public class ProyectoImportado {
     return referencia;
   }
 
-  public ProyectoImportado setReferencia(String referencia) {
+  public Proyecto setReferencia(String referencia) {
     this.referencia = referencia;
     return this;
   }

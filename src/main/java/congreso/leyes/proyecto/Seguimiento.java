@@ -4,7 +4,7 @@ import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.util.List;
 
-public class SeguimientoImportado {
+public class Seguimiento {
 
   private String periodo;
   private String legislatura;
@@ -23,10 +23,10 @@ public class SeguimientoImportado {
   private String leyTitulo;
   private String leySumilla;
 
-  public SeguimientoImportado() {
+  public Seguimiento() {
   }
 
-  public SeguimientoImportado(
+  public Seguimiento(
       String periodo,
       String legislatura,
       LocalDate presentacion,
@@ -61,7 +61,7 @@ public class SeguimientoImportado {
     return periodo;
   }
 
-  public SeguimientoImportado setPeriodo(String periodo) {
+  public Seguimiento setPeriodo(String periodo) {
     this.periodo = periodo;
     return this;
   }
@@ -70,7 +70,7 @@ public class SeguimientoImportado {
     return legislatura;
   }
 
-  public SeguimientoImportado setLegislatura(String legislatura) {
+  public Seguimiento setLegislatura(String legislatura) {
     this.legislatura = legislatura;
     return this;
   }
@@ -79,12 +79,12 @@ public class SeguimientoImportado {
     return presentacion;
   }
 
-  public SeguimientoImportado setPresentacion(Long presentacion) {
+  public Seguimiento setPresentacion(Long presentacion) {
     this.presentacion = presentacion;
     return this;
   }
 
-  public SeguimientoImportado setPresentacionLocalDate(LocalDate presentacion) {
+  public Seguimiento setPresentacionLocalDate(LocalDate presentacion) {
     this.presentacion = presentacion.atStartOfDay().toEpochSecond(ZoneOffset.ofHours(-5));
     return this;
   }
@@ -93,7 +93,7 @@ public class SeguimientoImportado {
     return numero;
   }
 
-  public SeguimientoImportado setNumero(String numero) {
+  public Seguimiento setNumero(String numero) {
     this.numero = numero;
     return this;
   }
@@ -102,7 +102,7 @@ public class SeguimientoImportado {
     return proponente;
   }
 
-  public SeguimientoImportado setProponente(String proponente) {
+  public Seguimiento setProponente(String proponente) {
     this.proponente = proponente;
     return this;
   }
@@ -111,7 +111,7 @@ public class SeguimientoImportado {
     return grupoParlamentario;
   }
 
-  public SeguimientoImportado setGrupoParlamentario(String grupoParlamentario) {
+  public Seguimiento setGrupoParlamentario(String grupoParlamentario) {
     this.grupoParlamentario = grupoParlamentario;
     return this;
   }
@@ -120,7 +120,7 @@ public class SeguimientoImportado {
     return titulo;
   }
 
-  public SeguimientoImportado setTitulo(String titulo) {
+  public Seguimiento setTitulo(String titulo) {
     this.titulo = titulo;
     return this;
   }
@@ -129,7 +129,7 @@ public class SeguimientoImportado {
     return sumilla;
   }
 
-  public SeguimientoImportado setSumilla(String sumilla) {
+  public Seguimiento setSumilla(String sumilla) {
     this.sumilla = sumilla;
     return this;
   }
@@ -138,7 +138,7 @@ public class SeguimientoImportado {
     return autores;
   }
 
-  public SeguimientoImportado setAutores(List<Congresista> autores) {
+  public Seguimiento setAutores(List<Congresista> autores) {
     this.autores = autores;
     return this;
   }
@@ -147,7 +147,7 @@ public class SeguimientoImportado {
     return enlaceExpedienteDigital;
   }
 
-  public SeguimientoImportado setEnlaceExpedienteDigital(
+  public Seguimiento setEnlaceExpedienteDigital(
       String enlaceExpedienteDigital) {
     this.enlaceExpedienteDigital = enlaceExpedienteDigital;
     return this;
@@ -157,7 +157,7 @@ public class SeguimientoImportado {
     return adherentes;
   }
 
-  public SeguimientoImportado setAdherentes(
+  public Seguimiento setAdherentes(
       List<String> adherentes) {
     this.adherentes = adherentes;
     return this;
@@ -167,7 +167,7 @@ public class SeguimientoImportado {
     return seguimiento;
   }
 
-  public SeguimientoImportado setSeguimiento(String seguimiento) {
+  public Seguimiento setSeguimiento(String seguimiento) {
     this.seguimiento = seguimiento;
     return this;
   }
@@ -176,7 +176,7 @@ public class SeguimientoImportado {
     return iniciativasAgrupadas;
   }
 
-  public SeguimientoImportado setIniciativasAgrupadas(String iniciativasAgrupadas) {
+  public Seguimiento setIniciativasAgrupadas(String iniciativasAgrupadas) {
     this.iniciativasAgrupadas = iniciativasAgrupadas;
     return this;
   }
@@ -185,7 +185,7 @@ public class SeguimientoImportado {
     return leyNumero;
   }
 
-  public SeguimientoImportado setLeyNumero(String leyNumero) {
+  public Seguimiento setLeyNumero(String leyNumero) {
     this.leyNumero = leyNumero;
     return this;
   }
@@ -194,7 +194,7 @@ public class SeguimientoImportado {
     return leyTitulo;
   }
 
-  public SeguimientoImportado setLeyTitulo(String leyTitulo) {
+  public Seguimiento setLeyTitulo(String leyTitulo) {
     this.leyTitulo = leyTitulo;
     return this;
   }
@@ -203,7 +203,7 @@ public class SeguimientoImportado {
     return leySumilla;
   }
 
-  public SeguimientoImportado setLeySumilla(String leySumilla) {
+  public Seguimiento setLeySumilla(String leySumilla) {
     this.leySumilla = leySumilla;
     return this;
   }

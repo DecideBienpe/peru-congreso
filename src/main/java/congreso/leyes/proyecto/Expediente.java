@@ -2,7 +2,8 @@ package congreso.leyes.proyecto;
 
 import java.util.List;
 
-public class ExpedienteImportado {
+public class Expediente {
+
   private String titulo1;
   private String titulo2;
   private List<Documento> documentosLey;
@@ -15,7 +16,7 @@ public class ExpedienteImportado {
     return titulo1;
   }
 
-  public ExpedienteImportado setTitulo1(String titulo1) {
+  public Expediente setTitulo1(String titulo1) {
     this.titulo1 = titulo1;
     return this;
   }
@@ -24,7 +25,7 @@ public class ExpedienteImportado {
     return titulo2;
   }
 
-  public ExpedienteImportado setTitulo2(String titulo2) {
+  public Expediente setTitulo2(String titulo2) {
     this.titulo2 = titulo2;
     return this;
   }
@@ -33,8 +34,7 @@ public class ExpedienteImportado {
     return documentosLey;
   }
 
-  public ExpedienteImportado setDocumentosLey(
-      List<Documento> documentosLey) {
+  public Expediente setDocumentosLey(List<Documento> documentosLey) {
     this.documentosLey = documentosLey;
     return this;
   }
@@ -43,7 +43,7 @@ public class ExpedienteImportado {
     return documentosProyectosLey;
   }
 
-  public ExpedienteImportado setDocumentosProyectosLey(
+  public Expediente setDocumentosProyectosLey(
       List<Documento> documentosProyectosLey) {
     this.documentosProyectosLey = documentosProyectosLey;
     return this;
@@ -53,7 +53,7 @@ public class ExpedienteImportado {
     return documentosAnexos;
   }
 
-  public ExpedienteImportado setDocumentosAnexos(List<Documento> documentosAnexos) {
+  public Expediente setDocumentosAnexos(List<Documento> documentosAnexos) {
     this.documentosAnexos = documentosAnexos;
     return this;
   }
@@ -62,7 +62,7 @@ public class ExpedienteImportado {
     return enlacePresentarOpinion;
   }
 
-  public ExpedienteImportado setEnlacePresentarOpinion(String enlacePresentarOpinion) {
+  public Expediente setEnlacePresentarOpinion(String enlacePresentarOpinion) {
     this.enlacePresentarOpinion = enlacePresentarOpinion;
     return this;
   }
@@ -71,7 +71,7 @@ public class ExpedienteImportado {
     return enlaceOpinionesRecibidos;
   }
 
-  public ExpedienteImportado setEnlaceOpinionesRecibidos(String enlaceOpinionesRecibidos) {
+  public Expediente setEnlaceOpinionesRecibidos(String enlaceOpinionesRecibidos) {
     this.enlaceOpinionesRecibidos = enlaceOpinionesRecibidos;
     return this;
   }
