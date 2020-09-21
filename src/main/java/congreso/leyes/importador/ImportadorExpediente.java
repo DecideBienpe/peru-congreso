@@ -123,7 +123,8 @@ public class ImportadorExpediente {
       var tablas = doc.body().select("table[width=500]");
       if (tablas.size() != 1) {
         LOG.error("Numero inesperado de tablas {}, url={}", tablas.size(), url);
-        throw new IllegalStateException("Numero inesperado de tablas");
+//        throw new IllegalStateException("Numero inesperado de tablas");
+        return null;
       }
       //Ubicar contenido
       var contenido = tablas
@@ -235,8 +236,9 @@ public class ImportadorExpediente {
     try {
       var rows = table.getElementsByTag("tr");
       var th = rows.first().getElementsByTag("th");
+      var td = rows.first().getElementsByTag("td");
       var headers = rows.first().getElementsByTag("b");
-      if (th.size() == 3 || headers.size() == 5) { //extraer documentos de ley
+      if (th.size() == 3 || headers.size() == 5 || td.size() == 3) { //extraer documentos de ley
         var docs = new ArrayList<Documento>();
         for (int i = 1; i < rows.size(); i++) {
           var row = rows.get(i);
@@ -315,6 +317,7 @@ public class ImportadorExpediente {
               .replaceAll("178", "18")
               .replaceAll("187", "18")
               .replaceAll("182", "18")
+              .replaceAll("0719", "07/19")
               .replaceAll("0708", "07/18")
               .replaceAll("0617", "06/17")
               .replaceAll("1710", "17/10")
@@ -322,6 +325,7 @@ public class ImportadorExpediente {
               .replaceAll("0208", "02/08")
               .replaceAll("1907", "19/07")
               .replaceAll("23/03/18/", "23/03/18")
+              .replaceAll("02/15/19", "15/02/19")
               .replaceAll("-", "")
               .replaceAll("\\+", "")
               .replaceAll("//", "/"),
