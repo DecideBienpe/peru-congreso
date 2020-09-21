@@ -309,27 +309,43 @@ public class ImportadorExpediente {
       return LocalDate.parse(td.text(),
           DateTimeFormatter.ofPattern("dd/MM/yyyy"));
     } else {
-      return LocalDate.parse(td.text()
-              .replaceAll("\\s+", "")
-              .replaceAll("011", "11")
-              .replaceAll("119", "19")
-              .replaceAll("240", "24")
-              .replaceAll("178", "18")
-              .replaceAll("187", "18")
-              .replaceAll("182", "18")
-              .replaceAll("0719", "07/19")
-              .replaceAll("0708", "07/18")
-              .replaceAll("0617", "06/17")
-              .replaceAll("1710", "17/10")
-              .replaceAll("1018", "10/18")
-              .replaceAll("0208", "02/08")
-              .replaceAll("1907", "19/07")
-              .replaceAll("23/03/18/", "23/03/18")
-              .replaceAll("02/15/19", "15/02/19")
-              .replaceAll("-", "")
-              .replaceAll("\\+", "")
-              .replaceAll("//", "/"),
-          DateTimeFormatter.ofPattern("dd/MM/yy"));
+      if (td.text().length() == 8) {
+        return LocalDate.parse(td.text()
+                .replaceAll("\\s+", "")
+                .replaceAll("-", "")
+                .replaceAll("\\+", "")
+                .replaceAll("//", "/")
+                .replaceAll("02/15/19", "15/02/19")
+                .replaceAll("20/0708", "20/07/18")
+            ,
+            DateTimeFormatter.ofPattern("dd/MM/yy"));
+      } else {
+        return LocalDate.parse(td.text()
+                .replaceAll("\\s+", "")
+                .replaceAll("-", "")
+                .replaceAll("\\+", "")
+                .replaceAll("//", "/")
+                .replaceAll("011", "11")
+                .replaceAll("119", "19")
+                .replaceAll("240", "24")
+                .replaceAll("178", "18")
+                .replaceAll("187", "18")
+                .replaceAll("182", "18")
+                .replaceAll("0520", "05/20")
+                .replaceAll("5/04/19", "05/04/19")
+                .replaceAll("0719", "07/19")
+                .replaceAll("0617", "06/17")
+                .replaceAll("1710", "17/10")
+                .replaceAll("1018", "10/18")
+                .replaceAll("0208", "02/08")
+                .replaceAll("1907", "19/07")
+                .replaceAll("23/03/18/", "23/03/18")
+                .replaceAll("02/15/19", "15/02/19")
+                .replaceAll("21/5/20", "21/05/20")
+                .replaceAll("20/0708", "20/07/18")
+            ,
+            DateTimeFormatter.ofPattern("dd/MM/yy"));
+      }
     }
   }
 }
