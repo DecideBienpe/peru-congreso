@@ -64,6 +64,7 @@ public class ImportadorExpediente {
     streamsBuilder
         .stream(inputTopic, Consumed.with(new ProyectoIdSerde(), new ProyectoLeySerde()))
         .mapValues(importador::importarExpediente)
+        .filterNot((id, proyectoLey) -> Objects.isNull(proyectoLey))
         .transformValues(() -> new ValueTransformer<ProyectoLey, ProyectoLey>() {
           KeyValueStore<Id, ProyectoLey> store;
 
@@ -116,12 +117,6 @@ public class ImportadorExpediente {
     try {
       var expediente = seguimiento.toBuilder();
       var doc = Jsoup.connect(url).get();
-      var scripts = doc.head().getElementsByTag("script");
-      if (scripts.size() != 2) {
-        LOG.error("Numero inesperado de scripts {}, url={}, html={}",
-            scripts.size(), url, doc.html());
-        throw new IllegalStateException("Numero inesperado de scripts");
-      }
       var tablas = doc.body().select("table[width=500]");
       if (tablas.size() != 1) {
         LOG.error("Numero inesperado de tablas {}, url={}", tablas.size(), url);
