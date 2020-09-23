@@ -166,8 +166,8 @@ public class ImportadorProyecto {
     var numero = campos.get(0).text();
     var fechaActualizacion = campos.get(1).text().isBlank() ?
         Optional.<Long>empty() :
-        Optional.of(parsearFecha(campos.get(1)));
-    var fechaPresentacion = parsearFecha(campos.get(2));
+        Optional.of(leerFecha(campos.get(1)));
+    var fechaPresentacion = leerFecha(campos.get(2));
     var estado = campos.get(3).text();
     var enlaceSeguimiento = campos.get(0).getElementsByTag("a").attr("href");
     var builder = ProyectoLey.newBuilder()
@@ -182,7 +182,7 @@ public class ImportadorProyecto {
     return builder.build();
   }
 
-  private Long parsearFecha(Element td) {
+  private Long leerFecha(Element td) {
     return LocalDate.parse(td.text(), DateTimeFormatter.ofPattern("MM/dd/yyyy"))
         .atStartOfDay()
         .toInstant(ZoneOffset.ofHours(-5))

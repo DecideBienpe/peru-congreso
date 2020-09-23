@@ -206,7 +206,7 @@ public class ImportadorSeguimiento {
             var fecha = matcher.group();
             seguimientos.add(Seguimiento.newBuilder()
                 .setTexto(texto)
-                .setFecha(parsearFecha(fecha))
+                .setFecha(leerFecha(fecha))
                 .build());
           }
         }
@@ -250,7 +250,7 @@ public class ImportadorSeguimiento {
     return Arrays.asList(element.text().split(","));
   }
 
-  private Long parsearFecha(String texto) {
+  private Long leerFecha(String texto) {
     return LocalDate.parse(texto
             .replaceAll("58/08/2018", "08/08/2018")
             .replaceAll("59/02/2017", "06/02/2017")

@@ -250,12 +250,15 @@ public class ImportadorExpediente {
             var element = values.get(2);
             var nombreDocumento = element.text();
             var referenciaDocumento = element.getElementsByTag("a").attr("href");
-            var doc = Documento.newBuilder()
-                .setFecha(parseDate(values.get(1)))
+            var builder = Documento.newBuilder()
                 .setTitulo(nombreDocumento)
                 .setProyecto(numeroProyecto)
-                .setUrl(referenciaDocumento)
-                .build();
+                .setUrl(referenciaDocumento);
+            var fecha = leerFecha(values.get(1));
+            if (fecha != null) {
+              builder.setFecha(fecha);
+            }
+            var doc = builder.build();
             docs.add(doc);
           } else if (values.size() == 1) {
             var element = values.get(0);
@@ -277,11 +280,15 @@ public class ImportadorExpediente {
           var element = values.get(1);
           var nombreDocumento = element.text();
           var referenciaDocumento = element.getElementsByTag("a").attr("href");
-          var doc = Documento.newBuilder()
-              .setFecha(parseDate(values.get(0)))
+
+          var builder = Documento.newBuilder()
               .setTitulo(nombreDocumento)
-              .setUrl(referenciaDocumento)
-              .build();
+              .setUrl(referenciaDocumento);
+          var fecha = leerFecha(values.get(0));
+          if (fecha != null) {
+            builder.setFecha(fecha);
+          }
+          var doc = builder.build();
           docs.add(doc);
         }
         return docs;
@@ -297,11 +304,14 @@ public class ImportadorExpediente {
           var element = values.get(1);
           var nombreDocumento = element.text();
           var referenciaDocumento = element.getElementsByTag("a").attr("href");
-          var doc = Documento.newBuilder()
-              .setFecha(parseDate(values.get(0)))
+          var builder = Documento.newBuilder()
               .setTitulo(nombreDocumento)
-              .setUrl(referenciaDocumento)
-              .build();
+              .setUrl(referenciaDocumento);
+          var fecha = leerFecha(values.get(0));
+          if (fecha != null) {
+            builder.setFecha(fecha);
+          }
+          var doc = builder.build();
           docs.add(doc);
         }
         return docs;
@@ -316,7 +326,7 @@ public class ImportadorExpediente {
     }
   }
 
-  private Long parseDate(Element td) {
+  private Long leerFecha(Element td) {
     if (td.text().isBlank()) {
       LOG.error("Fecha vacia! {}", td.html());
       return null;
