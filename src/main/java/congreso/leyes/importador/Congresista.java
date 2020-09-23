@@ -1,4 +1,4 @@
-package congreso.leyes;
+package congreso.leyes.importador;
 
 public class Congresista {
 

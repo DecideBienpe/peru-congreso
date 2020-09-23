@@ -1,0 +1,80 @@
+syntax = "proto3";
+
+package congreso.leyes;
+
+message ProyectoLey {
+  Id id = 1;
+  string estado = 2;
+
+  int64 fecha_publicacion = 3;
+  int64 fecha_actualizacion = 4;
+
+  Enlaces enlaces = 5;
+  Detalle detalle = 6;
+  Expediente expediente = 7;
+  Ley ley = 8;
+
+  message Id {
+    string periodo = 1;
+    string numero_periodo = 2;
+  }
+
+  message Enlaces {
+    string seguimiento = 1;
+    string expediente = 2;
+    string opiniones_publicadas = 3;
+    string publicar_opinion = 4;
+  }
+
+  message Seguimiento {
+    int64 fecha = 1;
+    string texto = 2;
+  }
+
+  message Detalle {
+    string numero_unico = 1;
+
+    string titulo = 2;
+    string sumilla = 3;
+
+    string periodo_texto = 4;
+    string legislatura = 5;
+
+    string proponente = 6;
+    string grupo_parlamentario = 7;
+
+    string iniciativas_agrupadas = 8;
+
+    repeated string autor = 9;
+    repeated string adherente = 10;
+
+    string seguimiento_texto = 11;
+    repeated Seguimiento seguimiento = 12;
+    repeated string sector = 13;
+    repeated Congresista congresista = 14;
+  }
+
+  message Expediente {
+    repeated string titulo = 1;
+    repeated Documento resultado = 2;
+    repeated Documento proyecto = 3;
+    repeated Documento anexo = 4;
+
+    message Documento {
+      string titulo = 1;
+      string url = 2;
+      int64 fecha = 3;
+      string proyecto = 4;
+    }
+  }
+
+  message Ley {
+    string numero = 1;
+    string titulo = 2;
+    string sumilla = 3;
+  }
+}
+message Congresista {
+  string nombre_completo = 1 ;
+  string email = 2;
+}

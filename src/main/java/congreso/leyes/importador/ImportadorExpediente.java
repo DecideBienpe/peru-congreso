@@ -1,27 +1,32 @@
 package congreso.leyes.importador;
 
 import com.typesafe.config.ConfigFactory;
-import congreso.leyes.Documento;
-import congreso.leyes.Expediente;
-import congreso.leyes.Seguimiento;
-import congreso.leyes.internal.ExpedienteSerde;
-import congreso.leyes.internal.SeguimientoSerde;
-import java.time.Duration;
+import congreso.leyes.Proyecto;
+import congreso.leyes.Proyecto.ProyectoLey;
+import congreso.leyes.Proyecto.ProyectoLey.Expediente.Documento;
+import congreso.leyes.Proyecto.ProyectoLey.Id;
+import congreso.leyes.internal.ProyectoIdSerde;
+import congreso.leyes.internal.ProyectoLeySerde;
 import java.time.LocalDate;
+import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Objects;
 import java.util.Properties;
 import java.util.stream.Collectors;
 import org.apache.kafka.clients.CommonClientConfigs;
-import org.apache.kafka.clients.consumer.ConsumerConfig;
-import org.apache.kafka.clients.consumer.KafkaConsumer;
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.apache.kafka.common.serialization.StringDeserializer;
-import org.apache.kafka.common.serialization.StringSerializer;
+import org.apache.kafka.streams.KafkaStreams;
+import org.apache.kafka.streams.StreamsBuilder;
+import org.apache.kafka.streams.StreamsConfig;
+import org.apache.kafka.streams.kstream.Consumed;
+import org.apache.kafka.streams.kstream.Produced;
+import org.apache.kafka.streams.kstream.ValueTransformer;
+import org.apache.kafka.streams.processor.ProcessorContext;
+import org.apache.kafka.streams.state.KeyValueStore;
+import org.apache.kafka.streams.state.Stores;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -41,78 +46,75 @@ public class ImportadorExpediente {
   public static void main(String[] args) {
     var config = ConfigFactory.load();
 
-    var consumerConfig = new Properties();
-    var kafkaBootstrapServers = config.getString("kafka.bootstrap-servers");
-    consumerConfig.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServers);
-    var groupId = config.getString("kafka.consumer-groups.importador-expediente");
-    consumerConfig.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
-    var overrides = config.getConfig("kafka.consumer").entrySet().stream()
-        .collect(Collectors.toMap(Entry::getKey, entry -> entry.getValue().unwrapped()));
-    consumerConfig.putAll(overrides);
-    var keyDeserializer = new StringDeserializer();
-    var valueDeserializer = new SeguimientoSerde().deserializer();
-    var consumer = new KafkaConsumer<>(consumerConfig, keyDeserializer, valueDeserializer);
-    consumer.subscribe(List.of(config.getString("kafka.topics.seguimiento-importado")));
-
-    var producerConfig = new Properties();
-    producerConfig.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServers);
-    var producerOverrides = config.getConfig("kafka.producer").entrySet().stream()
-        .collect(Collectors.toMap(Entry::getKey, entry -> entry.getValue().unwrapped()));
-    producerConfig.putAll(producerOverrides);
-    var keySerializer = new StringSerializer();
-    var valueSerializer = new ExpedienteSerde().serializer();
-    var producer = new KafkaProducer<>(producerConfig, keySerializer, valueSerializer);
-
     var baseUrl = config.getString("importador.base-url");
 
     var importador = new ImportadorExpediente(baseUrl);
 
-    var topic = config.getString("kafka.topics.expediente-importado");
+    var kafkaBootstrapServers = config.getString("kafka.bootstrap-servers");
+    var inputTopic = config.getString("kafka.topics.seguimiento-importado");
+    var outputTopic = config.getString("kafka.topics.expediente-importado");
 
-    while (!Thread.interrupted()) {
-      var records = consumer.poll(Duration.ofSeconds(5));
+    var streamsBuilder = new StreamsBuilder();
+    streamsBuilder.addStateStore(Stores.keyValueStoreBuilder(
+        Stores.persistentKeyValueStore("proyectos"),
+        new ProyectoIdSerde(),
+        new ProyectoLeySerde()
+    ));
 
-      LOG.info("Seguimientos recibidos {}", records.count());
+    streamsBuilder
+        .stream(inputTopic, Consumed.with(new ProyectoIdSerde(), new ProyectoLeySerde()))
+        .mapValues(importador::importarExpediente)
+        .transformValues(() -> new ValueTransformer<ProyectoLey, ProyectoLey>() {
+          KeyValueStore<Id, ProyectoLey> store;
 
-      if (records.isEmpty()) {
-        LOG.info("Cerrando importador ya que no hay mas seguimientos disponibles");
-        producer.close();
-        consumer.close();
-        Runtime.getRuntime().exit(0);
-      }
-
-      for (var record : records) {
-        var expediente = importador.getExpediente(record.value());
-
-        var recordExpediente = new ProducerRecord<>(topic, record.key(), expediente);
-        producer.send(recordExpediente, (recordMetadata, e) -> {
-          if (e != null) {
-            LOG.error("Error guardando expediente {}", expediente, e);
-            throw new IllegalStateException(e);
+          @Override
+          public void init(ProcessorContext context) {
+            store = (KeyValueStore<Id, ProyectoLey>) context.getStateStore("proyectos");
           }
-        });
-      }
 
-      consumer.commitAsync((map, e) -> {
-        if (e != null) {
-          LOG.error("Error guardando progreso de importador {}", map, e);
-          throw new IllegalStateException(e);
-        }
-        LOG.info("Progreso de importador {}", map);
-      });
-    }
+          @Override
+          public ProyectoLey transform(ProyectoLey proyectoLey) {
+            if (proyectoLey.equals(store.get(proyectoLey.getId()))) {
+              return null;
+            } else {
+              LOG.info("Proyecto actualizado: {}", proyectoLey);
+              store.put(proyectoLey.getId(), proyectoLey);
+              return proyectoLey;
+            }
+          }
+
+          @Override
+          public void close() {
+          }
+        }, "proyectos")
+        .filterNot((id, proyectoLey) -> Objects.isNull(proyectoLey))
+        .to(outputTopic, Produced.with(new ProyectoIdSerde(), new ProyectoLeySerde()));
+    var streamsConfig = new Properties();
+    streamsConfig.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServers);
+    var groupId = config.getString("kafka.consumer-groups.importador-expediente");
+    streamsConfig.put(StreamsConfig.APPLICATION_ID_CONFIG, groupId);
+    var overrides = config.getConfig("kafka.streams").entrySet().stream()
+        .collect(Collectors.toMap(Entry::getKey, entry -> entry.getValue().unwrapped()));
+    streamsConfig.putAll(overrides);
+    var kafkaStreams = new KafkaStreams(streamsBuilder.build(), streamsConfig);
+
+    Runtime.getRuntime().addShutdownHook(new Thread(kafkaStreams::close));
+
+    LOG.info("Iniciando importacion de expedientes");
+
+    kafkaStreams.start();
   }
 
-  Expediente getExpediente(Seguimiento seguimiento) {
-    if (seguimiento.getEnlaceExpedienteDigital() == null) {
+  ProyectoLey importarExpediente(ProyectoLey seguimiento) {
+    if (seguimiento.getEnlaces().getExpediente() == null) {
       LOG.info("Seguimiento {}-{} no tiene enlace para expediente",
-          seguimiento.getNumero(),
-          seguimiento.getTitulo());
+          seguimiento.getDetalle().getNumeroUnico(),
+          seguimiento.getDetalle().getTitulo());
       return null;
     }
-    var url = baseUrl + seguimiento.getEnlaceExpedienteDigital();
+    var url = baseUrl + seguimiento.getEnlaces().getExpediente();
     try {
-      var expediente = new Expediente();
+      var expediente = seguimiento.toBuilder();
       var doc = Jsoup.connect(url).get();
       var scripts = doc.head().getElementsByTag("script");
       if (scripts.size() != 2) {
@@ -123,7 +125,6 @@ public class ImportadorExpediente {
       var tablas = doc.body().select("table[width=500]");
       if (tablas.size() != 1) {
         LOG.error("Numero inesperado de tablas {}, url={}", tablas.size(), url);
-//        throw new IllegalStateException("Numero inesperado de tablas");
         return null;
       }
       //Ubicar contenido
@@ -140,65 +141,66 @@ public class ImportadorExpediente {
       var headers = contenidoExperiente.first().getElementsByTag("div")
           .first().children()
           .first().getElementsByTag("b");
+      var builder = expediente.getExpediente().toBuilder();
       if (!headers.isEmpty()) {
-        expediente.setTitulo1(headers.get(0).text());
+        builder.addTitulo(headers.get(0).text());
       }
       if (headers.size() > 1) {
         var titulo = headers.get(1).text();
-        expediente.setTitulo2(titulo);
+        builder.addTitulo(titulo);
       }
       //extrayendo documentos
       var expedienteTablas = contenidoExperiente.first().getElementsByTag("table");
       if (expedienteTablas.size() == 3) { //cuando contiene docs de ley
         var leyTable = expedienteTablas.first();
-        var docsLey = getDocumentos(leyTable);
-        expediente.setDocumentosLey(docsLey);
+        var docsLey = leerDocumentos(leyTable);
+        builder.addAllResultado(docsLey);
 
         var proyectoLeyTable = expedienteTablas.get(1);
-        var docsProyecto = getDocumentos(proyectoLeyTable);
-        expediente.setDocumentosProyectosLey(docsProyecto);
+        var docsProyecto = leerDocumentos(proyectoLeyTable);
+        builder.addAllProyecto(docsProyecto);
 
         var anexosTable = expedienteTablas.get(2);
-        var anexos = getDocumentos(anexosTable);
-        expediente.setDocumentosAnexos(anexos);
+        var anexos = leerDocumentos(anexosTable);
+        builder.addAllAnexo(anexos);
       }
 
       if (expedienteTablas.size() == 2) { //cuando solo contiene proyecto y anexos
         var proyectoLeyTable = expedienteTablas.get(0);
-        var docsProyecto = getDocumentos(proyectoLeyTable);
-        expediente.setDocumentosProyectosLey(docsProyecto);
+        var docsProyecto = leerDocumentos(proyectoLeyTable);
+        builder.addAllProyecto(docsProyecto);
 
         var anexosTable = expedienteTablas.get(1);
-        var anexos = getDocumentos(anexosTable);
-        expediente.setDocumentosAnexos(anexos);
+        var anexos = leerDocumentos(anexosTable);
+        builder.addAllAnexo(anexos);
       }
 
       if (expedienteTablas.size() == 1) { //cuando solo contiene docs de proyecto
         var proyectoLeyTable = expedienteTablas.get(0);
-        var docsProyecto = getDocumentos(proyectoLeyTable);
-        expediente.setDocumentosProyectosLey(docsProyecto);
+        var docsProyecto = leerDocumentos(proyectoLeyTable);
+        builder.addAllProyecto(docsProyecto);
       }
       //extrayendo opiniones
       var expedienteOpiniones = contenido.get(1).select("table[width=100]");
       if (expedienteOpiniones.size() == 2) {
-        var presentarOpinionUrl = getEnlacePresentarOpinion(doc, expedienteOpiniones.get(0));
-        expediente.setEnlacePresentarOpinion(presentarOpinionUrl);
-        var opinionesUrl = getEnlaceOpinionesPresentadas(doc);
-        expediente.setEnlaceOpinionesRecibidos(opinionesUrl);
+        var presentarOpinionUrl = leerEnlacePresentarOpinion(doc, expedienteOpiniones.get(0));
+        expediente.getEnlacesBuilder().setPublicarOpinion(presentarOpinionUrl);
+        var opinionesUrl = leerEnlaceOpinionesPresentadas(doc);
+        expediente.getEnlacesBuilder().setOpinionesPublicadas(opinionesUrl);
       }
       if (expedienteOpiniones.size() == 1) {
-        var opinionesUrl = getEnlaceOpinionesPresentadas(doc);
-        expediente.setEnlaceOpinionesRecibidos(opinionesUrl);
+        var opinionesUrl = leerEnlaceOpinionesPresentadas(doc);
+        expediente.getEnlacesBuilder().setOpinionesPublicadas(opinionesUrl);
       }
 
-      return expediente;
+      return expediente.build();
     } catch (Throwable e) {
       LOG.error("Error procesando expediente {}", url, e);
-      throw new IllegalStateException("Error procesando expediente");
+      throw new IllegalStateException("Error procesando expediente", e);
     }
   }
 
-  private String getEnlaceOpinionesPresentadas(Document doc) {
+  private String leerEnlaceOpinionesPresentadas(Document doc) {
     var scripts = doc.head().getElementsByTag("script");
     var html = scripts.get(0).html();
     var enlace = Arrays.stream(html.split("\\r"))
@@ -221,7 +223,7 @@ public class ImportadorExpediente {
     }
   }
 
-  private String getEnlacePresentarOpinion(Document doc, Element opinionTable) {
+  private String leerEnlacePresentarOpinion(Document doc, Element opinionTable) {
     var onclick = opinionTable.getElementsByTag("a").attr("onclick");
     var variableRuta = onclick.indexOf("ruta3 =") + 7;
     var urlPrefix = onclick.substring(variableRuta, onclick.indexOf(";", variableRuta));
@@ -232,7 +234,7 @@ public class ImportadorExpediente {
     return urlPattern.replace("\"+ids+\"", variable);
   }
 
-  private List<Documento> getDocumentos(Element table) {
+  private List<Proyecto.ProyectoLey.Expediente.Documento> leerDocumentos(Element table) {
     try {
       var rows = table.getElementsByTag("tr");
       var th = rows.first().getElementsByTag("th");
@@ -248,13 +250,19 @@ public class ImportadorExpediente {
             var element = values.get(2);
             var nombreDocumento = element.text();
             var referenciaDocumento = element.getElementsByTag("a").attr("href");
-            var doc = new Documento(parseDate(values.get(1)), nombreDocumento, numeroProyecto,
-                referenciaDocumento);
+            var doc = Documento.newBuilder()
+                .setFecha(parseDate(values.get(1)))
+                .setTitulo(nombreDocumento)
+                .setProyecto(numeroProyecto)
+                .setUrl(referenciaDocumento)
+                .build();
             docs.add(doc);
           } else if (values.size() == 1) {
             var element = values.get(0);
             var referenciaDocumento = element.getElementsByTag("a").attr("href");
-            var doc = new Documento(null, null, null, referenciaDocumento);
+            var doc = Documento.newBuilder()
+                .setUrl(referenciaDocumento)
+                .build();
             docs.add(doc);
           } else {
             LOG.warn("Numero de columnas no esperado {}", values.size());
@@ -269,7 +277,11 @@ public class ImportadorExpediente {
           var element = values.get(1);
           var nombreDocumento = element.text();
           var referenciaDocumento = element.getElementsByTag("a").attr("href");
-          var doc = new Documento(parseDate(values.get(0)), nombreDocumento, referenciaDocumento);
+          var doc = Documento.newBuilder()
+              .setFecha(parseDate(values.get(0)))
+              .setTitulo(nombreDocumento)
+              .setUrl(referenciaDocumento)
+              .build();
           docs.add(doc);
         }
         return docs;
@@ -285,7 +297,11 @@ public class ImportadorExpediente {
           var element = values.get(1);
           var nombreDocumento = element.text();
           var referenciaDocumento = element.getElementsByTag("a").attr("href");
-          var doc = new Documento(parseDate(values.get(0)), nombreDocumento, referenciaDocumento);
+          var doc = Documento.newBuilder()
+              .setFecha(parseDate(values.get(0)))
+              .setTitulo(nombreDocumento)
+              .setUrl(referenciaDocumento)
+              .build();
           docs.add(doc);
         }
         return docs;
@@ -296,18 +312,22 @@ public class ImportadorExpediente {
       }
     } catch (Throwable e) {
       LOG.error("Error obteniendo documentos {}", table.html(), e);
-      throw new IllegalStateException("Error obteniendo documentos");
+      throw new IllegalStateException("Error obteniendo documentos", e);
     }
   }
 
-  private LocalDate parseDate(Element td) {
+  private Long parseDate(Element td) {
     if (td.text().isBlank()) {
+      LOG.error("Fecha vacia! {}", td.html());
       return null;
     }
     //agregar cualquier condicion para arreglar inconsistencias en fechas
     if (td.text().length() == 10) {
       return LocalDate.parse(td.text(),
-          DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+          DateTimeFormatter.ofPattern("dd/MM/yyyy"))
+          .atStartOfDay()
+          .toInstant(ZoneOffset.ofHours(-5))
+          .toEpochMilli();
     } else {
       if (td.text().length() == 8) {
         return LocalDate.parse(td.text()
@@ -318,7 +338,10 @@ public class ImportadorExpediente {
                 .replaceAll("02/15/19", "15/02/19")
                 .replaceAll("20/0708", "20/07/18")
             ,
-            DateTimeFormatter.ofPattern("dd/MM/yy"));
+            DateTimeFormatter.ofPattern("dd/MM/yy"))
+            .atStartOfDay()
+            .toInstant(ZoneOffset.ofHours(-5))
+            .toEpochMilli();
       } else {
         return LocalDate.parse(td.text()
                 .replaceAll("\\s+", "")
@@ -344,7 +367,10 @@ public class ImportadorExpediente {
                 .replaceAll("21/5/20", "21/05/20")
                 .replaceAll("20/0708", "20/07/18")
             ,
-            DateTimeFormatter.ofPattern("dd/MM/yy"));
+            DateTimeFormatter.ofPattern("dd/MM/yy"))
+            .atStartOfDay()
+            .toInstant(ZoneOffset.ofHours(-5))
+            .toEpochMilli();
       }
     }
   }
