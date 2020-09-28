@@ -79,6 +79,8 @@ public class ImportadorProyecto {
     var proyectoRepositorio = kafkaStreams.store(
         StoreQueryParameters.fromNameAndType("proyectos", QueryableStoreTypes.keyValueStore()));
 
+    LOG.info("Proyectos cargados {}", proyectoRepositorio.approximateNumEntries());
+
     var baseUrl = config.getString("importador.base-url");
     var proyectosUrl = config.getString("importador.proyectos-url");
 

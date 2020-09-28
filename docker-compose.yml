@@ -9,8 +9,8 @@ services:
       ZOOKEEPER_CLIENT_PORT: 32181
       ZOOKEEPER_TICK_TIME: 2000
     volumes:
-      - ./data/zk-data:/var/lib/zookeeper/data
-      - ./data/zk-txn-logs:/var/lib/zookeeper/log
+      - ./volumes/zk-data:/var/lib/zookeeper/data
+      - ./volumes/zk-txn-logs:/var/lib/zookeeper/log
   kafka:
     image: confluentinc/cp-server:${CP_VERSION}
     ports:
@@ -33,6 +33,6 @@ services:
       KAFKA_CONFLUENT_LICENSE_TOPIC_REPLICATION_FACTOR: 1
       CONFLUENT_SUPPORT_CUSTOMER_ID: anonymous
     volumes:
-      - ./data/kafka-data:/var/lib/kafka/data
+      - ./volumes/kafka-data:/var/lib/kafka/data
     depends_on:
       - zookeeper

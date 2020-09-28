@@ -113,9 +113,6 @@ public class ImportadorExpediente {
       return null;
     }
     var url = seguimiento.getEnlaces().getExpediente();
-    if (seguimiento.getEnlaces().getExpediente().startsWith(baseUrl)) {
-      url = seguimiento.getEnlaces().getExpediente();
-    }
     try {
       var expediente = seguimiento.toBuilder();
       var doc = Jsoup.connect(url).get();

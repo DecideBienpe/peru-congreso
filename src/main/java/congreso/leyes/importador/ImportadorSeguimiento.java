@@ -121,7 +121,6 @@ public class ImportadorSeguimiento {
 
   ProyectoLey importarSeguimiento(ProyectoLey proyecto) {
     var url = proyecto.getEnlaces().getSeguimiento();
-    if (!url.startsWith(baseUrl)) url = baseUrl + url;
     try {
       var builder = proyecto.toBuilder();
       var doc = Jsoup.connect(url).get();
@@ -216,11 +215,13 @@ public class ImportadorSeguimiento {
       for (Seguimiento seguimiento : seguimientos) {
         if (seguimiento.getTexto().startsWith(prefix)) {
           final var sector = seguimiento.getTexto().substring(prefix.length() + 1).strip();
-          if (sector.contains("-")) {
-            detalle.addSector(sector.substring(0, sector.indexOf("-")));
-          } else {
-            detalle.addSector(sector);
-          }
+            if (sector.contains("-")) {
+              LOG.warn("Sector con guion encontrado: {}", sector);
+              var corregido = sector.substring(0, sector.indexOf("-"));
+              detalle.addSector(corregido);
+            } else {
+              detalle.addSector(sector);
+            }
         }
       }
 

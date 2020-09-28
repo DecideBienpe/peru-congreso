@@ -1,0 +1,17 @@
+baseURL = "https://jeqo.github.io/peru-congreso"
+languageCode = "es-pe"
+title = "Congreso Perú"
+theme = "book"
+
+googleAnalytics = "UA-49047812-5"
+
+Paginate = 25
+
+[taxonomies]
+  estado = "estados"
+  proponente = "proponentes"
+  grupo = "grupos"
+  autor = "autores"
+  adherente = "adherentes"
+  sector = "sectores"
+  periodo = "periodos"
