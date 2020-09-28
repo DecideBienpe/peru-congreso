@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Edit/Trunk on Congreso Perú</title>
+    <link>https://jeqo.github.io/peru-congreso/edit/trunk/</link>
+    <description>Recent content in Edit/Trunk on Congreso Perú</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>es</language>
+    
+	<atom:link href="https://jeqo.github.io/peru-congreso/edit/trunk/index.xml" rel="self" type="application/rss+xml" />
+    
+    
+  </channel>
+</rss>
