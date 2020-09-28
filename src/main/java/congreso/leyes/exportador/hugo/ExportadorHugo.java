@@ -16,6 +16,7 @@ import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.stream.Collectors;
@@ -75,7 +76,14 @@ public class ExportadorHugo {
 
     var baseDir = "data/exportacion/hugo";
     try {
-      Files.deleteIfExists(Paths.get(baseDir));
+      Files.walk(Paths.get(baseDir)).sorted(Comparator.reverseOrder())
+          .forEach(path -> {
+            try {
+              Files.deleteIfExists(path);
+            } catch (IOException e) {
+              e.printStackTrace();
+            }
+          });
     } catch (Exception e) {
       e.printStackTrace();
     }

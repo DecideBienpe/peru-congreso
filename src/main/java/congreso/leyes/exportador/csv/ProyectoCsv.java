@@ -36,8 +36,8 @@ public class ProyectoCsv {
             "autores",
             "adherentes",
             "sectores",
-            "titulo",
-            "tiene_ley"
+            "tiene_ley",
+            "titulo"
             ));
   }
 
@@ -57,8 +57,8 @@ public class ProyectoCsv {
             "\""+autores+"\"",
             "\""+adherentes+"\"",
             "\""+sectores+"\"",
-            titulo,
-            ley
+            ley,
+            titulo
         ));
   }
 }

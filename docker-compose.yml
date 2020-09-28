@@ -36,5 +36,3 @@ services:
       - ./data/kafka-data:/var/lib/kafka/data
     depends_on:
       - zookeeper
-
-  # Labs

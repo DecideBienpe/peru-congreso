@@ -121,6 +121,7 @@ public class ImportadorSeguimiento {
 
   ProyectoLey importarSeguimiento(ProyectoLey proyecto) {
     var url = proyecto.getEnlaces().getSeguimiento();
+    if (!url.startsWith(baseUrl)) url = baseUrl + url;
     try {
       var builder = proyecto.toBuilder();
       var doc = Jsoup.connect(url).get();
