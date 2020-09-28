@@ -1,9 +1,8 @@
 {{ with .Date}}
   <b>Publicado el {{ .Day }} de {{ index $.Site.Data.mes (printf "%d" .Month) }} del {{ .Year }} </b>
-<!--  <h5>{{ partial "docs/date" (dict "Date" . "Format" $.Site.Params.BookDateFormat) }}</h5>-->
 {{ end }}
 {{with .Lastmod }}
-  <b><i>(Última modificación fue el {{ .Day }} de{{ index $.Site.Data.mes (printf "%d" .Month) }} del {{ .Year }})</i></b>
+  <b><i>(Última modificación fue el {{ .Day }} de {{ index $.Site.Data.mes (printf "%d" .Month) }} del {{ .Year }})</i></b>
 {{ end }}
 
 {{ range $taxonomy, $_ := .Site.Taxonomies }}

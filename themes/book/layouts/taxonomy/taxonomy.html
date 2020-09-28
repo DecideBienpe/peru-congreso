@@ -4,14 +4,7 @@
     <h2>
       <a href="{{ .RelPermalink }}">{{ .Title }}</a>
     </h2>
-    <span>{{ len .Pages }}</span>
-    <!-- {{ partial "docs/post-meta" . }} -->
-    <!-- <p>
-      {{- .Summary -}}
-      {{ if .Truncated }}
-        <a href="{{ .RelPermalink }}">...</a>
-      {{ end }}
-    </p> -->
+     {{ partial "docs/post-meta" . }}
   </article>
   {{ end }}
 
