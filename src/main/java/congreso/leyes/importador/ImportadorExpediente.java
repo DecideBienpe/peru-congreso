@@ -78,7 +78,6 @@ public class ImportadorExpediente {
             if (proyectoLey.equals(store.get(proyectoLey.getId()))) {
               return null;
             } else {
-              LOG.info("Proyecto actualizado: {}", proyectoLey);
               store.put(proyectoLey.getId(), proyectoLey);
               return proyectoLey;
             }
@@ -113,7 +112,10 @@ public class ImportadorExpediente {
           seguimiento.getDetalle().getTitulo());
       return null;
     }
-    var url = baseUrl + seguimiento.getEnlaces().getExpediente();
+    var url = seguimiento.getEnlaces().getExpediente();
+    if (seguimiento.getEnlaces().getExpediente().startsWith(baseUrl)) {
+      url = seguimiento.getEnlaces().getExpediente();
+    }
     try {
       var expediente = seguimiento.toBuilder();
       var doc = Jsoup.connect(url).get();
@@ -177,18 +179,19 @@ public class ImportadorExpediente {
       }
       //extrayendo opiniones
       var expedienteOpiniones = contenido.get(1).select("table[width=100]");
+      final var enlacesBuilder = expediente.getEnlacesBuilder();
       if (expedienteOpiniones.size() == 2) {
         var presentarOpinionUrl = leerEnlacePresentarOpinion(doc, expedienteOpiniones.get(0));
-        expediente.getEnlacesBuilder().setPublicarOpinion(presentarOpinionUrl);
+        enlacesBuilder.setPublicarOpinion(presentarOpinionUrl);
         var opinionesUrl = leerEnlaceOpinionesPresentadas(doc);
-        expediente.getEnlacesBuilder().setOpinionesPublicadas(opinionesUrl);
+        enlacesBuilder.setOpinionesPublicadas(opinionesUrl);
       }
       if (expedienteOpiniones.size() == 1) {
         var opinionesUrl = leerEnlaceOpinionesPresentadas(doc);
-        expediente.getEnlacesBuilder().setOpinionesPublicadas(opinionesUrl);
+        enlacesBuilder.setOpinionesPublicadas(opinionesUrl);
       }
 
-      return expediente.build();
+      return expediente.setEnlaces(enlacesBuilder).setExpediente(builder).build();
     } catch (Throwable e) {
       LOG.error("Error procesando expediente {}", url, e);
       throw new IllegalStateException("Error procesando expediente", e);

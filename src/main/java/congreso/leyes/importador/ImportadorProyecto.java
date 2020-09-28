@@ -169,7 +169,7 @@ public class ImportadorProyecto {
         Optional.of(leerFecha(campos.get(1)));
     var fechaPresentacion = leerFecha(campos.get(2));
     var estado = campos.get(3).text();
-    var enlaceSeguimiento = campos.get(0).getElementsByTag("a").attr("href");
+    var enlaceSeguimiento = baseUrl + campos.get(0).getElementsByTag("a").attr("href");
     var builder = ProyectoLey.newBuilder()
         .setId(Id.newBuilder()
             .setNumeroPeriodo(numero)

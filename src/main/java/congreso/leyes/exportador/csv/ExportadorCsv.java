@@ -2,17 +2,12 @@ package congreso.leyes.exportador.csv;
 
 import static java.lang.Thread.sleep;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.dataformat.csv.CsvMapper;
-import com.fasterxml.jackson.dataformat.csv.CsvSchema;
 import com.typesafe.config.ConfigFactory;
 import congreso.leyes.Proyecto.ProyectoLey;
 import congreso.leyes.internal.ProyectoIdSerde;
 import congreso.leyes.internal.ProyectoLeySerde;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.time.Duration;
@@ -21,6 +16,7 @@ import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.stream.Collectors;
@@ -100,15 +96,19 @@ public class ExportadorCsv {
       }
     }
 
+    csvList.sort(Comparator.comparing(o -> o.numeroUnico));
+
     var path = Paths.get("data/exportacion/csv/proyecto.csv");
     try {
-      Files.writeString(path, ProyectoCsv.header(), StandardOpenOption.CREATE);
+      Files.writeString(path, ProyectoCsv.header() + "\n", StandardOpenOption.CREATE);
       for (ProyectoCsv csv : csvList) {
-        Files.writeString(path, csv.toCsvLine(), StandardOpenOption.APPEND);
+        Files.writeString(path, csv.toCsvLine() + "\n", StandardOpenOption.APPEND);
       }
     } catch (IOException e) {
       e.printStackTrace();
     }
+
+    kafkaStreams.close();
   }
 
   static String fecha(long fecha) {

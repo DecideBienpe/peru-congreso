@@ -85,7 +85,6 @@ public class ImportadorSeguimiento {
             if (proyectoLey.equals(store.get(proyectoLey.getId()))) {
               return null;
             } else {
-              LOG.info("Proyecto actualizado: {}", proyectoLey);
               store.put(proyectoLey.getId(), proyectoLey);
               return proyectoLey;
             }
@@ -121,7 +120,7 @@ public class ImportadorSeguimiento {
   }
 
   ProyectoLey importarSeguimiento(ProyectoLey proyecto) {
-    var url = baseUrl + proyecto.getEnlaces().getSeguimiento();
+    var url = proyecto.getEnlaces().getSeguimiento();
     try {
       var builder = proyecto.toBuilder();
       var doc = Jsoup.connect(url).get();
@@ -143,7 +142,7 @@ public class ImportadorSeguimiento {
       if (a != null) {
         var onclick = a.attr("onclick");
         var param = onclick.substring(onclick.indexOf("'") + 1, onclick.lastIndexOf("'"));
-        enlace.ifPresent(s -> builder.getEnlacesBuilder().setExpediente(s + param));
+        enlace.ifPresent(s -> builder.getEnlacesBuilder().setExpediente(baseUrl + s + param));
       }
 
       var detalle = Detalle.newBuilder();
@@ -215,7 +214,12 @@ public class ImportadorSeguimiento {
       var prefix = "Decretado a...";
       for (Seguimiento seguimiento : seguimientos) {
         if (seguimiento.getTexto().startsWith(prefix)) {
-          detalle.addSector(seguimiento.getTexto().substring(prefix.length() + 1).strip());
+          final var sector = seguimiento.getTexto().substring(prefix.length() + 1).strip();
+          if (sector.contains("-")) {
+            detalle.addSector(sector.substring(0, sector.indexOf("-")));
+          } else {
+            detalle.addSector(sector);
+          }
         }
       }
 
@@ -224,8 +228,7 @@ public class ImportadorSeguimiento {
       builder.setLey(ley);
       builder.setDetalle(detalle);
       return builder.build();
-    } catch (
-        Throwable e) {
+    } catch (Throwable e) {
       LOG.error("Error procesando proyecto {} referencia {}", proyecto.getId(), url);
       throw new RuntimeException(e);
     }

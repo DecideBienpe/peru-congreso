@@ -21,7 +21,7 @@ public class ProyectoCsv {
   public String ley;
 
   static String header() {
-    return String.join(",",
+    return String.join("\t",
         List.of(
             "periodo",
             "numero_periodo",
@@ -29,34 +29,36 @@ public class ProyectoCsv {
             "estado",
             "fecha_publicacion",
             "fecha_actualizacion",
-            "titulo",
-            "sumilla",
             "legislatura",
             "proponente",
             "grupo_parlamentario",
             "iniciativas_agrupadas",
             "autores",
             "adherentes",
-            "sectores"));
+            "sectores",
+            "titulo",
+            "tiene_ley"
+            ));
   }
 
   String toCsvLine() {
-    return String.join(",",
+    return String.join("\t",
         List.of(
             periodo,
             numeroPeriodo,
+            numeroUnico,
             estado,
             fechaPublicacion,
             fechaActualizacion,
-            titulo,
-            sumilla,
             legislatura,
             proponente,
             grupoParlamentario,
             iniciativasAgrupadas,
-            autores,
-            adherentes,
-            sectores
+            "\""+autores+"\"",
+            "\""+adherentes+"\"",
+            "\""+sectores+"\"",
+            titulo,
+            ley
         ));
   }
 }
