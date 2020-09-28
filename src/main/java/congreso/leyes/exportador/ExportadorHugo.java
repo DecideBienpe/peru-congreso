@@ -8,10 +8,8 @@ import congreso.leyes.internal.ProyectoIdSerde;
 import congreso.leyes.internal.ProyectoLeySerde;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
@@ -104,7 +102,7 @@ public class ExportadorHugo {
     var header = "---" + "\n"
         + "title: " + quote + titulo + quote + "\n"
         + "date: " + fecha(proyectoLey.getFechaPublicacion()) + "\n"
-        + "lastmod: " + fecha(proyectoLey.getFechaActualizacion()) + "\n"
+        + ( proyectoLey.getFechaActualizacion() > 0 ? "lastmod: " + fecha(proyectoLey.getFechaActualizacion()) + "\n" : "")
         + "estados: \n  - " + proyectoLey.getEstado() + "\n"
         + "proponentes: \n  - " + proyectoLey.getDetalle().getProponente() + "\n"
         + "grupos: \n  - " + proyectoLey.getDetalle().getGrupoParlamentario() + "\n"
