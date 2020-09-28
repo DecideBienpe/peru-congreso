@@ -1,0 +1,15 @@
+{
+  "name": "Congreso Perú",
+  "short_name": "Congreso Perú",
+  "start_url": "/peru-congreso/",
+  "scope": "/peru-congreso/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "icons": [
+    {
+      "src": "/peru-congreso/favicon.svg",
+      "sizes": "512x512"
+    }
+  ]
+}
