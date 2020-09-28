@@ -103,7 +103,8 @@ public class ExportadorHugo {
     var quote = titulo.contains("\"") ? "'" : "\"";
     var header = "---" + "\n"
         + "title: " + quote + titulo + quote + "\n"
-        + "date: " + fecha(proyectoLey.getFechaActualizacion()) + "\n"
+        + "date: " + fecha(proyectoLey.getFechaPublicacion()) + "\n"
+        + "lastmod: " + fecha(proyectoLey.getFechaActualizacion()) + "\n"
         + "estados: \n  - " + proyectoLey.getEstado() + "\n"
         + "proponentes: \n  - " + proyectoLey.getDetalle().getProponente() + "\n"
         + "grupos: \n  - " + proyectoLey.getDetalle().getGrupoParlamentario() + "\n"

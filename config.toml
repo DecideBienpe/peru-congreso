@@ -1,5 +1,6 @@
 baseURL = "https://jeqo.github.io/peru-congreso"
-languageCode = "es-pe"
+languageCode = "es"
+DefaultContentLanguage = "es"
 title = "Congreso Perú"
 theme = "book"
 
@@ -15,3 +16,13 @@ Paginate = 25
   adherente = "adherentes"
   sector = "sectores"
   periodo = "periodos"
+
+BookMenuBundle = "/menu"
+# Set source repository location.
+# Used for 'Last Modified' and 'Edit this page' links.
+BookRepo = 'https://github.com/jeqo/peru-congreso'
+
+# Enable 'Edit this page' links for 'doc' page type.
+# Disabled by default. Uncomment to enable. Requires 'BookRepo' param.
+# Path must point to the site directory.
+BookEditPath = 'edit/trunk'
