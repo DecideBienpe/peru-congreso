@@ -114,12 +114,36 @@ public class ExportadorHugo {
         + "periodos: \n  - " + proyectoLey.getId().getPeriodo() + "\n"
         + "---" + "\n\n";
     var body = new StringBuilder(proyectoLey.getDetalle().getSumilla() + "\n\n");
+    // Metadata
+    body.append("- **Periodo**: ").append(proyectoLey.getId().getPeriodo()).append("\n");
+    body.append("- **Legislatura**: ").append(proyectoLey.getDetalle().getLegislatura()).append("\n");
+    body.append("- **Estado**: ").append(proyectoLey.getEstado()).append("\n");
+
+    // Congresistas
     body.append("""
 
-        ## Estado actual
+        ## Actores
 
         """);
-    body.append("**").append(proyectoLey.getEstado()).append("**").append("\n");
+    body.append("### Proponente\n\n")
+        .append("**").append(proyectoLey.getDetalle().getProponente()).append("**")
+        .append("\n\n");
+    if (proyectoLey.getDetalle().getGrupoParlamentario() != null &&
+        !proyectoLey.getDetalle().getGrupoParlamentario().isBlank()) {
+      body.append("### Grupo Parlamentario\n\n")
+          .append("**").append(proyectoLey.getDetalle().getGrupoParlamentario()).append("**")
+          .append("\n\n");
+    }
+    if (!proyectoLey.getDetalle().getAutorList().isEmpty()) {
+      body.append("### Autores\n\n")
+          .append(String.join("; ", proyectoLey.getDetalle().getAutorList()))
+          .append("\n\n");
+    }
+    if (!proyectoLey.getDetalle().getAdherenteList().isEmpty()) {
+      body.append("### Adherentes\n\n")
+          .append(String.join("; ", proyectoLey.getDetalle().getAdherenteList()))
+          .append("\n\n");
+    }
 
     // Opiniones
     body.append("""
