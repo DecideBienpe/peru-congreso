@@ -95,10 +95,8 @@ public class ExportadorHugo {
   }
 
   static String crearPagina(ProyectoLey proyectoLey) {
-    var titulo = proyectoLey.getDetalle().getTitulo()
-        .replaceAll("\"\"", "\"")
-        .replaceAll(":", ".-");
-    var quote = titulo.contains("\"") ? "'" : "\"";
+    var titulo = proyectoLey.getDetalle().getTitulo();
+    var quote = "\"";
     var header = "---" + "\n"
         + "title: " + quote + titulo + quote + "\n"
         + "date: " + fecha(proyectoLey.getFechaPublicacion()) + "\n"

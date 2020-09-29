@@ -167,7 +167,11 @@ public class ImportadorSeguimiento {
                   detalle.setGrupoParlamentario(texto);
                 }
               }
-              case "Título:" -> detalle.setTitulo(tds.get(1).text());
+              case "Título:" -> detalle.setTitulo(tds.get(1).text()
+                  .replaceAll("\"\"", "\"")
+                  .replaceAll("\"", "'")
+                  .replaceAll(",,", ",")
+                  .replaceAll(":", ".-"));
               case "Sumilla:" -> {
                 var texto = tds.get(1).text().trim();
                 if (!texto.isBlank()) {

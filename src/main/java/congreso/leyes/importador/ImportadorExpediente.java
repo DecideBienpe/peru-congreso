@@ -106,7 +106,8 @@ public class ImportadorExpediente {
   }
 
   ProyectoLey importarExpediente(ProyectoLey seguimiento) {
-    if (seguimiento.getEnlaces().getExpediente() == null) {
+    if (seguimiento.getEnlaces().getExpediente() == null ||
+        seguimiento.getEnlaces().getExpediente().isBlank()) {
       LOG.info("Seguimiento {}-{} no tiene enlace para expediente",
           seguimiento.getDetalle().getNumeroUnico(),
           seguimiento.getDetalle().getTitulo());
