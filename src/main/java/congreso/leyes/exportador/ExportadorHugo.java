@@ -253,12 +253,12 @@ public class ExportadorHugo {
       body.append("\n## Enlaces ")
           .append("\n\n");
       if (proyectoLey.getEnlaces().getSeguimiento() != null) {
-        body.append("- [Seguimiento](").append(baseUrl)
+        body.append("- [Seguimiento](")
             .append(proyectoLey.getEnlaces().getSeguimiento())
             .append(")\n");
       }
       if (proyectoLey.getEnlaces().getExpediente() != null) {
-        body.append("- [Expediente Digital](").append(baseUrl)
+        body.append("- [Expediente Digital](")
             .append(proyectoLey.getEnlaces().getExpediente())
             .append(")\n");
       }
