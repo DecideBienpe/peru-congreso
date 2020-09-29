@@ -19,11 +19,4 @@ Paginate = 25
 
 [params]
   BookMenuBundle = "/menu"
-  # Set source repository location.
-  # Used for 'Last Modified' and 'Edit this page' links.
   BookRepo = 'https://github.com/jeqo/peru-congreso'
-
-  # Enable 'Edit this page' links for 'doc' page type.
-  # Disabled by default. Uncomment to enable. Requires 'BookRepo' param.
-  # Path must point to the site directory.
-  BookEditPath = 'edit/trunk/content'
