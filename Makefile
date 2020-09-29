@@ -28,6 +28,10 @@ web-run:
 web-build:
 	hugo
 
+web-deploy-prepare:
+	rm -rf public/
+	git worktree add -B gh-pages public origin/gh-pages
+
 web-deploy: web-build
 	cd public && \
 		git add -A && git commit -m "publicar" && git push -f origin gh-pages
