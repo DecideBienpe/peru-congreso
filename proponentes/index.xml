@@ -6,7 +6,7 @@
     <description>Recent content in Proponentes on Congreso Perú</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>es</language>
-    <lastBuildDate>Wed, 23 Sep 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 28 Sep 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jeqo.github.io/peru-congreso/proponentes/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,9 +14,18 @@
     <item>
       <title>Congreso</title>
       <link>https://jeqo.github.io/peru-congreso/proponentes/congreso/</link>
-      <pubDate>Wed, 23 Sep 2020 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 28 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/proponentes/congreso/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Poder Ejecutivo</title>
+      <link>https://jeqo.github.io/peru-congreso/proponentes/poder-ejecutivo/</link>
+      <pubDate>Fri, 25 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/proponentes/poder-ejecutivo/</guid>
       <description></description>
     </item>
     
@@ -26,15 +35,6 @@
       <pubDate>Mon, 14 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/proponentes/jurado-nacional-de-elecciones/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Poder Ejecutivo</title>
-      <link>https://jeqo.github.io/peru-congreso/proponentes/poder-ejecutivo/</link>
-      <pubDate>Wed, 02 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/proponentes/poder-ejecutivo/</guid>
       <description></description>
     </item>
     

@@ -6,7 +6,7 @@
     <description>Recent content in Grupos on Congreso Perú</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>es</language>
-    <lastBuildDate>Wed, 23 Sep 2020 00:00:00 +0000</lastBuildDate>
+    <lastBuildDate>Mon, 28 Sep 2020 00:00:00 +0000</lastBuildDate>
     
 	<atom:link href="https://jeqo.github.io/peru-congreso/grupos/index.xml" rel="self" type="application/rss+xml" />
     
@@ -14,9 +14,54 @@
     <item>
       <title>Acción Popular</title>
       <link>https://jeqo.github.io/peru-congreso/grupos/acci%C3%B3n-popular/</link>
-      <pubDate>Wed, 23 Sep 2020 00:00:00 +0000</pubDate>
+      <pubDate>Mon, 28 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/grupos/acci%C3%B3n-popular/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Alianza Para el Progreso</title>
+      <link>https://jeqo.github.io/peru-congreso/grupos/alianza-para-el-progreso/</link>
+      <pubDate>Mon, 28 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/grupos/alianza-para-el-progreso/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Frente Popular Agrícola del Perú</title>
+      <link>https://jeqo.github.io/peru-congreso/grupos/frente-popular-agr%C3%ADcola-del-per%C3%BA/</link>
+      <pubDate>Mon, 28 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/grupos/frente-popular-agr%C3%ADcola-del-per%C3%BA/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>No Agrupados</title>
+      <link>https://jeqo.github.io/peru-congreso/grupos/no-agrupados/</link>
+      <pubDate>Mon, 28 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/grupos/no-agrupados/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Somos Perú</title>
+      <link>https://jeqo.github.io/peru-congreso/grupos/somos-per%C3%BA/</link>
+      <pubDate>Mon, 28 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/grupos/somos-per%C3%BA/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Unión por el Perú</title>
+      <link>https://jeqo.github.io/peru-congreso/grupos/uni%C3%B3n-por-el-per%C3%BA/</link>
+      <pubDate>Mon, 28 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/grupos/uni%C3%B3n-por-el-per%C3%BA/</guid>
       <description></description>
     </item>
     
@@ -26,24 +71,6 @@
       <pubDate>Wed, 23 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/grupos/podemos-per%C3%BA/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Unión por el Perú</title>
-      <link>https://jeqo.github.io/peru-congreso/grupos/uni%C3%B3n-por-el-per%C3%BA/</link>
-      <pubDate>Wed, 23 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/grupos/uni%C3%B3n-por-el-per%C3%BA/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Alianza Para el Progreso</title>
-      <link>https://jeqo.github.io/peru-congreso/grupos/alianza-para-el-progreso/</link>
-      <pubDate>Tue, 22 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/grupos/alianza-para-el-progreso/</guid>
       <description></description>
     </item>
     
@@ -62,24 +89,6 @@
       <pubDate>Mon, 21 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/grupos/multipartidario/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Somos Perú</title>
-      <link>https://jeqo.github.io/peru-congreso/grupos/somos-per%C3%BA/</link>
-      <pubDate>Mon, 21 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/grupos/somos-per%C3%BA/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Frente Popular Agrícola del Perú</title>
-      <link>https://jeqo.github.io/peru-congreso/grupos/frente-popular-agr%C3%ADcola-del-per%C3%BA/</link>
-      <pubDate>Wed, 16 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/grupos/frente-popular-agr%C3%ADcola-del-per%C3%BA/</guid>
       <description></description>
     </item>
     
@@ -107,15 +116,6 @@
       <pubDate>Mon, 07 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/grupos/partido-morado/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>No Agrupados</title>
-      <link>https://jeqo.github.io/peru-congreso/grupos/no-agrupados/</link>
-      <pubDate>Mon, 31 Aug 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/grupos/no-agrupados/</guid>
       <description></description>
     </item>
     
