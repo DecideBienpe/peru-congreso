@@ -34,13 +34,10 @@ import org.slf4j.LoggerFactory;
 public class ExportadorHugo {
 
   static final Logger LOG = LoggerFactory.getLogger(ExportadorCsv.class);
-  private static String baseUrl;
 
   public static void main(String[] args) throws InterruptedException {
 
     var config = ConfigFactory.load();
-
-    baseUrl = config.getString("importador.base-url");
 
     var kafkaBootstrapServers = config.getString("kafka.bootstrap-servers");
     var topic = config.getString("kafka.topics.expediente-importado");
