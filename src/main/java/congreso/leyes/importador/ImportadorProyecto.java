@@ -2,6 +2,7 @@ package congreso.leyes.importador;
 
 import static java.lang.Thread.sleep;
 
+import com.google.protobuf.Int64Value;
 import com.typesafe.config.ConfigFactory;
 import congreso.leyes.Proyecto.ProyectoLey;
 import congreso.leyes.Proyecto.ProyectoLey.Enlaces;
@@ -180,7 +181,7 @@ public class ImportadorProyecto {
         .setEstado(estado)
         .setFechaPublicacion(fechaPresentacion)
         .setEnlaces(Enlaces.newBuilder().setSeguimiento(enlaceSeguimiento).build());
-    fechaActualizacion.ifPresent(builder::setFechaActualizacion);
+    fechaActualizacion.map(Int64Value::of).ifPresent(builder::setFechaActualizacion);
     return builder.build();
   }
 

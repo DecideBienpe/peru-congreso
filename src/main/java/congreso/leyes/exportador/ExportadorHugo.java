@@ -74,10 +74,12 @@ public class ExportadorHugo {
       while (iter.hasNext()) {
         var keyValue = iter.next();
         var proyectoLey = (ProyectoLey) keyValue.value;
-        var grupo = (Integer.parseInt(proyectoLey.getId().getNumeroPeriodo()) / 100) * 100;
-        var dir = baseDir + "/" + proyectoLey.getId().getPeriodo() + "/" + String.format("%05d", grupo);
+        var numeroPeriodo = proyectoLey.getId().getNumeroPeriodo();
+        var grupo = getGrupo(numeroPeriodo);
+        var dir =
+            baseDir + "/" + proyectoLey.getId().getPeriodo() + "/" + grupo;
         Files.createDirectories(Paths.get(dir));
-        var rutaTexto = dir + "/" + proyectoLey.getId().getNumeroPeriodo() + ".md";
+        var rutaTexto = dir + "/" + numeroPeriodo + ".md";
         Path ruta = Paths.get(rutaTexto);
         Files.deleteIfExists(ruta);
         Files.createFile(ruta);
@@ -91,13 +93,19 @@ public class ExportadorHugo {
     kafkaStreams.close();
   }
 
+  private static String getGrupo(String numeroPeriodo) {
+    var i = (Integer.parseInt(numeroPeriodo.trim()) / 100) * 100;
+    return String.format("%05d", i);
+  }
+
   static String crearPagina(ProyectoLey proyectoLey) {
     var titulo = proyectoLey.getDetalle().getTitulo();
     var quote = "\"";
     var header = "---" + "\n"
         + "title: " + quote + titulo + quote + "\n"
         + "date: " + fecha(proyectoLey.getFechaPublicacion()) + "\n"
-        + ( proyectoLey.getFechaActualizacion() > 0 ? "lastmod: " + fecha(proyectoLey.getFechaActualizacion()) + "\n" : "")
+        + (proyectoLey.hasFechaActualizacion() ? "lastmod: " + fecha(
+        proyectoLey.getFechaActualizacion().getValue()) + "\n" : "")
         + "estados: \n  - " + proyectoLey.getEstado() + "\n"
         + "proponentes: \n  - " + proyectoLey.getDetalle().getProponente() + "\n"
         + "grupos: \n  - " + proyectoLey.getDetalle().getGrupoParlamentario() + "\n"
@@ -108,11 +116,25 @@ public class ExportadorHugo {
         + "\n"
         + "periodos: \n  - " + proyectoLey.getId().getPeriodo() + "\n"
         + "---" + "\n\n";
-    var body = new StringBuilder(proyectoLey.getDetalle().getSumilla() + "\n\n");
+    var body = new StringBuilder();
     // Metadata
     body.append("- **Periodo**: ").append(proyectoLey.getId().getPeriodo()).append("\n");
-    body.append("- **Legislatura**: ").append(proyectoLey.getDetalle().getLegislatura()).append("\n");
+    body.append("- **Legislatura**: ").append(proyectoLey.getDetalle().getLegislatura())
+        .append("\n");
+    body.append("- **Número**: ").append(proyectoLey.getDetalle().getNumeroUnico()).append("\n");
+    if (proyectoLey.getDetalle().getIniciativaAgrupadaCount() > 0) {
+      body.append("- **Iniciativas agrupadas**: ")
+          .append(proyectoLey.getDetalle().getIniciativaAgrupadaList()
+              .stream()
+              .map(num -> "[" + num.trim() + "](../../" + getGrupo(num.trim()) + "/" + num.trim() + ")")
+              .collect(Collectors.joining(", ")))
+          .append("\n");
+    }
     body.append("- **Estado**: ").append(proyectoLey.getEstado()).append("\n");
+    if (proyectoLey.getDetalle().hasSumilla()) {
+      body.append("\n").append("> ").append(proyectoLey.getDetalle().getSumilla().getValue())
+          .append("\n\n");
+    }
 
     // Congresistas
     body.append("""
@@ -154,12 +176,11 @@ public class ExportadorHugo {
       body.append("\n[Enlace](")
           .append(proyectoLey.getEnlaces().getOpinionesPublicadas()).append(")\n");
     }
-    if (proyectoLey.getEnlaces().getPublicarOpinion() != null &&
-        !proyectoLey.getEnlaces().getPublicarOpinion().isBlank()) {
+    if (proyectoLey.getEnlaces().hasPublicarOpinion()) {
       body.append("### Publicar opinión").append("\n\n");
-      body.append("{{< iframe \"").append(proyectoLey.getEnlaces().getPublicarOpinion())
+      body.append("{{< iframe \"").append(proyectoLey.getEnlaces().getPublicarOpinion().getValue())
           .append("\" \"Brindar opinión\" >}}\n");
-      body.append("\n[Enlace](").append(proyectoLey.getEnlaces().getPublicarOpinion())
+      body.append("\n[Enlace](").append(proyectoLey.getEnlaces().getPublicarOpinion().getValue())
           .append(")\n");
     }
 
@@ -183,7 +204,7 @@ public class ExportadorHugo {
           .append("\n\n")
           .append("**\"").append(proyectoLey.getLey().getTitulo()).append("\"**")
           .append("\n\n")
-          .append("Sumilla: ").append(proyectoLey.getLey().getSumilla())
+          .append("> ").append(proyectoLey.getLey().getSumilla().getValue())
           .append("\n\n")
       ;
     }
@@ -193,20 +214,26 @@ public class ExportadorHugo {
       body.append("\n")
           .append("## Expediente")
           .append("\n\n")
-          .append(String.join("\n\n", proyectoLey.getExpediente().getTituloList()))
-          .append("\n\n")
+//          .append("**").append(proyectoLey.getExpediente().getTitulo()).append("**")
+//          .append("\n\n")
       ;
+//      if (proyectoLey.getExpediente().hasSubtitulo()) {
+//        body
+//          .append("> ").append(proyectoLey.getExpediente().getSubtitulo().getValue())
+//            .append("\n\n");
+//      }
       if (proyectoLey.getExpediente().getResultadoCount() > 0) {
         body.append("""
-            
+                        
             ### Documentos resultado
-            
+                        
             | Fecha | Documento |
             |------:|--------|
             """);
 
         for (var doc : proyectoLey.getExpediente().getResultadoList()) {
-          body.append("| **").append(fecha(doc.getFecha())).append("** | [")
+          body.append("| **").append(doc.hasFecha() ? fecha(doc.getFecha().getValue()) : "")
+              .append("** | [")
               .append(doc.getTitulo()).append("](")
               .append(doc.getUrl()).append(") |")
               .append("\n");
@@ -215,15 +242,16 @@ public class ExportadorHugo {
 
       if (proyectoLey.getExpediente().getProyectoCount() > 0) {
         body.append("""
-            
+                        
             ### Documentos del Proyecto de Ley
-            
+                        
             | Fecha | Documento |
             |------:|--------|
             """);
 
         for (var doc : proyectoLey.getExpediente().getProyectoList()) {
-          body.append("| **").append(fecha(doc.getFecha())).append("** | [")
+          body.append("| **").append(doc.hasFecha() ? fecha(doc.getFecha().getValue()) : "")
+              .append("** | [")
               .append(doc.getTitulo()).append("](")
               .append(doc.getUrl()).append(") |")
               .append("\n");
@@ -231,15 +259,16 @@ public class ExportadorHugo {
       }
       if (proyectoLey.getExpediente().getAnexoCount() > 0) {
         body.append("""
-            
+                        
             ### Documentos de Anexo 
-            
+                        
             | Fecha | Documento |
             |------:|--------|
             """);
 
         for (var doc : proyectoLey.getExpediente().getAnexoList()) {
-          body.append("| **").append(fecha(doc.getFecha())).append("** | [")
+          body.append("| **").append(doc.hasFecha() ? fecha(doc.getFecha().getValue()) : "")
+              .append("** | [")
               .append(doc.getTitulo()).append("](")
               .append(doc.getUrl()).append(") |")
               .append("\n");
@@ -256,7 +285,7 @@ public class ExportadorHugo {
       }
       if (proyectoLey.getEnlaces().getExpediente() != null) {
         body.append("- [Expediente Digital](")
-            .append(proyectoLey.getEnlaces().getExpediente())
+            .append(proyectoLey.getEnlaces().getExpediente().getValue())
             .append(")\n");
       }
     }

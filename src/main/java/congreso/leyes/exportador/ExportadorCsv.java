@@ -82,13 +82,11 @@ public class ExportadorCsv {
         csv.numeroUnico = proyectoLey.getDetalle().getNumeroUnico();
         csv.estado = proyectoLey.getEstado();
         csv.fechaPublicacion = fecha(proyectoLey.getFechaPublicacion());
-        csv.fechaActualizacion = fecha(proyectoLey.getFechaActualizacion());
+        csv.fechaActualizacion = proyectoLey.hasFechaActualizacion() ? fecha(proyectoLey.getFechaActualizacion().getValue()) : "";
         csv.titulo = proyectoLey.getDetalle().getTitulo();
-        csv.sumilla = proyectoLey.getDetalle().getSumilla();
         csv.legislatura = proyectoLey.getDetalle().getLegislatura();
         csv.proponente = proyectoLey.getDetalle().getProponente();
         csv.grupoParlamentario = proyectoLey.getDetalle().getGrupoParlamentario();
-        csv.iniciativasAgrupadas = proyectoLey.getDetalle().getIniciativasAgrupadas();
         csv.autores = String.join(";", proyectoLey.getDetalle().getAutorList());
         csv.adherentes = String.join(";", proyectoLey.getDetalle().getAdherenteList());
         csv.sectores = String.join(";", proyectoLey.getDetalle().getSectorList());
@@ -128,11 +126,9 @@ public class ExportadorCsv {
     public String fechaPublicacion;
     public String fechaActualizacion;
     public String titulo;
-    public String sumilla;
     public String legislatura;
     public String proponente;
     public String grupoParlamentario;
-    public String iniciativasAgrupadas;
     public String autores;
     public String adherentes;
     public String sectores;
@@ -150,7 +146,6 @@ public class ExportadorCsv {
               "legislatura",
               "proponente",
               "grupo_parlamentario",
-              "iniciativas_agrupadas",
               "autores",
               "adherentes",
               "sectores",
@@ -171,7 +166,6 @@ public class ExportadorCsv {
               legislatura,
               proponente,
               grupoParlamentario,
-              iniciativasAgrupadas,
               "\""+autores+"\"",
               "\""+adherentes+"\"",
               "\""+sectores+"\"",

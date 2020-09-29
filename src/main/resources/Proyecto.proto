@@ -2,17 +2,22 @@ syntax = "proto3";
 
 package congreso.leyes;
 
+import "google/protobuf/wrappers.proto";
+
 message ProyectoLey {
   Id id = 1;
   string estado = 2;
 
   int64 fecha_publicacion = 3;
-  int64 fecha_actualizacion = 4;
+  google.protobuf.Int64Value fecha_actualizacion = 4;
 
   Enlaces enlaces = 5;
   Detalle detalle = 6;
   Expediente expediente = 7;
   Ley ley = 8;
+  Tuit tuit_principal = 9;
+
+  map<string, Tuit> tuit_estado = 10;
 
   message Id {
     string periodo = 1;
@@ -21,59 +26,69 @@ message ProyectoLey {
 
   message Enlaces {
     string seguimiento = 1;
-    string expediente = 2;
+    google.protobuf.StringValue expediente = 2;
     string opiniones_publicadas = 3;
-    string publicar_opinion = 4;
+    google.protobuf.StringValue publicar_opinion = 4;
   }
 
   message Seguimiento {
     int64 fecha = 1;
     string texto = 2;
+    Tuit tuit = 3;
   }
 
   message Detalle {
     string numero_unico = 1;
+    string numero_grupo = 2;
 
-    string titulo = 2;
-    string sumilla = 3;
+    string titulo = 3;
+    google.protobuf.StringValue sumilla = 4;
 
-    string periodo_texto = 4;
-    string legislatura = 5;
+    string periodo_texto = 5;
+    string legislatura = 6;
 
-    string proponente = 6;
-    string grupo_parlamentario = 7;
+    string proponente = 7;
+    string grupo_parlamentario = 8;
 
-    string iniciativas_agrupadas = 8;
+    repeated string iniciativa_agrupada = 9;
 
-    repeated string autor = 9;
-    repeated string adherente = 10;
+    repeated string autor = 10;
+    repeated string adherente = 11;
 
-    string seguimiento_texto = 11;
-    repeated Seguimiento seguimiento = 12;
-    repeated string sector = 13;
-    repeated Congresista congresista = 14;
+    string seguimiento_texto = 12;
+    repeated Seguimiento seguimiento = 13;
+    repeated string sector = 14;
+    repeated Congresista congresista = 15;
   }
 
   message Expediente {
-    repeated string titulo = 1;
-    repeated Documento resultado = 2;
-    repeated Documento proyecto = 3;
-    repeated Documento anexo = 4;
+    string titulo = 1;
+    google.protobuf.StringValue subtitulo = 2;
+    repeated Documento resultado = 3;
+    repeated Documento proyecto = 4;
+    repeated Documento anexo = 5;
 
     message Documento {
       string titulo = 1;
       string url = 2;
-      int64 fecha = 3;
-      string proyecto = 4;
+      google.protobuf.Int64Value fecha = 3;
+      google.protobuf.StringValue proyecto = 4;
+      Tuit tuit = 5;
     }
   }
 
   message Ley {
     string numero = 1;
     string titulo = 2;
-    string sumilla = 3;
+    google.protobuf.StringValue sumilla = 3;
+    Tuit tuit = 4;
   }
 }
+
+message Tuit {
+  string url = 1;
+}
+
 message Congresista {
   string nombre_completo = 1 ;
   string email = 2;

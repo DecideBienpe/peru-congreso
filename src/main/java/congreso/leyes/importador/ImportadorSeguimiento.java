@@ -1,5 +1,6 @@
 package congreso.leyes.importador;
 
+import com.google.protobuf.StringValue;
 import com.typesafe.config.ConfigFactory;
 import congreso.leyes.Proyecto;
 import congreso.leyes.Proyecto.ProyectoLey;
@@ -142,7 +143,8 @@ public class ImportadorSeguimiento {
       if (a != null) {
         var onclick = a.attr("onclick");
         var param = onclick.substring(onclick.indexOf("'") + 1, onclick.lastIndexOf("'"));
-        enlace.ifPresent(s -> builder.getEnlacesBuilder().setExpediente(baseUrl + s + param));
+        enlace.ifPresent(s -> builder.getEnlacesBuilder()
+            .setExpediente(StringValue.of(baseUrl + s + param)));
       }
 
       var detalle = Detalle.newBuilder();
@@ -175,7 +177,7 @@ public class ImportadorSeguimiento {
               case "Sumilla:" -> {
                 var texto = tds.get(1).text().trim();
                 if (!texto.isBlank()) {
-                  detalle.setSumilla(texto);
+                  detalle.setSumilla(StringValue.of(texto));
                 }
               }
               case "Autores (*):" -> detalle.addAllAutor(
@@ -187,12 +189,18 @@ public class ImportadorSeguimiento {
               case "Iniciativas Agrupadas:" -> {
                 var texto = tds.get(1).text().trim();
                 if (!texto.isBlank()) {
-                  detalle.setIniciativasAgrupadas(texto);
+                  var values = Arrays.stream(texto.split(",")).map(String::trim).collect(Collectors.toList());
+                  detalle.addAllIniciativaAgrupada(values);
                 }
               }
               case "Número de Ley:" -> ley.setNumero(tds.get(1).text());
               case "Título de la Ley:" -> ley.setTitulo(tds.get(1).text());
-              case "Sumilla de la Ley" -> ley.setSumilla(tds.get(1).text());
+              case "Sumilla de la Ley" -> {
+                var text = tds.get(1).text();
+                if (!text.isBlank()) {
+                  ley.setSumilla(StringValue.of(text));
+                }
+              }
               default -> LOG.error("Campo no mapeado: " + field);
             }
           });
@@ -219,13 +227,13 @@ public class ImportadorSeguimiento {
       for (Seguimiento seguimiento : seguimientos) {
         if (seguimiento.getTexto().startsWith(prefix)) {
           final var sector = seguimiento.getTexto().substring(prefix.length() + 1).strip();
-            if (sector.contains("-")) {
-              LOG.warn("Sector con guion encontrado: {}", sector);
-              var corregido = sector.substring(0, sector.indexOf("-"));
-              detalle.addSector(corregido);
-            } else {
-              detalle.addSector(sector);
-            }
+          if (sector.contains("-")) {
+            LOG.warn("Sector con guion encontrado: {}", sector);
+            var corregido = sector.substring(0, sector.indexOf("-"));
+            detalle.addSector(corregido);
+          } else {
+            detalle.addSector(sector);
+          }
         }
       }
 

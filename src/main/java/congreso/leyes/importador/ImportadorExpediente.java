@@ -1,5 +1,7 @@
 package congreso.leyes.importador;
 
+import com.google.protobuf.Int64Value;
+import com.google.protobuf.StringValue;
 import com.typesafe.config.ConfigFactory;
 import congreso.leyes.Proyecto;
 import congreso.leyes.Proyecto.ProyectoLey;
@@ -106,14 +108,13 @@ public class ImportadorExpediente {
   }
 
   ProyectoLey importarExpediente(ProyectoLey seguimiento) {
-    if (seguimiento.getEnlaces().getExpediente() == null ||
-        seguimiento.getEnlaces().getExpediente().isBlank()) {
+    if (!seguimiento.getEnlaces().hasExpediente()) {
       LOG.info("Seguimiento {}-{} no tiene enlace para expediente",
           seguimiento.getDetalle().getNumeroUnico(),
           seguimiento.getDetalle().getTitulo());
       return null;
     }
-    var url = seguimiento.getEnlaces().getExpediente();
+    var url = seguimiento.getEnlaces().getExpediente().getValue();
     try {
       var expediente = seguimiento.toBuilder();
       var doc = Jsoup.connect(url).get();
@@ -138,11 +139,11 @@ public class ImportadorExpediente {
           .first().getElementsByTag("b");
       var builder = expediente.getExpediente().toBuilder();
       if (!headers.isEmpty()) {
-        builder.addTitulo(headers.get(0).text());
+        builder.setTitulo(headers.get(0).text());
       }
       if (headers.size() > 1) {
         var titulo = headers.get(1).text();
-        builder.addTitulo(titulo);
+        builder.setSubtitulo(StringValue.of(titulo));
       }
       //extrayendo documentos
       var expedienteTablas = contenidoExperiente.first().getElementsByTag("table");
@@ -180,7 +181,7 @@ public class ImportadorExpediente {
       final var enlacesBuilder = expediente.getEnlacesBuilder();
       if (expedienteOpiniones.size() == 2) {
         var presentarOpinionUrl = leerEnlacePresentarOpinion(doc, expedienteOpiniones.get(0));
-        enlacesBuilder.setPublicarOpinion(presentarOpinionUrl);
+        enlacesBuilder.setPublicarOpinion(StringValue.of(presentarOpinionUrl));
         var opinionesUrl = leerEnlaceOpinionesPresentadas(doc);
         enlacesBuilder.setOpinionesPublicadas(opinionesUrl);
       }
@@ -248,11 +249,11 @@ public class ImportadorExpediente {
             var referenciaDocumento = element.getElementsByTag("a").attr("href");
             var builder = Documento.newBuilder()
                 .setTitulo(nombreDocumento)
-                .setProyecto(numeroProyecto)
+                .setProyecto(StringValue.of(numeroProyecto))
                 .setUrl(referenciaDocumento);
             var fecha = leerFecha(values.get(1));
             if (fecha != null) {
-              builder.setFecha(fecha);
+              builder.setFecha(Int64Value.of(fecha));
             }
             var doc = builder.build();
             docs.add(doc);
@@ -282,7 +283,7 @@ public class ImportadorExpediente {
               .setUrl(referenciaDocumento);
           var fecha = leerFecha(values.get(0));
           if (fecha != null) {
-            builder.setFecha(fecha);
+            builder.setFecha(Int64Value.of(fecha));
           }
           var doc = builder.build();
           docs.add(doc);
@@ -305,7 +306,7 @@ public class ImportadorExpediente {
               .setUrl(referenciaDocumento);
           var fecha = leerFecha(values.get(0));
           if (fecha != null) {
-            builder.setFecha(fecha);
+            builder.setFecha(Int64Value.of(fecha));
           }
           var doc = builder.build();
           docs.add(doc);

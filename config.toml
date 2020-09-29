@@ -13,7 +13,6 @@ Paginate = 25
   proponente = "proponentes"
   grupo = "grupos"
   autor = "autores"
-  adherente = "adherentes"
   sector = "sectores"
   periodo = "periodos"
 
