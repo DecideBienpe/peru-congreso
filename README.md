@@ -29,7 +29,7 @@ Idealmente, el sitio web del Congreso debería ser un repositorio abierto, y los
 ### Proyectos de Ley
 
 - Sitio web: <https://jeqo.github.io/peru-congreso/proyectos-ley>
-- Git
+- Git: <https://github.com/jeqo/peru-congreso/tree/trunk/content/proyectos-ley>
 
 ### Proyectos de Ley en formato CSV
 
@@ -37,6 +37,8 @@ Idealmente, el sitio web del Congreso debería ser un repositorio abierto, y los
 - Git: <https://github.com/jeqo/peru-congreso/blob/trunk/static/proyectos-ley/2016-2021.csv>
 
 ## Detalle del código fuente
+
+Mayor detalle [aquí](./RATIONALE.md)
 
 ### Documentación
 
