@@ -176,6 +176,7 @@ public class ImportadorProyecto {
     var builder = ProyectoLey.newBuilder()
         .setId(Id.newBuilder()
             .setNumeroPeriodo(numero)
+            .setNumeroGrupo(grupo(numero))
             .setPeriodo("2016-2021")
             .build())
         .setEstado(estado)
@@ -190,5 +191,10 @@ public class ImportadorProyecto {
         .atStartOfDay()
         .toInstant(ZoneOffset.ofHours(-5))
         .toEpochMilli();
+  }
+
+  private static String grupo(String numeroPeriodo) {
+    var i = (Integer.parseInt(numeroPeriodo) / 100) * 100;
+    return String.format("%05d", i);
   }
 }

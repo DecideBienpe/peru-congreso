@@ -236,7 +236,7 @@ public class ImportadorSeguimiento {
         }
       }
 
-      detalle.addAllSeguimiento(seguimientos);
+      builder.addAllSeguimiento(seguimientos);
 
       builder.setLey(ley);
       builder.setDetalle(detalle);

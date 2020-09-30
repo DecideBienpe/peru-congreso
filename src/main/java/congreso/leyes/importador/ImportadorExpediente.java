@@ -39,18 +39,10 @@ public class ImportadorExpediente {
 
   static final Logger LOG = LoggerFactory.getLogger(ImportadorExpediente.class);
 
-  final String baseUrl;
-
-  public ImportadorExpediente(String baseUrl) {
-    this.baseUrl = baseUrl;
-  }
-
   public static void main(String[] args) {
     var config = ConfigFactory.load();
 
-    var baseUrl = config.getString("importador.base-url");
-
-    var importador = new ImportadorExpediente(baseUrl);
+    var importador = new ImportadorExpediente();
 
     var kafkaBootstrapServers = config.getString("kafka.bootstrap-servers");
     var inputTopic = config.getString("kafka.topics.seguimiento-importado");

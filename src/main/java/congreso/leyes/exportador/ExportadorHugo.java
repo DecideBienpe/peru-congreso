@@ -75,7 +75,7 @@ public class ExportadorHugo {
         var keyValue = iter.next();
         var proyectoLey = (ProyectoLey) keyValue.value;
         var numeroPeriodo = proyectoLey.getId().getNumeroPeriodo();
-        var grupo = getGrupo(numeroPeriodo);
+        var grupo = proyectoLey.getId().getNumeroGrupo();
         var dir =
             baseDir + "/" + proyectoLey.getId().getPeriodo() + "/" + grupo;
         Files.createDirectories(Paths.get(dir));
@@ -93,10 +93,6 @@ public class ExportadorHugo {
     kafkaStreams.close();
   }
 
-  private static String getGrupo(String numeroPeriodo) {
-    var i = (Integer.parseInt(numeroPeriodo) / 100) * 100;
-    return String.format("%05d", i);
-  }
 
   static String crearPagina(ProyectoLey proyectoLey) {
     var titulo = proyectoLey.getDetalle().getTitulo();
@@ -126,7 +122,7 @@ public class ExportadorHugo {
       body.append("- **Iniciativas agrupadas**: ")
           .append(proyectoLey.getDetalle().getIniciativaAgrupadaList()
               .stream()
-              .map(num -> "[" + num + "](../../" + getGrupo(num) + "/" + num + ")")
+              .map(num -> "[" + num + "](../../" + grupo(num) + "/" + num + ")")
               .collect(Collectors.joining(", ")))
           .append("\n");
     }
@@ -192,7 +188,7 @@ public class ExportadorHugo {
         | Fecha | Evento |
         |------:|--------|
         """);
-    for (var seguimiento : proyectoLey.getDetalle().getSeguimientoList()) {
+    for (var seguimiento : proyectoLey.getSeguimientoList()) {
       body.append("| **").append(fecha(seguimiento.getFecha())).append("** | ")
           .append(seguimiento.getTexto()).append("|\n");
     }
@@ -290,6 +286,11 @@ public class ExportadorHugo {
       }
     }
     return header + body;
+  }
+
+  private static String grupo(String num) {
+    var i = (Integer.parseInt(num) / 100) * 100;
+    return String.format("%05d", i);
   }
 
   static String fecha(long fecha) {

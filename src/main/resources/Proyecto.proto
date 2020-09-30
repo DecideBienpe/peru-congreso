@@ -13,15 +13,14 @@ message ProyectoLey {
 
   Enlaces enlaces = 5;
   Detalle detalle = 6;
-  Expediente expediente = 7;
-  Ley ley = 8;
-  Tuit tuit_principal = 9;
-
-  map<string, Tuit> tuit_estado = 10;
+  repeated Seguimiento seguimiento = 7;
+  Expediente expediente = 8;
+  Ley ley = 9;
 
   message Id {
     string periodo = 1;
     string numero_periodo = 2;
+    string numero_grupo = 3;
   }
 
   message Enlaces {
@@ -34,31 +33,28 @@ message ProyectoLey {
   message Seguimiento {
     int64 fecha = 1;
     string texto = 2;
-    Tuit tuit = 3;
   }
 
   message Detalle {
     string numero_unico = 1;
-    string numero_grupo = 2;
 
-    string titulo = 3;
-    google.protobuf.StringValue sumilla = 4;
+    string titulo = 2;
+    google.protobuf.StringValue sumilla = 3;
 
-    string periodo_texto = 5;
-    string legislatura = 6;
+    string periodo_texto = 4;
+    string legislatura = 5;
 
-    string proponente = 7;
-    string grupo_parlamentario = 8;
+    string proponente = 6;
+    string grupo_parlamentario = 7;
 
-    repeated string iniciativa_agrupada = 9;
+    repeated string iniciativa_agrupada = 8;
 
-    repeated string autor = 10;
-    repeated string adherente = 11;
+    repeated string autor = 9;
+    repeated string adherente = 10;
 
-    string seguimiento_texto = 12;
-    repeated Seguimiento seguimiento = 13;
-    repeated string sector = 14;
-    repeated Congresista congresista = 15;
+    string seguimiento_texto = 11;
+    repeated string sector = 12;
+    repeated Congresista congresista = 13;
   }
 
   message Expediente {
@@ -73,7 +69,6 @@ message ProyectoLey {
       string url = 2;
       google.protobuf.Int64Value fecha = 3;
       google.protobuf.StringValue proyecto = 4;
-      Tuit tuit = 5;
     }
   }
 
@@ -81,12 +76,16 @@ message ProyectoLey {
     string numero = 1;
     string titulo = 2;
     google.protobuf.StringValue sumilla = 3;
-    Tuit tuit = 4;
   }
 }
 
+message Tuits {
+  Tuit principal = 1;
+  repeated Tuit seguimientos = 2;
+}
+
 message Tuit {
-  string url = 1;
+  int64 id = 1;
 }
 
 message Congresista {

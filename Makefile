@@ -16,7 +16,7 @@ kafka-topics:
 	${KAFKA_HOME}/bin/kafka-topics.sh --bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS} \
 		--create --if-not-exists --topic congreso.leyes.congresista-importado-v1 --partitions ${PARTITIONS}
 	${KAFKA_HOME}/bin/kafka-topics.sh --bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS} \
-		--create --if-not-exists --topic congreso.leyes.tuit-v1 --partitions ${PARTITIONS}
+		--create --if-not-exists --topic congreso.leyes.exportador-twitter-v1 --partitions ${PARTITIONS}
 	${KAFKA_HOME}/bin/kafka-configs.sh --bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS} \
 		--entity-type topics --entity-name congreso.leyes.proyecto-importado-v1 \
 		--alter --add-config cleanup.policy=compact
@@ -30,7 +30,7 @@ kafka-topics:
 		--entity-type topics --entity-name congreso.leyes.congresista-importado-v1 \
 		--alter --add-config cleanup.policy=compact
 	${KAFKA_HOME}/bin/kafka-configs.sh --bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS} \
-		--entity-type topics --entity-name congreso.leyes.tuit-v1 \
+		--entity-type topics --entity-name congreso.leyes.exportador-twitter-v1 \
 		--alter --add-config cleanup.policy=compact
 
 kafka-reset-offset-to-earliest:
