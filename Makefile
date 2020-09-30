@@ -1,33 +1,57 @@
 all:
+
 build:
 	mvn clean package
+
+KAFKA_BOOTSTRAP_SERVERS := localhost:39092
 PARTITIONS := 6
+
 kafka-topics:
-	${KAFKA_HOME}/bin/kafka-topics.sh --bootstrap-server localhost:39092 \
+	${KAFKA_HOME}/bin/kafka-topics.sh --bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS} \
 		--create --if-not-exists --topic congreso.leyes.proyecto-importado-v1 --partitions ${PARTITIONS}
-	${KAFKA_HOME}/bin/kafka-topics.sh --bootstrap-server localhost:39092 \
+	${KAFKA_HOME}/bin/kafka-topics.sh --bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS} \
 		--create --if-not-exists --topic congreso.leyes.seguimiento-importado-v1 --partitions ${PARTITIONS}
-	${KAFKA_HOME}/bin/kafka-topics.sh --bootstrap-server localhost:39092 \
+	${KAFKA_HOME}/bin/kafka-topics.sh --bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS} \
 		--create --if-not-exists --topic congreso.leyes.expediente-importado-v1 --partitions ${PARTITIONS}
-	${KAFKA_HOME}/bin/kafka-topics.sh --bootstrap-server localhost:39092 \
+	${KAFKA_HOME}/bin/kafka-topics.sh --bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS} \
 		--create --if-not-exists --topic congreso.leyes.congresista-importado-v1 --partitions ${PARTITIONS}
-	${KAFKA_HOME}/bin/kafka-topics.sh --bootstrap-server localhost:39092 \
+	${KAFKA_HOME}/bin/kafka-topics.sh --bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS} \
 		--create --if-not-exists --topic congreso.leyes.tuit-v1 --partitions ${PARTITIONS}
-	${KAFKA_HOME}/bin/kafka-configs.sh --bootstrap-server localhost:39092 \
+	${KAFKA_HOME}/bin/kafka-configs.sh --bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS} \
 		--entity-type topics --entity-name congreso.leyes.proyecto-importado-v1 \
 		--alter --add-config cleanup.policy=compact
-	${KAFKA_HOME}/bin/kafka-configs.sh --bootstrap-server localhost:39092 \
+	${KAFKA_HOME}/bin/kafka-configs.sh --bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS} \
 		--entity-type topics --entity-name congreso.leyes.seguimiento-importado-v1 \
 		--alter --add-config cleanup.policy=compact
-	${KAFKA_HOME}/bin/kafka-configs.sh --bootstrap-server localhost:39092 \
+	${KAFKA_HOME}/bin/kafka-configs.sh --bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS} \
 		--entity-type topics --entity-name congreso.leyes.expediente-importado-v1 \
 		--alter --add-config cleanup.policy=compact
-	${KAFKA_HOME}/bin/kafka-configs.sh --bootstrap-server localhost:39092 \
+	${KAFKA_HOME}/bin/kafka-configs.sh --bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS} \
 		--entity-type topics --entity-name congreso.leyes.congresista-importado-v1 \
 		--alter --add-config cleanup.policy=compact
-	${KAFKA_HOME}/bin/kafka-configs.sh --bootstrap-server localhost:39092 \
+	${KAFKA_HOME}/bin/kafka-configs.sh --bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS} \
 		--entity-type topics --entity-name congreso.leyes.tuit-v1 \
 		--alter --add-config cleanup.policy=compact
+
+kafka-reset-offset-to-earliest:
+	${KAFKA_HOME}/bin/kafka-consumer-groups.sh --bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS} \
+		--reset-offsets --group ${KAFKA_CONSUMER_GROUP} --to-earliest --all-topics --execute
+
+kafka-describe-offsets:
+	${KAFKA_HOME}/bin/kafka-consumer-groups.sh --bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS} \
+		--describe --group ${KAFKA_CONSUMER_GROUP}
+
+kafka-reset-offset-seguimiento:
+	make KAFKA_CONSUMER_GROUP=congreso.leyes.seguimiento-v1 kafka-reset-offset-to-earliest
+
+kafka-describe-offsets-seguimiento:
+	make KAFKA_CONSUMER_GROUP=congreso.leyes.seguimiento-v1 kafka-describe-offsets
+
+kafka-reset-offset-expediente:
+	make KAFKA_CONSUMER_GROUP=congreso.leyes.expediente-v1 kafka-reset-offset-to-earliest
+
+kafka-describe-offsets-expediente:
+	make KAFKA_CONSUMER_GROUP=congreso.leyes.expediente-v1 kafka-describe-offsets
 
 web-run:
 	hugo serve

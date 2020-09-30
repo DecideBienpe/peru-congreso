@@ -94,7 +94,7 @@ public class ExportadorHugo {
   }
 
   private static String getGrupo(String numeroPeriodo) {
-    var i = (Integer.parseInt(numeroPeriodo.trim()) / 100) * 100;
+    var i = (Integer.parseInt(numeroPeriodo) / 100) * 100;
     return String.format("%05d", i);
   }
 
@@ -126,7 +126,7 @@ public class ExportadorHugo {
       body.append("- **Iniciativas agrupadas**: ")
           .append(proyectoLey.getDetalle().getIniciativaAgrupadaList()
               .stream()
-              .map(num -> "[" + num.trim() + "](../../" + getGrupo(num.trim()) + "/" + num.trim() + ")")
+              .map(num -> "[" + num + "](../../" + getGrupo(num) + "/" + num + ")")
               .collect(Collectors.joining(", ")))
           .append("\n");
     }

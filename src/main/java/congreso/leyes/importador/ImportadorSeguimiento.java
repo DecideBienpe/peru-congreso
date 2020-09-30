@@ -156,26 +156,25 @@ public class ImportadorSeguimiento {
             var tds = tr.getElementsByTag("td");
             var field = tds.get(0).text();
             var autores = leerAutores(tds.get(1));
+            var texto = tds.get(1).text().trim();
             switch (field) {
-              case "Período:" -> detalle.setPeriodoTexto(tds.get(1).text());
-              case "Legislatura:" -> detalle.setLegislatura(tds.get(1).text());
-              case "Número:" -> detalle.setNumeroUnico(tds.get(1).text());
+              case "Período:" -> detalle.setPeriodoTexto(texto);
+              case "Legislatura:" -> detalle.setLegislatura(texto);
+              case "Número:" -> detalle.setNumeroUnico(texto);
               case "Fecha Presentación:" -> {
               }
-              case "Proponente:" -> detalle.setProponente(tds.get(1).text());
+              case "Proponente:" -> detalle.setProponente(texto);
               case "Grupo Parlamentario:" -> {
-                var texto = tds.get(1).text().trim();
                 if (!texto.isBlank()) {
                   detalle.setGrupoParlamentario(texto);
                 }
               }
-              case "Título:" -> detalle.setTitulo(tds.get(1).text()
+              case "Título:" -> detalle.setTitulo(texto
                   .replaceAll("\"\"", "\"")
                   .replaceAll("\"", "'")
                   .replaceAll(",,", ",")
                   .replaceAll(":", ".-"));
               case "Sumilla:" -> {
-                var texto = tds.get(1).text().trim();
                 if (!texto.isBlank()) {
                   detalle.setSumilla(StringValue.of(texto));
                 }
@@ -185,20 +184,20 @@ public class ImportadorSeguimiento {
                       .map(Proyecto.Congresista::getNombreCompleto)
                       .collect(Collectors.toList()));
               case "Adherentes(**):" -> detalle.addAllAdherente(leerAdherentes(tds.get(1)));
-              case "Seguimiento:" -> detalle.setSeguimientoTexto(tds.get(1).text());
+              case "Seguimiento:" -> detalle.setSeguimientoTexto(texto);
               case "Iniciativas Agrupadas:" -> {
-                var texto = tds.get(1).text().trim();
                 if (!texto.isBlank()) {
-                  var values = Arrays.stream(texto.split(",")).map(String::trim).collect(Collectors.toList());
+                  var values = Arrays.stream(texto.split(","))
+                      .map(String::trim)
+                      .collect(Collectors.toList());
                   detalle.addAllIniciativaAgrupada(values);
                 }
               }
-              case "Número de Ley:" -> ley.setNumero(tds.get(1).text());
-              case "Título de la Ley:" -> ley.setTitulo(tds.get(1).text());
+              case "Número de Ley:" -> ley.setNumero(texto);
+              case "Título de la Ley:" -> ley.setTitulo(texto);
               case "Sumilla de la Ley" -> {
-                var text = tds.get(1).text();
-                if (!text.isBlank()) {
-                  ley.setSumilla(StringValue.of(text));
+                if (!texto.isBlank()) {
+                  ley.setSumilla(StringValue.of(texto));
                 }
               }
               default -> LOG.error("Campo no mapeado: " + field);
