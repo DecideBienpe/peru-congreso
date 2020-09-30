@@ -53,6 +53,22 @@ kafka-reset-offset-expediente:
 kafka-describe-offsets-expediente:
 	make KAFKA_CONSUMER_GROUP=congreso.leyes.expediente-v1 kafka-describe-offsets
 
+importacion-proyecto:
+	mvn compile exec:java -Dexec.mainClass="congreso.leyes.importador.ImportadorProyecto"
+
+importacion-seguimiento: kafka-reset-offset-seguimiento
+	mvn compile exec:java -Dexec.mainClass="congreso.leyes.importador.ImportadorSeguimiento"
+
+importacion-expediente: kafka-reset-offset-expediente
+	mvn compile exec:java -Dexec.mainClass="congreso.leyes.importador.ImportadorExpediente"
+
+
+exportacion-hugo:
+	mvn compile exec:java -Dexec.mainClass="congreso.leyes.exportador.ExportadorHugo"
+
+exportacion-csv:
+	mvn compile exec:java -Dexec.mainClass="congreso.leyes.exportador.ExportadorCsv"
+
 web-run:
 	hugo serve
 

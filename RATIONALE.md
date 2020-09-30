@@ -8,15 +8,21 @@ Java es el lenguaje de programación utilizado para la lógica detrás de la imp
 
 El motivo principal es la familiaridad del lenguaje, y por el uso de librerias de Apache Kafka.
 
+Actualmente utilizando Java 15.
+
 ### Apache Kafka
 
-Apache Kafka es utilizado como repositorio de eventos generados a partir de la importación de datos.
+[Apache Kafka](https://kafka.apache.org) es utilizado como repositorio de eventos generados a partir de la importación de datos.
 
 Kafka permite el almacenamiento de nuevos proyectos de ley, así como los cambios de estado, en el orden en el que suceden, facilitando la reutilización de eventos en distintos contextos.
 
+Kafka Streams es utilizado para almacenamiento local de exportaciones y validación de datos ya procesados.
+
+Versión actual: 2.6.0
+
 ### Hugo
 
-Hugo es una herramienta de creación de sitios web basado en formatos de archivo de texto; principalmente Markdown.
+[Hugo](https://gohugo.io/) es una herramienta de creación de sitios web basado en formatos de archivo de texto; principalmente Markdown.
 
 ## Patrones
 
