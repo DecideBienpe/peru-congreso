@@ -82,11 +82,14 @@ public class ExportadorCsv {
         csv.numeroUnico = proyectoLey.getDetalle().getNumeroUnico();
         csv.estado = proyectoLey.getEstado();
         csv.fechaPublicacion = fecha(proyectoLey.getFechaPublicacion());
-        csv.fechaActualizacion = proyectoLey.hasFechaActualizacion() ? fecha(proyectoLey.getFechaActualizacion().getValue()) : "";
-        csv.titulo = proyectoLey.getDetalle().getTitulo();
+        csv.fechaActualizacion = proyectoLey.hasFechaActualizacion() ?
+            fecha(proyectoLey.getFechaActualizacion().getValue()) : "";
+        csv.titulo = proyectoLey.getDetalle().getTitulo().isBlank() ?
+            proyectoLey.getExpediente().getSubtitulo().getValue().toUpperCase() :
+            proyectoLey.getDetalle().getTitulo();
         csv.legislatura = proyectoLey.getDetalle().getLegislatura();
         csv.proponente = proyectoLey.getDetalle().getProponente();
-        csv.grupoParlamentario = proyectoLey.getDetalle().getGrupoParlamentario();
+        csv.grupoParlamentario = proyectoLey.getDetalle().getGrupoParlamentario().getValue();
         csv.autores = String.join(";", proyectoLey.getDetalle().getAutorList());
         csv.adherentes = String.join(";", proyectoLey.getDetalle().getAdherenteList());
         csv.sectores = String.join(";", proyectoLey.getDetalle().getSectorList());
@@ -119,6 +122,7 @@ public class ExportadorCsv {
   }
 
   static class ProyectoCsv {
+
     public String periodo;
     public String numeroPeriodo;
     public String numeroUnico;
@@ -151,7 +155,7 @@ public class ExportadorCsv {
               "sectores",
               "tiene_ley",
               "titulo"
-              ));
+          ));
     }
 
     String toCsvLine() {
@@ -166,9 +170,9 @@ public class ExportadorCsv {
               legislatura,
               proponente,
               grupoParlamentario,
-              "\""+autores+"\"",
-              "\""+adherentes+"\"",
-              "\""+sectores+"\"",
+              "\"" + autores + "\"",
+              "\"" + adherentes + "\"",
+              "\"" + sectores + "\"",
               ley,
               titulo
           ));

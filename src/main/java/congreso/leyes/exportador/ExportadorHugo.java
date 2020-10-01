@@ -3,20 +3,27 @@ package congreso.leyes.exportador;
 import static java.lang.Thread.sleep;
 
 import com.typesafe.config.ConfigFactory;
+import congreso.leyes.Proyecto.Congresista;
 import congreso.leyes.Proyecto.ProyectoLey;
+import congreso.leyes.Proyecto.ProyectoLey.Expediente.Documento;
 import congreso.leyes.internal.ProyectoIdSerde;
 import congreso.leyes.internal.ProyectoLeySerde;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.Set;
 import java.util.stream.Collectors;
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.streams.KafkaStreams;
@@ -40,12 +47,12 @@ public class ExportadorHugo {
     var config = ConfigFactory.load();
 
     var kafkaBootstrapServers = config.getString("kafka.bootstrap-servers");
-    var topic = config.getString("kafka.topics.expediente-importado");
+    var topicExpedientes = config.getString("kafka.topics.expediente-importado");
 
     LOG.info("Cargando proyectos importados");
 
     var builder = new StreamsBuilder();
-    builder.globalTable(topic,
+    builder.globalTable(topicExpedientes,
         Consumed.with(new ProyectoIdSerde(), new ProyectoLeySerde())
             .withOffsetResetPolicy(AutoOffsetReset.EARLIEST),
         Materialized.as(Stores.persistentKeyValueStore("proyectos")));
@@ -66,226 +73,293 @@ public class ExportadorHugo {
       sleep(Duration.ofSeconds(1).toMillis());
     }
 
-    var proyectoRepositorio = kafkaStreams.store(
+    var proyectos = kafkaStreams.store(
         StoreQueryParameters.fromNameAndType("proyectos", QueryableStoreTypes.keyValueStore()));
 
-    var baseDir = "content/proyectos-ley";
-    try (var iter = proyectoRepositorio.all()) {
+    var congresistas = new HashMap<String, Set<Congresista>>();
+    try (var iter = proyectos.all()) {
       while (iter.hasNext()) {
-        var keyValue = iter.next();
-        var proyectoLey = (ProyectoLey) keyValue.value;
+        var proyectoLey = (ProyectoLey) iter.next().value;
         var numeroPeriodo = proyectoLey.getId().getNumeroPeriodo();
         var grupo = proyectoLey.getId().getNumeroGrupo();
-        var dir =
-            baseDir + "/" + proyectoLey.getId().getPeriodo() + "/" + grupo;
+        var periodo = proyectoLey.getId().getPeriodo();
+        var dir = "content/proyectos-ley" + "/" + periodo + "/" + grupo;
         Files.createDirectories(Paths.get(dir));
         var rutaTexto = dir + "/" + numeroPeriodo + ".md";
-        Path ruta = Paths.get(rutaTexto);
+        var ruta = Paths.get(rutaTexto);
         Files.deleteIfExists(ruta);
         Files.createFile(ruta);
         var pagina = crearPagina(proyectoLey);
         Files.writeString(ruta, pagina);
+        //actualizar lista de congresistas
+        var congresistasPeriodo = congresistas.get(periodo);
+        if (congresistasPeriodo == null) {
+          congresistasPeriodo = new HashSet<>();
+        }
+        congresistasPeriodo.addAll(proyectoLey.getDetalle().getCongresistaList());
+        congresistas.put(periodo, congresistasPeriodo);
       }
+      congresistas.forEach((periodo, congresistasPeriodo) -> {
+        try {
+          var dir = "content/congresistas";
+          Files.createDirectories(Paths.get(dir));
+          var rutaTexto = dir + "/" + periodo + ".md";
+          var ruta = Paths.get(rutaTexto);
+          Files.deleteIfExists(ruta);
+          Files.createFile(ruta);
+          var pagina = paginaCongresistas(periodo, congresistasPeriodo);
+          Files.writeString(ruta, pagina);
+        } catch (IOException e) {
+          LOG.error("Error procesando proyectos", e);
+        }
+      });
     } catch (IOException e) {
-      e.printStackTrace();
+      LOG.error("Error procesando proyectos", e);
     }
 
     kafkaStreams.close();
   }
 
+  private static String paginaCongresistas(String periodo, Set<Congresista> congresistasPeriodo) {
+    var list = new ArrayList<>(congresistasPeriodo);
+    list.sort(Comparator.comparing(Congresista::getNombreCompleto));
+    var listaCongresistas = list.stream()
+        .map(s -> String.format("- [%s](mailto:%s)", s.getNombreCompleto(), s.getEmail()))
+        .collect(Collectors.joining("\n"));
+    return String.format("""
+            ---
+            title: Directorio de Congresistas %s
+            ---
+            %s
+            """,
+        periodo,
+        listaCongresistas);
+  }
+
 
   static String crearPagina(ProyectoLey proyectoLey) {
-    var titulo = proyectoLey.getDetalle().getTitulo();
-    var quote = "\"";
-    var header = "---" + "\n"
-        + "title: " + quote + titulo + quote + "\n"
-        + "date: " + fecha(proyectoLey.getFechaPublicacion()) + "\n"
-        + (proyectoLey.hasFechaActualizacion() ? "lastmod: " + fecha(
-        proyectoLey.getFechaActualizacion().getValue()) + "\n" : "")
-        + "estados: \n  - " + proyectoLey.getEstado() + "\n"
-        + "proponentes: \n  - " + proyectoLey.getDetalle().getProponente() + "\n"
-        + "grupos: \n  - " + proyectoLey.getDetalle().getGrupoParlamentario() + "\n"
-        + "autores: \n  - " + String.join("\n  - ", proyectoLey.getDetalle().getAutorList()) + "\n"
-        + "adherentes: \n  - " + String.join("\n  - ", proyectoLey.getDetalle().getAdherenteList())
-        + "\n"
-        + "sectores: \n  - " + String.join("\n  - ", proyectoLey.getDetalle().getSectorList())
-        + "\n"
-        + "periodos: \n  - " + proyectoLey.getId().getPeriodo() + "\n"
-        + "---" + "\n\n";
+    var header =
+        String.format("""
+                ---
+                title: "%s"
+                date: %s
+                %s
+                estados:
+                - %s
+                periodos:
+                - %s
+                proponentes:
+                - %s
+                grupos:
+                - %s
+                autores:
+                %s
+                sectores:
+                %s
+                ---
+                """,
+            proyectoLey.getDetalle().getTitulo().isBlank() ?
+                proyectoLey.getExpediente().getSubtitulo().getValue().toUpperCase() :
+                proyectoLey.getDetalle().getTitulo(),
+            fecha(proyectoLey.getFechaPublicacion()),
+            (proyectoLey.hasFechaActualizacion() ?
+                "lastmod: " + fecha(proyectoLey.getFechaActualizacion().getValue()) :
+                ""),
+            proyectoLey.getEstado(),
+            proyectoLey.getId().getPeriodo(),
+            proyectoLey.getDetalle().getProponente(),
+            proyectoLey.getDetalle().getGrupoParlamentario().getValue(),
+            proyectoLey.getDetalle().getAutorList().stream()
+                .map(s -> "- " + s)
+                .collect(Collectors.joining("\n")),
+            proyectoLey.getDetalle().getSectorList().stream()
+                .map(s -> "- " + s)
+                .collect(Collectors.joining("\n")));
+
     var body = new StringBuilder();
     // Metadata
-    body.append("- **Periodo**: ").append(proyectoLey.getId().getPeriodo()).append("\n");
-    body.append("- **Legislatura**: ").append(proyectoLey.getDetalle().getLegislatura())
-        .append("\n");
-    body.append("- **Número**: ").append(proyectoLey.getDetalle().getNumeroUnico()).append("\n");
-    if (proyectoLey.getDetalle().getIniciativaAgrupadaCount() > 0) {
-      body.append("- **Iniciativas agrupadas**: ")
-          .append(proyectoLey.getDetalle().getIniciativaAgrupadaList()
-              .stream()
-              .map(num -> "[" + num + "](../../" + grupo(num) + "/" + num + ")")
-              .collect(Collectors.joining(", ")))
-          .append("\n");
-    }
-    body.append("- **Estado**: ").append(proyectoLey.getEstado()).append("\n");
+    var metadata = String.format("""
+            - **Periodo**: %s
+            - **Legislatura**: %s
+            - **Número**: %s
+            - **Iniciativas agrupadas**: %s
+            - **Estado**: %s
+                    
+            """,
+        proyectoLey.getId().getPeriodo(),
+        proyectoLey.getDetalle().getLegislatura(),
+        proyectoLey.getDetalle().getNumeroUnico(),
+        proyectoLey.getDetalle().getIniciativaAgrupadaList()
+            .stream()
+            .map(num -> "[" + num + "](../../" + grupo(num) + "/" + num + ")")
+            .collect(Collectors.joining(", ")),
+        proyectoLey.getEstado()
+    );
+    body.append(metadata);
     if (proyectoLey.getDetalle().hasSumilla()) {
-      body.append("\n").append("> ").append(proyectoLey.getDetalle().getSumilla().getValue())
-          .append("\n\n");
+      var sumilla = String.format("""
+              > %s
+                        
+              """,
+          proyectoLey.getDetalle().getSumilla().getValue());
+      body.append(sumilla);
     }
 
     // Congresistas
-    body.append("""
+    var emails = new HashSet<>(proyectoLey.getDetalle().getCongresistaList())
+        .stream()
+        .collect(Collectors.toMap(Congresista::getNombreCompleto, Congresista::getEmail));
+    var actores = String.format("""
 
-        ## Actores
-
-        """);
-    body.append("### Proponente\n\n")
-        .append("**").append(proyectoLey.getDetalle().getProponente()).append("**")
-        .append("\n\n");
-    if (proyectoLey.getDetalle().getGrupoParlamentario() != null &&
-        !proyectoLey.getDetalle().getGrupoParlamentario().isBlank()) {
-      body.append("### Grupo Parlamentario\n\n")
-          .append("**").append(proyectoLey.getDetalle().getGrupoParlamentario()).append("**")
-          .append("\n\n");
+            ## Actores
+                    
+            ### Proponente
+                    
+            **%s**
+                    
+            """,
+        proyectoLey.getDetalle().getProponente());
+    body.append(actores);
+    if (proyectoLey.getDetalle().hasGrupoParlamentario()) {
+      var grupo = String.format("""
+              ### Grupo Parlamentario
+                        
+              **%s**
+                        
+              """,
+          proyectoLey.getDetalle().getGrupoParlamentario().getValue());
+      body.append(grupo);
     }
     if (!proyectoLey.getDetalle().getAutorList().isEmpty()) {
-      body.append("### Autores\n\n")
-          .append(String.join("; ", proyectoLey.getDetalle().getAutorList()))
-          .append("\n\n");
+      var autores = String.format("""
+              ### Autores
+                        
+              %s
+                        
+              """,
+          proyectoLey.getDetalle().getAutorList()
+              .stream()
+              .map(s -> "[" + s + "](mailto:" + emails.get(s) + ")")
+              .collect(Collectors.joining("; ")));
+      body.append(autores);
     }
     if (!proyectoLey.getDetalle().getAdherenteList().isEmpty()) {
-      body.append("### Adherentes\n\n")
-          .append(String.join("; ", proyectoLey.getDetalle().getAdherenteList()))
-          .append("\n\n");
+      var adherentes = String.format("""
+              ### Adherentes
+                        
+              %s
+                        
+              """,
+          String.join("; ", proyectoLey.getDetalle().getAdherenteList()));
+      body.append(adherentes);
     }
 
     // Opiniones
-    body.append("""
+    var opinionesTitulo = String.format("""
+            ## Opiniones
+                    
+            ### Opiniones publicadas
+                    
+            {{<iframe "%1$s" "Opiniones publicadas" >}}
+            [Enlace](%1$s)
+                    
+            """,
+        proyectoLey.getEnlaces().getOpinionesPublicadas());
+    body.append(opinionesTitulo);
 
-        ## Opiniones
-
-        """);
-
-    if (proyectoLey.getEnlaces().getOpinionesPublicadas() != null) {
-      body.append("### Opiniones publicadas").append("\n\n");
-      body.append("{{<iframe \"").append(proyectoLey.getEnlaces().getOpinionesPublicadas())
-          .append("\" \"Opiniones publicadas\" >}}\n");
-      body.append("\n[Enlace](")
-          .append(proyectoLey.getEnlaces().getOpinionesPublicadas()).append(")\n");
-    }
     if (proyectoLey.getEnlaces().hasPublicarOpinion()) {
-      body.append("### Publicar opinión").append("\n\n");
-      body.append("{{< iframe \"").append(proyectoLey.getEnlaces().getPublicarOpinion().getValue())
-          .append("\" \"Brindar opinión\" >}}\n");
-      body.append("\n[Enlace](").append(proyectoLey.getEnlaces().getPublicarOpinion().getValue())
-          .append(")\n");
+      var publicarOpinion = String.format("""
+              ### Publicar opinión
+                      
+              {{<iframe "%1$s" "Brindar opinión" >}}
+              [Enlace](%1$s)
+                      
+              """,
+          proyectoLey.getEnlaces().getPublicarOpinion().getValue());
+      body.append(publicarOpinion);
     }
 
     // Seguimiento
-    body.append("""
+    var seguimiento = String.format("""
 
-        ## Seguimiento
+            ## Seguimiento
 
-        | Fecha | Evento |
-        |------:|--------|
-        """);
-    for (var seguimiento : proyectoLey.getSeguimientoList()) {
-      body.append("| **").append(fecha(seguimiento.getFecha())).append("** | ")
-          .append(seguimiento.getTexto()).append("|\n");
-    }
-    body.append("\n");
+            | Fecha | Evento |
+            |------:|--------|
+            %s
+                        
+            """,
+        proyectoLey.getSeguimientoList().stream()
+            .map(s -> String.format("| **%s** | %s |", fecha(s.getFecha()), s.getTexto()))
+            .collect(Collectors.joining("\n")));
+    body.append(seguimiento);
 
     // Ley
     if (proyectoLey.hasLey() && !proyectoLey.getLey().getNumero().isBlank()) {
-      body.append("## ").append(proyectoLey.getLey().getNumero())
-          .append("\n\n")
-          .append("**\"").append(proyectoLey.getLey().getTitulo()).append("\"**")
-          .append("\n\n")
-          .append("> ").append(proyectoLey.getLey().getSumilla().getValue())
-          .append("\n\n")
-      ;
+      var ley = String.format("""
+              ## %s
+                        
+              **%s**
+                        
+              > %s
+                            
+              """,
+          proyectoLey.getLey().getNumero(),
+          proyectoLey.getLey().getTitulo(),
+          proyectoLey.getLey().getSumilla());
+      body.append(ley);
     }
 
     // Expediente
     if (proyectoLey.hasExpediente()) {
-      body.append("\n")
-          .append("## Expediente")
-          .append("\n\n")
-//          .append("**").append(proyectoLey.getExpediente().getTitulo()).append("**")
-//          .append("\n\n")
-      ;
-//      if (proyectoLey.getExpediente().hasSubtitulo()) {
-//        body
-//          .append("> ").append(proyectoLey.getExpediente().getSubtitulo().getValue())
-//            .append("\n\n");
-//      }
+      body.append("""
+          ## Expediente
+                    
+          """);
       if (proyectoLey.getExpediente().getResultadoCount() > 0) {
-        body.append("""
-                        
-            ### Documentos resultado
-                        
-            | Fecha | Documento |
-            |------:|--------|
-            """);
-
-        for (var doc : proyectoLey.getExpediente().getResultadoList()) {
-          body.append("| **").append(doc.hasFecha() ? fecha(doc.getFecha().getValue()) : "")
-              .append("** | [")
-              .append(doc.getTitulo()).append("](")
-              .append(doc.getUrl()).append(") |")
-              .append("\n");
-        }
+        body.append(tablaDocumentos("resultado", proyectoLey.getExpediente().getResultadoList()));
       }
 
       if (proyectoLey.getExpediente().getProyectoCount() > 0) {
-        body.append("""
-                        
-            ### Documentos del Proyecto de Ley
-                        
-            | Fecha | Documento |
-            |------:|--------|
-            """);
-
-        for (var doc : proyectoLey.getExpediente().getProyectoList()) {
-          body.append("| **").append(doc.hasFecha() ? fecha(doc.getFecha().getValue()) : "")
-              .append("** | [")
-              .append(doc.getTitulo()).append("](")
-              .append(doc.getUrl()).append(") |")
-              .append("\n");
-        }
+        body.append(
+            tablaDocumentos("proyecto de ley", proyectoLey.getExpediente().getProyectoList()));
       }
       if (proyectoLey.getExpediente().getAnexoCount() > 0) {
-        body.append("""
-                        
-            ### Documentos de Anexo 
-                        
-            | Fecha | Documento |
-            |------:|--------|
-            """);
-
-        for (var doc : proyectoLey.getExpediente().getAnexoList()) {
-          body.append("| **").append(doc.hasFecha() ? fecha(doc.getFecha().getValue()) : "")
-              .append("** | [")
-              .append(doc.getTitulo()).append("](")
-              .append(doc.getUrl()).append(") |")
-              .append("\n");
-        }
+        body.append(tablaDocumentos("anexos", proyectoLey.getExpediente().getAnexoList()));
       }
 
       // Enlaces
-      body.append("\n## Enlaces ")
-          .append("\n\n");
-      if (proyectoLey.getEnlaces().getSeguimiento() != null) {
-        body.append("- [Seguimiento](")
-            .append(proyectoLey.getEnlaces().getSeguimiento())
-            .append(")\n");
-      }
-      if (proyectoLey.getEnlaces().getExpediente() != null) {
-        body.append("- [Expediente Digital](")
-            .append(proyectoLey.getEnlaces().getExpediente().getValue())
-            .append(")\n");
-      }
+      var enlaces = String.format("""
+              ## Enlaces 
+                        
+              - [Seguimiento](%s)
+              %s
+                        
+              """,
+          proyectoLey.getEnlaces().getSeguimiento(),
+          proyectoLey.getEnlaces().hasExpediente() ? String.format("- [Expediente Digital](%s)",
+              proyectoLey.getEnlaces().getExpediente().getValue()) : "");
+      body.append(enlaces);
     }
     return header + body;
+  }
+
+  private static String tablaDocumentos(String titulo, List<Documento> docs) {
+    return String.format("""
+            ### Documentos %s
+                        
+            | Fecha | Documento |
+            |------:|-----------|
+            %s
+                            
+            """,
+        titulo,
+        docs.stream()
+            .map(d -> String.format("| **%s** | [%s](%s) |",
+                d.hasFecha() ? fecha(d.getFecha().getValue()) : "",
+                d.getTitulo(),
+                d.getUrl()))
+            .collect(Collectors.joining("\n")));
   }
 
   private static String grupo(String num) {

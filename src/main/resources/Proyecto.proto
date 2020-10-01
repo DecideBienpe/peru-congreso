@@ -45,7 +45,7 @@ message ProyectoLey {
     string legislatura = 5;
 
     string proponente = 6;
-    string grupo_parlamentario = 7;
+    google.protobuf.StringValue grupo_parlamentario = 7;
 
     repeated string iniciativa_agrupada = 8;
 

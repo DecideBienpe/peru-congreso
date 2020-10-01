@@ -155,7 +155,8 @@ public class ImportadorSeguimiento {
           .forEach(tr -> {
             var tds = tr.getElementsByTag("td");
             var field = tds.get(0).text();
-            var autores = leerAutores(tds.get(1));
+            var autores = autores(tds.get(1));
+            detalle.addAllCongresista(autores);
             var texto = tds.get(1).text().trim();
             switch (field) {
               case "Período:" -> detalle.setPeriodoTexto(texto);
@@ -166,7 +167,7 @@ public class ImportadorSeguimiento {
               case "Proponente:" -> detalle.setProponente(texto);
               case "Grupo Parlamentario:" -> {
                 if (!texto.isBlank()) {
-                  detalle.setGrupoParlamentario(texto);
+                  detalle.setGrupoParlamentario(StringValue.of(texto));
                 }
               }
               case "Título:" -> detalle.setTitulo(texto
@@ -183,7 +184,7 @@ public class ImportadorSeguimiento {
                   autores.stream()
                       .map(Proyecto.Congresista::getNombreCompleto)
                       .collect(Collectors.toList()));
-              case "Adherentes(**):" -> detalle.addAllAdherente(leerAdherentes(tds.get(1)));
+              case "Adherentes(**):" -> detalle.addAllAdherente(adherentes(tds.get(1)));
               case "Seguimiento:" -> detalle.setSeguimientoTexto(texto);
               case "Iniciativas Agrupadas:" -> {
                 if (!texto.isBlank()) {
@@ -216,7 +217,7 @@ public class ImportadorSeguimiento {
             var fecha = matcher.group();
             seguimientos.add(Seguimiento.newBuilder()
                 .setTexto(texto)
-                .setFecha(leerFecha(fecha))
+                .setFecha(fecha(fecha))
                 .build());
           }
         }
@@ -227,7 +228,6 @@ public class ImportadorSeguimiento {
         if (seguimiento.getTexto().startsWith(prefix)) {
           final var sector = seguimiento.getTexto().substring(prefix.length() + 1).strip();
           if (sector.contains("-")) {
-            LOG.warn("Sector con guion encontrado: {}", sector);
             var corregido = sector.substring(0, sector.indexOf("-"));
             detalle.addSector(corregido);
           } else {
@@ -237,7 +237,6 @@ public class ImportadorSeguimiento {
       }
 
       builder.addAllSeguimiento(seguimientos);
-
       builder.setLey(ley);
       builder.setDetalle(detalle);
       return builder.build();
@@ -248,7 +247,7 @@ public class ImportadorSeguimiento {
 
   }
 
-  private List<Proyecto.Congresista> leerAutores(Element element) {
+  private List<Proyecto.Congresista> autores(Element element) {
     return
         element.getElementsByTag("a").stream()
             .map(a -> {
@@ -262,11 +261,11 @@ public class ImportadorSeguimiento {
             .collect(Collectors.toList());
   }
 
-  private List<String> leerAdherentes(Element element) {
+  private List<String> adherentes(Element element) {
     return Arrays.asList(element.text().split(","));
   }
 
-  private Long leerFecha(String texto) {
+  private Long fecha(String texto) {
     return LocalDate.parse(texto
             .replaceAll("58/08/2018", "08/08/2018")
             .replaceAll("59/02/2017", "06/02/2017")

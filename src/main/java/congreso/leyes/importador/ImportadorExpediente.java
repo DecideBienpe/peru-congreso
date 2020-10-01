@@ -83,6 +83,7 @@ public class ImportadorExpediente {
         }, "proyectos")
         .filterNot((id, proyectoLey) -> Objects.isNull(proyectoLey))
         .to(outputTopic, Produced.with(new ProyectoIdSerde(), new ProyectoLeySerde()));
+
     var streamsConfig = new Properties();
     streamsConfig.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServers);
     var groupId = config.getString("kafka.consumer-groups.importador-expediente");
@@ -90,6 +91,7 @@ public class ImportadorExpediente {
     var overrides = config.getConfig("kafka.streams").entrySet().stream()
         .collect(Collectors.toMap(Entry::getKey, entry -> entry.getValue().unwrapped()));
     streamsConfig.putAll(overrides);
+
     var kafkaStreams = new KafkaStreams(streamsBuilder.build(), streamsConfig);
 
     Runtime.getRuntime().addShutdownHook(new Thread(kafkaStreams::close));
@@ -99,16 +101,18 @@ public class ImportadorExpediente {
     kafkaStreams.start();
   }
 
-  ProyectoLey importarExpediente(ProyectoLey seguimiento) {
-    if (!seguimiento.getEnlaces().hasExpediente()) {
-      LOG.info("Seguimiento {}-{} no tiene enlace para expediente",
-          seguimiento.getDetalle().getNumeroUnico(),
-          seguimiento.getDetalle().getTitulo());
+  ProyectoLey importarExpediente(ProyectoLey proyectoLey) {
+    if (!proyectoLey.getEnlaces().hasExpediente()) {
+      LOG.warn("Seguimiento {}-{} no tiene enlace para expediente",
+          proyectoLey.getDetalle().getNumeroUnico(),
+          proyectoLey.getDetalle().getTitulo());
       return null;
     }
-    var url = seguimiento.getEnlaces().getExpediente().getValue();
+
+    var url = proyectoLey.getEnlaces().getExpediente().getValue();
     try {
-      var expediente = seguimiento.toBuilder();
+      var builder = proyectoLey.toBuilder();
+
       var doc = Jsoup.connect(url).get();
       var tablas = doc.body().select("table[width=500]");
       if (tablas.size() != 1) {
@@ -120,89 +124,86 @@ public class ImportadorExpediente {
           .first().children()
           .first().children()
           .get(1).children();
-      var contenidoExperiente = contenido
+      var contenidoExpediente = contenido
           .first().children()
           .first().children()
           .first().children()
           .first().children();
       //extrayendo titulos
-      var headers = contenidoExperiente.first().getElementsByTag("div")
+      var cabeceras = contenidoExpediente.first().getElementsByTag("div")
           .first().children()
           .first().getElementsByTag("b");
-      var builder = expediente.getExpediente().toBuilder();
-      if (!headers.isEmpty()) {
-        builder.setTitulo(headers.get(0).text());
+      var expedienteBuilder = builder.getExpediente().toBuilder();
+      if (!cabeceras.isEmpty()) {
+        expedienteBuilder.setTitulo(cabeceras.get(0).text());
       }
-      if (headers.size() > 1) {
-        var titulo = headers.get(1).text();
-        builder.setSubtitulo(StringValue.of(titulo));
+      if (cabeceras.size() > 1) {
+        var titulo = cabeceras.get(1).text();
+        expedienteBuilder.setSubtitulo(StringValue.of(titulo));
       }
       //extrayendo documentos
-      var expedienteTablas = contenidoExperiente.first().getElementsByTag("table");
-      if (expedienteTablas.size() == 3) { //cuando contiene docs de ley
-        var leyTable = expedienteTablas.first();
-        var docsLey = leerDocumentos(leyTable);
-        builder.addAllResultado(docsLey);
+      var tablasDocumento = contenidoExpediente.first().getElementsByTag("table");
+      //  cuando contiene docs de ley
+      if (tablasDocumento.size() == 3) {
+        var docsResultado = documentos(tablasDocumento.first());
+        expedienteBuilder.addAllResultado(docsResultado);
 
-        var proyectoLeyTable = expedienteTablas.get(1);
-        var docsProyecto = leerDocumentos(proyectoLeyTable);
-        builder.addAllProyecto(docsProyecto);
+        var docsProyecto = documentos(tablasDocumento.get(1));
+        expedienteBuilder.addAllProyecto(docsProyecto);
 
-        var anexosTable = expedienteTablas.get(2);
-        var anexos = leerDocumentos(anexosTable);
-        builder.addAllAnexo(anexos);
+        var docsAnexos = documentos(tablasDocumento.get(2));
+        expedienteBuilder.addAllAnexo(docsAnexos);
       }
+      //  cuando solo contiene proyecto y anexos
+      if (tablasDocumento.size() == 2) {
+        var docsProyecto = documentos(tablasDocumento.get(0));
+        expedienteBuilder.addAllProyecto(docsProyecto);
 
-      if (expedienteTablas.size() == 2) { //cuando solo contiene proyecto y anexos
-        var proyectoLeyTable = expedienteTablas.get(0);
-        var docsProyecto = leerDocumentos(proyectoLeyTable);
-        builder.addAllProyecto(docsProyecto);
-
-        var anexosTable = expedienteTablas.get(1);
-        var anexos = leerDocumentos(anexosTable);
-        builder.addAllAnexo(anexos);
+        var docsAnexos = documentos(tablasDocumento.get(1));
+        expedienteBuilder.addAllAnexo(docsAnexos);
       }
-
-      if (expedienteTablas.size() == 1) { //cuando solo contiene docs de proyecto
-        var proyectoLeyTable = expedienteTablas.get(0);
-        var docsProyecto = leerDocumentos(proyectoLeyTable);
-        builder.addAllProyecto(docsProyecto);
+      //  cuando solo contiene docs de proyecto
+      if (tablasDocumento.size() == 1) {
+        var docsProyecto = documentos(tablasDocumento.get(0));
+        expedienteBuilder.addAllProyecto(docsProyecto);
       }
       //extrayendo opiniones
       var expedienteOpiniones = contenido.get(1).select("table[width=100]");
-      final var enlacesBuilder = expediente.getEnlacesBuilder();
+      final var enlacesBuilder = builder.getEnlacesBuilder();
       if (expedienteOpiniones.size() == 2) {
-        var presentarOpinionUrl = leerEnlacePresentarOpinion(doc, expedienteOpiniones.get(0));
+        var presentarOpinionUrl = enlacePresentarOpinion(doc, expedienteOpiniones.get(0));
         enlacesBuilder.setPublicarOpinion(StringValue.of(presentarOpinionUrl));
-        var opinionesUrl = leerEnlaceOpinionesPresentadas(doc);
+        var opinionesUrl = enlaceOpinionesPresentadas(doc);
         enlacesBuilder.setOpinionesPublicadas(opinionesUrl);
       }
       if (expedienteOpiniones.size() == 1) {
-        var opinionesUrl = leerEnlaceOpinionesPresentadas(doc);
+        var opinionesUrl = enlaceOpinionesPresentadas(doc);
         enlacesBuilder.setOpinionesPublicadas(opinionesUrl);
       }
 
-      return expediente.setEnlaces(enlacesBuilder).setExpediente(builder).build();
+      return builder.setEnlaces(enlacesBuilder).setExpediente(expedienteBuilder).build();
     } catch (Throwable e) {
       LOG.error("Error procesando expediente {}", url, e);
-      throw new IllegalStateException("Error procesando expediente", e);
+      throw new IllegalStateException(e);
     }
   }
 
-  private String leerEnlaceOpinionesPresentadas(Document doc) {
+  private String enlaceOpinionesPresentadas(Document doc) {
     var scripts = doc.head().getElementsByTag("script");
     var html = scripts.get(0).html();
     var enlace = Arrays.stream(html.split("\\r"))
         .filter(s -> s.strip().startsWith("window.open"))
         .findFirst()
-        .map(l -> l.substring(l.indexOf("(") + 1, l.lastIndexOf(")")))
-        .map(l -> l.split(",")[0])
-        .map(urlPrefix -> {
-          var urlPattern = urlPrefix
-              .substring(urlPrefix.indexOf("\"") + 1, urlPrefix.lastIndexOf("\""));
+        .map(s -> s.substring(s.indexOf("(") + 1, s.lastIndexOf(")")))
+        .map(s -> s.split(",")[0])
+        .map(link -> {
+          var urlPattern = link.substring(
+              link.indexOf("\"") + 1,
+              link.lastIndexOf("\"")
+          );
           var idElement = doc.select("input[name=IdO]");
-          var variable = idElement.first().attr("value");
-          return urlPattern.replace("\" + num + \"", variable);
+          var value = idElement.first().attr("value");
+          return urlPattern.replace("\" + num + \"", value);
         });
     if (enlace.isEmpty()) {
       LOG.warn("Enlace de opiniones presentadas no ha sido encontrado {}", html);
@@ -212,24 +213,27 @@ public class ImportadorExpediente {
     }
   }
 
-  private String leerEnlacePresentarOpinion(Document doc, Element opinionTable) {
+  private String enlacePresentarOpinion(Document doc, Element opinionTable) {
     var onclick = opinionTable.getElementsByTag("a").attr("onclick");
-    var variableRuta = onclick.indexOf("ruta3 =") + 7;
-    var urlPrefix = onclick.substring(variableRuta, onclick.indexOf(";", variableRuta));
-    var urlPattern = urlPrefix
-        .substring(urlPrefix.indexOf("\"") + 1, urlPrefix.lastIndexOf("\""));
+    var ruta = onclick.indexOf("ruta3 =") + 7;
+    var link = onclick.substring(ruta, onclick.indexOf(";", ruta));
+    var urlPattern = link.substring(
+        link.indexOf("\"") + 1,
+        link.lastIndexOf("\"")
+    );
     var idElement = doc.select("input[name=IdO]");
-    var variable = idElement.first().attr("value");
-    return urlPattern.replace("\"+ids+\"", variable);
+    var value = idElement.first().attr("value");
+    return urlPattern.replace("\"+ids+\"", value);
   }
 
-  private List<Proyecto.ProyectoLey.Expediente.Documento> leerDocumentos(Element table) {
+  private List<Proyecto.ProyectoLey.Expediente.Documento> documentos(Element table) {
     try {
       var rows = table.getElementsByTag("tr");
       var th = rows.first().getElementsByTag("th");
       var td = rows.first().getElementsByTag("td");
       var headers = rows.first().getElementsByTag("b");
-      if (th.size() == 3 || headers.size() == 5 || td.size() == 3) { //extraer documentos de ley
+      //extraer documentos de ley
+      if (th.size() == 3 || headers.size() == 5 || td.size() == 3) {
         var docs = new ArrayList<Documento>();
         for (int i = 1; i < rows.size(); i++) {
           var row = rows.get(i);
@@ -243,7 +247,7 @@ public class ImportadorExpediente {
                 .setTitulo(nombreDocumento)
                 .setProyecto(StringValue.of(numeroProyecto))
                 .setUrl(referenciaDocumento);
-            var fecha = leerFecha(values.get(1));
+            var fecha = fecha(values.get(1));
             if (fecha != null) {
               builder.setFecha(Int64Value.of(fecha));
             }
@@ -273,7 +277,7 @@ public class ImportadorExpediente {
           var builder = Documento.newBuilder()
               .setTitulo(nombreDocumento)
               .setUrl(referenciaDocumento);
-          var fecha = leerFecha(values.get(0));
+          var fecha = fecha(values.get(0));
           if (fecha != null) {
             builder.setFecha(Int64Value.of(fecha));
           }
@@ -296,7 +300,7 @@ public class ImportadorExpediente {
           var builder = Documento.newBuilder()
               .setTitulo(nombreDocumento)
               .setUrl(referenciaDocumento);
-          var fecha = leerFecha(values.get(0));
+          var fecha = fecha(values.get(0));
           if (fecha != null) {
             builder.setFecha(Int64Value.of(fecha));
           }
@@ -315,7 +319,7 @@ public class ImportadorExpediente {
     }
   }
 
-  private Long leerFecha(Element td) {
+  private Long fecha(Element td) {
     if (td.text().isBlank()) {
       LOG.error("Fecha vacia! {}", td.html());
       return null;
