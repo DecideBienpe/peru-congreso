@@ -2,6 +2,8 @@
 
 <https://jeqo.github.io/peru-congreso>
 
+twitter: <https://twitter.com/otrocongresope>
+
 Este proyecto es un intento de brindar un mejor acceso a la información al que actualmente ofrece el sitio web del Congreso peruano.
 
 El actual sitio web del Congreso ofrece información fragmentada, y de difícil acceso.

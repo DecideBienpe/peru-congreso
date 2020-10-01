@@ -50,7 +50,7 @@ Una vez que los datos son expuestos en tópicos de Apache Kafka distintos proces
 
 - [Exportación a CSV](src/main/java/congreso/leyes/exportador/ExportadorCsv.java)
 - [Exportación del Sitio Web](src/main/java/congreso/leyes/exportador/ExportadorHugo.java)
-- [Exportación a Twitter](src/main/java/congreso/leyes/exportador/ExportadorTwitter.java) (a la espera de token de una nueva cuenta para testear y publicar cambios)
+- [Exportación a Twitter](src/main/java/congreso/leyes/exportador/ExportadorTwitter.java)
 
 ## Ejecución
 
