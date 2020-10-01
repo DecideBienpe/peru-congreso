@@ -41,16 +41,16 @@ kafka-describe-offsets:
 	${KAFKA_HOME}/bin/kafka-consumer-groups.sh --bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS} \
 		--describe --group ${KAFKA_CONSUMER_GROUP}
 
-kafka-reset-offset-seguimiento:
+kafka-offsets-reset-seguimiento:
 	make KAFKA_CONSUMER_GROUP=congreso.leyes.seguimiento-v1 kafka-reset-offset-to-earliest
 
-kafka-describe-offsets-seguimiento:
+kafka-offsets-describe-seguimiento:
 	make KAFKA_CONSUMER_GROUP=congreso.leyes.seguimiento-v1 kafka-describe-offsets
 
-kafka-reset-offset-expediente:
+kafka-offsets-reset-expediente:
 	make KAFKA_CONSUMER_GROUP=congreso.leyes.expediente-v1 kafka-reset-offset-to-earliest
 
-kafka-describe-offsets-expediente:
+kafka-offsets-describe-expediente:
 	make KAFKA_CONSUMER_GROUP=congreso.leyes.expediente-v1 kafka-describe-offsets
 
 importacion-proyecto:
