@@ -6,22 +6,22 @@
     <description>Recent content in Estados on Congreso Perú</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>es-pe</language>
-    <lastBuildDate>Wed, 30 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/estados/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 01 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/estados/index.xml" rel="self" type="application/rss+xml" />
     <item>
-      <title>Presentado</title>
-      <link>https://jeqo.github.io/peru-congreso/estados/presentado/</link>
-      <pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate>
+      <title>En comisión</title>
+      <link>https://jeqo.github.io/peru-congreso/estados/en-comisi%C3%B3n/</link>
+      <pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jeqo.github.io/peru-congreso/estados/presentado/</guid>
+      <guid>https://jeqo.github.io/peru-congreso/estados/en-comisi%C3%B3n/</guid>
       <description></description>
     </item>
     
     <item>
-      <title>En comisión</title>
-      <link>https://jeqo.github.io/peru-congreso/estados/en-comisi%C3%B3n/</link>
-      <pubDate>Tue, 29 Sep 2020 00:00:00 +0000</pubDate>
+      <title>Presentado</title>
+      <link>https://jeqo.github.io/peru-congreso/estados/presentado/</link>
+      <pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jeqo.github.io/peru-congreso/estados/en-comisi%C3%B3n/</guid>
+      <guid>https://jeqo.github.io/peru-congreso/estados/presentado/</guid>
       <description></description>
     </item>
     
@@ -40,6 +40,15 @@
       <pubDate>Fri, 21 Aug 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/estados/publicado-el-peruano/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Insistencia</title>
+      <link>https://jeqo.github.io/peru-congreso/estados/insistencia/</link>
+      <pubDate>Wed, 12 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/estados/insistencia/</guid>
       <description></description>
     </item>
     
@@ -85,15 +94,6 @@
       <pubDate>Fri, 19 Jun 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/estados/aprobado-en-primera-votaci%C3%B3n/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Insistencia</title>
-      <link>https://jeqo.github.io/peru-congreso/estados/insistencia/</link>
-      <pubDate>Mon, 18 May 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/estados/insistencia/</guid>
       <description></description>
     </item>
     

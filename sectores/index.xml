@@ -6,29 +6,38 @@
     <description>Recent content in Sectores on Congreso Perú</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>es-pe</language>
-    <lastBuildDate>Tue, 29 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/sectores/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Educación, Juventud y Deporte</title>
-      <link>https://jeqo.github.io/peru-congreso/sectores/educaci%C3%B3n-juventud-y-deporte/</link>
-      <pubDate>Tue, 29 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/sectores/educaci%C3%B3n-juventud-y-deporte/</guid>
-      <description></description>
-    </item>
-    
+    <lastBuildDate>Thu, 01 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/sectores/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Salud y Población</title>
       <link>https://jeqo.github.io/peru-congreso/sectores/salud-y-poblaci%C3%B3n/</link>
-      <pubDate>Tue, 29 Sep 2020 00:00:00 +0000</pubDate>
+      <pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/sectores/salud-y-poblaci%C3%B3n/</guid>
       <description></description>
     </item>
     
     <item>
+      <title>Economía, Banca, Finanzas e Inteligencia Financiera</title>
+      <link>https://jeqo.github.io/peru-congreso/sectores/econom%C3%ADa-banca-finanzas-e-inteligencia-financiera/</link>
+      <pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/sectores/econom%C3%ADa-banca-finanzas-e-inteligencia-financiera/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Presupuesto y Cuenta General de la República</title>
+      <link>https://jeqo.github.io/peru-congreso/sectores/presupuesto-y-cuenta-general-de-la-rep%C3%BAblica/</link>
+      <pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/sectores/presupuesto-y-cuenta-general-de-la-rep%C3%BAblica/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Trabajo y Seguridad Social</title>
       <link>https://jeqo.github.io/peru-congreso/sectores/trabajo-y-seguridad-social/</link>
-      <pubDate>Tue, 29 Sep 2020 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/sectores/trabajo-y-seguridad-social/</guid>
       <description></description>
@@ -37,9 +46,18 @@
     <item>
       <title>Transportes y Comunicaciones</title>
       <link>https://jeqo.github.io/peru-congreso/sectores/transportes-y-comunicaciones/</link>
-      <pubDate>Tue, 29 Sep 2020 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/sectores/transportes-y-comunicaciones/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Educación, Juventud y Deporte</title>
+      <link>https://jeqo.github.io/peru-congreso/sectores/educaci%C3%B3n-juventud-y-deporte/</link>
+      <pubDate>Tue, 29 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/sectores/educaci%C3%B3n-juventud-y-deporte/</guid>
       <description></description>
     </item>
     
@@ -62,15 +80,6 @@
     </item>
     
     <item>
-      <title>Presupuesto y Cuenta General de la República</title>
-      <link>https://jeqo.github.io/peru-congreso/sectores/presupuesto-y-cuenta-general-de-la-rep%C3%BAblica/</link>
-      <pubDate>Mon, 28 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/sectores/presupuesto-y-cuenta-general-de-la-rep%C3%BAblica/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Cultura y Patrimonio Cultural</title>
       <link>https://jeqo.github.io/peru-congreso/sectores/cultura-y-patrimonio-cultural/</link>
       <pubDate>Fri, 25 Sep 2020 00:00:00 +0000</pubDate>
@@ -85,15 +94,6 @@
       <pubDate>Fri, 25 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/sectores/descentralizaci%C3%B3n-regionalizaci%C3%B3n-gobiernos-locales-y-modernizaci%C3%B3n-de-la-gesti%C3%B3n-del-estado/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Economía, Banca, Finanzas e Inteligencia Financiera</title>
-      <link>https://jeqo.github.io/peru-congreso/sectores/econom%C3%ADa-banca-finanzas-e-inteligencia-financiera/</link>
-      <pubDate>Thu, 24 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/sectores/econom%C3%ADa-banca-finanzas-e-inteligencia-financiera/</guid>
       <description></description>
     </item>
     
