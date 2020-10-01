@@ -6,11 +6,11 @@
     <description>Recent content in Estados on Congreso Perú</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>es-pe</language>
-    <lastBuildDate>Tue, 29 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/estados/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 30 Sep 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/estados/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Presentado</title>
       <link>https://jeqo.github.io/peru-congreso/estados/presentado/</link>
-      <pubDate>Tue, 29 Sep 2020 00:00:00 +0000</pubDate>
+      <pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/estados/presentado/</guid>
       <description></description>
@@ -19,7 +19,7 @@
     <item>
       <title>En comisión</title>
       <link>https://jeqo.github.io/peru-congreso/estados/en-comisi%C3%B3n/</link>
-      <pubDate>Fri, 18 Sep 2020 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 29 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/estados/en-comisi%C3%B3n/</guid>
       <description></description>
@@ -76,15 +76,6 @@
       <pubDate>Thu, 09 Jul 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/estados/observado/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Dispensado 2da. votación</title>
-      <link>https://jeqo.github.io/peru-congreso/estados/dispensado-2da.-votaci%C3%B3n/</link>
-      <pubDate>Wed, 24 Jun 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/estados/dispensado-2da.-votaci%C3%B3n/</guid>
       <description></description>
     </item>
     
@@ -148,6 +139,15 @@
       <pubDate>Thu, 11 Jul 2019 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/estados/dispensado-de-tr%C3%A1mite-de-comisi%C3%B3n/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Dispensado 2da. votación</title>
+      <link>https://jeqo.github.io/peru-congreso/estados/dispensado-2da.-votaci%C3%B3n/</link>
+      <pubDate>Fri, 14 Jun 2019 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/estados/dispensado-2da.-votaci%C3%B3n/</guid>
       <description></description>
     </item>
     
