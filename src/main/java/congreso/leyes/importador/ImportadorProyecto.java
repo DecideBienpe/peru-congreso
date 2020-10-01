@@ -1,6 +1,8 @@
 package congreso.leyes.importador;
 
 import static java.lang.Thread.sleep;
+import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG;
+import static org.apache.kafka.streams.StreamsConfig.*;
 
 import com.google.protobuf.Int64Value;
 import com.typesafe.config.ConfigFactory;
@@ -20,13 +22,11 @@ import java.util.Map.Entry;
 import java.util.Optional;
 import java.util.Properties;
 import java.util.stream.Collectors;
-import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.streams.KafkaStreams;
 import org.apache.kafka.streams.StoreQueryParameters;
 import org.apache.kafka.streams.StreamsBuilder;
-import org.apache.kafka.streams.StreamsConfig;
 import org.apache.kafka.streams.Topology.AutoOffsetReset;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.Materialized;
@@ -56,20 +56,22 @@ public class ImportadorProyecto {
     LOG.info("Cargando proyectos importados");
 
     var builder = new StreamsBuilder();
-    builder.globalTable(topic,
+    builder.globalTable(
+        topic,
         Consumed.with(new ProyectoIdSerde(), new ProyectoLeySerde())
             .withOffsetResetPolicy(AutoOffsetReset.EARLIEST),
         Materialized.as(Stores.persistentKeyValueStore("proyectos")));
 
     var streamsConfig = new Properties();
-    streamsConfig.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServers);
-    streamsConfig.put(StreamsConfig.APPLICATION_ID_CONFIG,
-        config.getString("kafka.consumer-groups.importador-proyecto"));
+    streamsConfig.put(BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServers);
+    final var groupId = config.getString("kafka.consumer-groups.importador-proyecto");
+    streamsConfig.put(APPLICATION_ID_CONFIG, groupId);
     var streamsOverrides = config.getConfig("kafka.streams").entrySet().stream()
         .collect(Collectors.toMap(Entry::getKey, entry -> entry.getValue().unwrapped()));
     streamsConfig.putAll(streamsOverrides);
 
     var kafkaStreams = new KafkaStreams(builder.build(), streamsConfig);
+
     kafkaStreams.start();
 
     while (!kafkaStreams.state().isRunningOrRebalancing()) {
@@ -77,50 +79,49 @@ public class ImportadorProyecto {
       sleep(Duration.ofSeconds(1).toMillis());
     }
 
-    var proyectoRepositorio = kafkaStreams.store(
+    var repositorio = kafkaStreams.store(
         StoreQueryParameters.fromNameAndType("proyectos", QueryableStoreTypes.keyValueStore()));
-
-    LOG.info("Proyectos cargados {}", proyectoRepositorio.approximateNumEntries());
 
     var baseUrl = config.getString("importador.base-url");
     var proyectosUrl = config.getString("importador.proyectos-url");
 
     var importador = new ImportadorProyecto(baseUrl);
 
-    LOG.info("Iniciando importacion de proyectos");
+    LOG.info("Iniciando importación de proyectos");
 
     var proyectos = importador.importarProyectos(proyectosUrl);
 
     LOG.info("Proyectos importados {}", proyectos.size());
 
     var producerConfig = new Properties();
-    producerConfig.put(CommonClientConfigs.BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServers);
+    producerConfig.put(BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServers);
     var overrides = config.getConfig("kafka.producer").entrySet().stream()
         .collect(Collectors.toMap(Entry::getKey, entry -> entry.getValue().unwrapped()));
     producerConfig.putAll(overrides);
 
     var keySerializer = new ProyectoIdSerde().serializer();
     var valueSerializer = new ProyectoLeySerde().serializer();
+
     var producer = new KafkaProducer<>(producerConfig, keySerializer, valueSerializer);
 
     LOG.info("Guardando proyectos");
 
-    int changes = 0;
+    int cambios = 0;
     for (var proyecto : proyectos) {
-      var importado = (ProyectoLey) proyectoRepositorio.get(proyecto.getId());
+      var importado = (ProyectoLey) repositorio.get(proyecto.getId());
       if (!proyecto.equals(importado)) {
-        changes ++;
+        cambios++;
         var record = new ProducerRecord<>(topic, proyecto.getId(), proyecto);
         producer.send(record, (recordMetadata, e) -> {
           if (e != null) {
-            LOG.error("Error enviando proyecto", e);
-            throw new IllegalStateException("Error enviando proyecto", e);
+            LOG.error("Error enviando proyecto {}", proyecto, e);
+            throw new IllegalStateException(e);
           }
         });
       }
     }
 
-    LOG.info("Proyectos guardados {}", changes);
+    LOG.info("Proyectos guardados {}", cambios);
 
     producer.close();
     kafkaStreams.close();
@@ -152,15 +153,14 @@ public class ImportadorProyecto {
       throw new IllegalStateException("Unexpected number of tables");
     }
     var proyectos = new ArrayList<ProyectoLey>();
-    var tablaProyectos = tablas.get(1);
-    var filas = tablaProyectos.getElementsByTag("tr");
+    var filas = tablas.get(1).getElementsByTag("tr");
     for (int i = 1; i < filas.size(); i++) {
-      proyectos.add(leerProyecto(filas.get(i)));
+      proyectos.add(proyecto(filas.get(i)));
     }
     return proyectos;
   }
 
-  private ProyectoLey leerProyecto(Element row) {
+  private ProyectoLey proyecto(Element row) {
     var campos = row.getElementsByTag("td");
     if (campos.size() != 5) {
       LOG.error("Numero inesperado de campos: {}, fila: {}", campos.size(), row.html());
@@ -169,8 +169,8 @@ public class ImportadorProyecto {
     var numero = campos.get(0).text();
     var fechaActualizacion = campos.get(1).text().isBlank() ?
         Optional.<Long>empty() :
-        Optional.of(leerFecha(campos.get(1)));
-    var fechaPresentacion = leerFecha(campos.get(2));
+        Optional.of(fecha(campos.get(1).text().trim()));
+    var fechaPresentacion = fecha(campos.get(2).text().trim());
     var estado = campos.get(3).text();
     var enlaceSeguimiento = baseUrl + campos.get(0).getElementsByTag("a").attr("href");
     var builder = ProyectoLey.newBuilder()
@@ -186,8 +186,8 @@ public class ImportadorProyecto {
     return builder.build();
   }
 
-  private Long leerFecha(Element td) {
-    return LocalDate.parse(td.text(), DateTimeFormatter.ofPattern("MM/dd/yyyy"))
+  private Long fecha(String texto) {
+    return LocalDate.parse(texto, DateTimeFormatter.ofPattern("MM/dd/yyyy"))
         .atStartOfDay()
         .toInstant(ZoneOffset.ofHours(-5))
         .toEpochMilli();

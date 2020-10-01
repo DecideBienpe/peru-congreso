@@ -1,8 +1,9 @@
 baseURL = "https://jeqo.github.io/peru-congreso"
-languageCode = "es"
-DefaultContentLanguage = "es"
 title = "Congreso Perú"
 theme = "book"
+
+languageCode = "es-pe"
+DefaultContentLanguage = "es"
 
 googleAnalytics = "UA-49047812-5"
 
