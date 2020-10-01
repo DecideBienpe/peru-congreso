@@ -69,6 +69,10 @@ exportacion-hugo:
 exportacion-csv:
 	mvn compile exec:java -Dexec.mainClass="congreso.leyes.exportador.ExportadorCsv"
 
+include .env
+exportacion-twitter:
+	mvn compile exec:java -Dexec.mainClass="congreso.leyes.exportador.ExportadorTwitter"
+
 web-run:
 	hugo serve
 

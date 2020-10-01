@@ -2,3 +2,4 @@ volumes/
 target/
 public/
 resources/
+.env

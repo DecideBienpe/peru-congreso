@@ -1,6 +1,5 @@
 package congreso.leyes.internal;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import congreso.leyes.Proyecto.ProyectoLey;
 import java.io.IOException;
 import org.apache.kafka.common.serialization.Deserializer;

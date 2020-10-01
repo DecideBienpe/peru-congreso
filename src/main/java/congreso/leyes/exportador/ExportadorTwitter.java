@@ -41,6 +41,8 @@ public class ExportadorTwitter {
   public static void main(String[] args) {
     var config = ConfigFactory.load();
 
+    var exportador = new ExportadorTwitter();
+
     var kafkaBootstrapServers = config.getString("kafka.bootstrap-servers");
     var inputTopic = config.getString("kafka.topics.expediente-importado");
     var outputTopic = config.getString("kafka.topics.exportador-twitter");
@@ -49,7 +51,7 @@ public class ExportadorTwitter {
     streamsBuilder.addStateStore(Stores.keyValueStoreBuilder(
         Stores.persistentKeyValueStore("tuits"),
         new ProyectoIdSerde(),
-        new ProyectoLeySerde()
+        new ProyectoTuitsSerde()
     ));
 
     streamsBuilder
@@ -66,12 +68,13 @@ public class ExportadorTwitter {
           public Tuits transform(ProyectoLey proyectoLey) {
             var found = store.get(proyectoLey.getId());
             if (found == null) {
-              var idPrincipal = tuitPrincipal(proyectoLey);
+              var idPrincipal = exportador.tuitPrincipal(proyectoLey);
               var tuits = Tuits.newBuilder()
                   .setPrincipal(Tuit.newBuilder().setId(idPrincipal).build());
               store.put(proyectoLey.getId(), tuits.build());
               for (var seguimiento : proyectoLey.getSeguimientoList()) {
-                var idSeguimiento = tuitSeguimiento(proyectoLey, seguimiento, idPrincipal);
+                var idSeguimiento = exportador
+                    .tuitSeguimiento(proyectoLey, seguimiento, idPrincipal);
                 tuits.addSeguimientos(Tuit.newBuilder().setId(idSeguimiento).build());
                 store.put(proyectoLey.getId(), tuits.build());
               }
@@ -84,7 +87,7 @@ public class ExportadorTwitter {
                 for (int i = found.getSeguimientosCount();
                     i < proyectoLey.getSeguimientoCount(); i++) {
                   var seguimiento = proyectoLey.getSeguimiento(i);
-                  var urlSeguimiento = tuitSeguimiento(proyectoLey, seguimiento,
+                  var urlSeguimiento = exportador.tuitSeguimiento(proyectoLey, seguimiento,
                       found.getPrincipal().getId());
                   tuits.addSeguimientos(Tuit.newBuilder().setId(urlSeguimiento).build());
                   store.put(proyectoLey.getId(), tuits.build());
@@ -117,18 +120,15 @@ public class ExportadorTwitter {
     kafkaStreams.start();
   }
 
-  private static long tuitSeguimiento(
-      ProyectoLey proyectoLey,
-      Seguimiento seguimiento,
-      long idPrincipal) {
+  long tuitSeguimiento(ProyectoLey proyectoLey, Seguimiento seguimiento, long idPrincipal) {
     try {
       var factory = TwitterFactory.getSingleton();
       var statusUpdate = new StatusUpdate(
           String.format("""
-              %s: %s
-              
-              %s
-              """,
+                  %s: %s
+                                
+                  %s
+                  """,
               fecha(seguimiento.getFecha()),
               seguimiento.getTexto(),
               urlHugo(proyectoLey)));
@@ -141,18 +141,18 @@ public class ExportadorTwitter {
     }
   }
 
-  private static long tuitPrincipal(ProyectoLey proyectoLey) {
+  long tuitPrincipal(ProyectoLey proyectoLey) {
     try {
       var factory = TwitterFactory.getSingleton();
       var status = factory.updateStatus(new StatusUpdate(
           String.format("""
-                  Proyecto %s: "%s"
+                  %s: "%s"
                   publicado el %s
-                  
+                                    
                   %s
                   """,
               proyectoLey.getDetalle().getNumeroUnico(),
-              titulo(proyectoLey.getDetalle().getPeriodoTexto()),
+              titulo(proyectoLey.getDetalle().getTitulo()),
               fecha(proyectoLey.getFechaPublicacion()),
               urlHugo(proyectoLey))
       ));
@@ -164,7 +164,7 @@ public class ExportadorTwitter {
   }
 
   private static String titulo(String texto) {
-    return texto.length() > 180 ? texto.substring(0, 180) : texto + "...";
+    return texto.length() > 150 ? texto.substring(0, 150) + "..." : texto;
   }
 
   private static Object urlHugo(ProyectoLey proyectoLey) {
