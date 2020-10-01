@@ -16,6 +16,9 @@ La apertura de datos puede habilitar una fiscalización más fácil del lado de 
 El proyecto actualmente importa y expone datos sobre:
 
 - Proyectos de Ley
+- Directorio de Congresistas
+
+*La frecuencia de actualización es de una actualización al día.*
 
 Importante:
 
@@ -35,6 +38,11 @@ Idealmente, el sitio web del Congreso debería ser un repositorio abierto, y los
 
 - Sitio web: <https://jeqo.github.io/peru-congreso/proyectos-ley/2016-2021.csv>
 - Git: <https://github.com/jeqo/peru-congreso/blob/trunk/static/proyectos-ley/2016-2021.csv>
+
+### Directorio de Congresistas
+
+- Sitio web: <https://jeqo.github.io/peru-congreso/congresistas/2016-2021>
+- Git: <https://github.com/jeqo/peru-congreso/blob/trunk/content/congresistas/2016-2021.md>
 
 ## Detalle del código fuente
 
