@@ -45,17 +45,20 @@ public class ImportadorSeguimiento {
   static final Pattern datePattern = Pattern.compile("\\d{2}/\\d{2}/\\d{4}");
 
   final String baseUrl;
+  final String expedienteUrl;
 
-  public ImportadorSeguimiento(String baseUrl) {
+  public ImportadorSeguimiento(String baseUrl, String expedienteUrl) {
     this.baseUrl = baseUrl;
+    this.expedienteUrl = expedienteUrl;
   }
 
   public static void main(String[] args) {
     var config = ConfigFactory.load();
 
     var baseUrl = config.getString("importador.base-url");
+    var expedienteUrl = config.getString("importador.expedientes-url");
 
-    var importador = new ImportadorSeguimiento(baseUrl);
+    var importador = new ImportadorSeguimiento(baseUrl, expedienteUrl);
 
     var kafkaBootstrapServers = config.getString("kafka.bootstrap-servers");
     var inputTopic = config.getString("kafka.topics.proyecto-importado");
@@ -130,22 +133,14 @@ public class ImportadorSeguimiento {
         LOG.error("Numero inesperado de scripts {}, url={}", scripts.size(), url);
         throw new IllegalStateException("Unexpected number of tables");
       }
-      var enlace = Arrays.stream(scripts.get(1).html().split("\\n"))
-          .filter(s -> s.strip().startsWith("var url="))
-          .map(s -> s.substring(s.indexOf("\"") + 1, s.lastIndexOf("\"")))
-          .findFirst();
       var tablas = doc.body().getElementsByTag("table");
       if (tablas.size() != 2) {
         LOG.error("Unexpected number of tables url={}", url);
         throw new IllegalStateException("Unexpected number of tables");
       }
-      var a = tablas.get(0).getElementsByTag("a").first();
-      if (a != null) {
-        var onclick = a.attr("onclick");
-        var param = onclick.substring(onclick.indexOf("'") + 1, onclick.lastIndexOf("'"));
-        enlace.ifPresent(s -> builder.getEnlacesBuilder()
-            .setExpediente(StringValue.of(baseUrl + s + param)));
-      }
+
+      builder.getEnlacesBuilder().setExpediente(
+          String.format(baseUrl + expedienteUrl, proyecto.getId().getNumeroPeriodo()));
 
       var detalle = Detalle.newBuilder();
       var ley = Ley.newBuilder();

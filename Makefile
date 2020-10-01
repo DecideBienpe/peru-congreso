@@ -56,10 +56,10 @@ kafka-offsets-describe-expediente:
 importacion-proyecto:
 	mvn compile exec:java -Dexec.mainClass="congreso.leyes.importador.ImportadorProyecto"
 
-importacion-seguimiento: kafka-reset-offset-seguimiento
+importacion-seguimiento: kafka-offsets-reset-seguimiento
 	mvn compile exec:java -Dexec.mainClass="congreso.leyes.importador.ImportadorSeguimiento"
 
-importacion-expediente: kafka-reset-offset-expediente
+importacion-expediente: kafka-offsets-reset-expediente
 	mvn compile exec:java -Dexec.mainClass="congreso.leyes.importador.ImportadorExpediente"
 
 

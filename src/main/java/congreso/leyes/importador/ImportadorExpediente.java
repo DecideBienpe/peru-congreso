@@ -29,6 +29,7 @@ import org.apache.kafka.streams.kstream.ValueTransformer;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.state.KeyValueStore;
 import org.apache.kafka.streams.state.Stores;
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -102,21 +103,14 @@ public class ImportadorExpediente {
   }
 
   ProyectoLey importarExpediente(ProyectoLey proyectoLey) {
-    if (!proyectoLey.getEnlaces().hasExpediente()) {
-      LOG.warn("Seguimiento {}-{} no tiene enlace para expediente",
-          proyectoLey.getDetalle().getNumeroUnico(),
-          proyectoLey.getDetalle().getTitulo());
-      return null;
-    }
-
-    var url = proyectoLey.getEnlaces().getExpediente().getValue();
+    var urlExp = proyectoLey.getEnlaces().getExpediente();
     try {
       var builder = proyectoLey.toBuilder();
 
-      var doc = Jsoup.connect(url).get();
+      var doc = Jsoup.connect(urlExp).get();
       var tablas = doc.body().select("table[width=500]");
       if (tablas.size() != 1) {
-        LOG.error("Numero inesperado de tablas {}, url={}", tablas.size(), url);
+        LOG.error("Numero inesperado de tablas {}, url={}", tablas.size(), urlExp);
         return null;
       }
       //Ubicar contenido
@@ -182,8 +176,16 @@ public class ImportadorExpediente {
       }
 
       return builder.setEnlaces(enlacesBuilder).setExpediente(expedienteBuilder).build();
+    } catch (HttpStatusException e) {
+      if (e.getStatusCode() == 404) {
+        LOG.warn("Error procesando expediente {}, no encontrado", urlExp);
+        return null;
+      } else {
+        LOG.error("Error procesando expediente {}", urlExp, e);
+        throw new IllegalStateException(e);
+      }
     } catch (Throwable e) {
-      LOG.error("Error procesando expediente {}", url, e);
+      LOG.error("Error procesando expediente {}", urlExp, e);
       throw new IllegalStateException(e);
     }
   }

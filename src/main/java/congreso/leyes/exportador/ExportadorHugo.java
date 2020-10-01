@@ -46,6 +46,8 @@ public class ExportadorHugo {
 
     var config = ConfigFactory.load();
 
+    var exportador = new ExportadorHugo();
+
     var kafkaBootstrapServers = config.getString("kafka.bootstrap-servers");
     var topicExpedientes = config.getString("kafka.topics.expediente-importado");
 
@@ -89,7 +91,7 @@ public class ExportadorHugo {
         var ruta = Paths.get(rutaTexto);
         Files.deleteIfExists(ruta);
         Files.createFile(ruta);
-        var pagina = crearPagina(proyectoLey);
+        var pagina = exportador.crearPagina(proyectoLey);
         Files.writeString(ruta, pagina);
         //actualizar lista de congresistas
         var congresistasPeriodo = congresistas.get(periodo);
@@ -107,7 +109,7 @@ public class ExportadorHugo {
           var ruta = Paths.get(rutaTexto);
           Files.deleteIfExists(ruta);
           Files.createFile(ruta);
-          var pagina = paginaCongresistas(periodo, congresistasPeriodo);
+          var pagina = exportador.paginaCongresistas(periodo, congresistasPeriodo);
           Files.writeString(ruta, pagina);
         } catch (IOException e) {
           LOG.error("Error procesando proyectos", e);
@@ -120,7 +122,7 @@ public class ExportadorHugo {
     kafkaStreams.close();
   }
 
-  private static String paginaCongresistas(String periodo, Set<Congresista> congresistasPeriodo) {
+  String paginaCongresistas(String periodo, Set<Congresista> congresistasPeriodo) {
     var list = new ArrayList<>(congresistasPeriodo);
     list.sort(Comparator.comparing(Congresista::getNombreCompleto));
     var listaCongresistas = list.stream()
@@ -137,7 +139,7 @@ public class ExportadorHugo {
   }
 
 
-  static String crearPagina(ProyectoLey proyectoLey) {
+  String crearPagina(ProyectoLey proyectoLey) {
     var header =
         String.format("""
                 ---
@@ -170,9 +172,11 @@ public class ExportadorHugo {
             proyectoLey.getDetalle().getProponente(),
             proyectoLey.getDetalle().getGrupoParlamentario().getValue(),
             proyectoLey.getDetalle().getAutorList().stream()
+                .sorted()
                 .map(s -> "- " + s)
                 .collect(Collectors.joining("\n")),
             proyectoLey.getDetalle().getSectorList().stream()
+                .sorted()
                 .map(s -> "- " + s)
                 .collect(Collectors.joining("\n")));
 
@@ -333,18 +337,17 @@ public class ExportadorHugo {
               ## Enlaces 
                         
               - [Seguimiento](%s)
-              %s
+              - [Expediente Digital](%s)
                         
               """,
           proyectoLey.getEnlaces().getSeguimiento(),
-          proyectoLey.getEnlaces().hasExpediente() ? String.format("- [Expediente Digital](%s)",
-              proyectoLey.getEnlaces().getExpediente().getValue()) : "");
+          proyectoLey.getEnlaces().getExpediente());
       body.append(enlaces);
     }
     return header + body;
   }
 
-  private static String tablaDocumentos(String titulo, List<Documento> docs) {
+  private String tablaDocumentos(String titulo, List<Documento> docs) {
     return String.format("""
             ### Documentos %s
                         
@@ -362,12 +365,12 @@ public class ExportadorHugo {
             .collect(Collectors.joining("\n")));
   }
 
-  private static String grupo(String num) {
+  private String grupo(String num) {
     var i = (Integer.parseInt(num) / 100) * 100;
     return String.format("%05d", i);
   }
 
-  static String fecha(long fecha) {
+  private String fecha(long fecha) {
     return OffsetDateTime.ofInstant(
         Instant.ofEpochMilli(fecha),
         ZoneOffset.ofHours(-5))

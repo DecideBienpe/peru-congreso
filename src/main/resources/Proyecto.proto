@@ -25,7 +25,7 @@ message ProyectoLey {
 
   message Enlaces {
     string seguimiento = 1;
-    google.protobuf.StringValue expediente = 2;
+    string expediente = 2;
     string opiniones_publicadas = 3;
     google.protobuf.StringValue publicar_opinion = 4;
   }
