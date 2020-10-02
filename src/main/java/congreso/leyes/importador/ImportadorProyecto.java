@@ -31,6 +31,7 @@ import org.apache.kafka.streams.Topology.AutoOffsetReset;
 import org.apache.kafka.streams.kstream.Consumed;
 import org.apache.kafka.streams.kstream.Materialized;
 import org.apache.kafka.streams.state.QueryableStoreTypes;
+import org.apache.kafka.streams.state.ReadOnlyKeyValueStore;
 import org.apache.kafka.streams.state.Stores;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -42,9 +43,13 @@ public class ImportadorProyecto {
   static final Logger LOG = LoggerFactory.getLogger(ImportadorProyecto.class);
 
   final String baseUrl;
+  final KafkaProducer<Id, ProyectoLey> producer;
+  final String topic;
 
-  public ImportadorProyecto(String baseUrl) {
+  public ImportadorProyecto(String baseUrl, KafkaProducer<Id, ProyectoLey> producer, String topic) {
     this.baseUrl = baseUrl;
+    this.producer = producer;
+    this.topic = topic;
   }
 
   public static void main(String[] args) throws IOException, InterruptedException {
@@ -82,17 +87,6 @@ public class ImportadorProyecto {
     var repositorio = kafkaStreams.store(
         StoreQueryParameters.fromNameAndType("proyectos", QueryableStoreTypes.keyValueStore()));
 
-    var baseUrl = config.getString("importador.base-url");
-    var proyectosUrl = config.getString("importador.proyectos-url");
-
-    var importador = new ImportadorProyecto(baseUrl);
-
-    LOG.info("Iniciando importación de proyectos");
-
-    var proyectos = importador.importarProyectos(proyectosUrl);
-
-    LOG.info("Proyectos importados {}", proyectos.size());
-
     var producerConfig = new Properties();
     producerConfig.put(BOOTSTRAP_SERVERS_CONFIG, kafkaBootstrapServers);
     var overrides = config.getConfig("kafka.producer").entrySet().stream()
@@ -104,22 +98,28 @@ public class ImportadorProyecto {
 
     var producer = new KafkaProducer<>(producerConfig, keySerializer, valueSerializer);
 
-    LOG.info("Guardando proyectos");
+    var baseUrl = config.getString("importador.base-url");
+    var proyectosUrl = config.getString("importador.proyectos-url");
 
+    var importador = new ImportadorProyecto(baseUrl, producer, topic);
+
+    LOG.info("Iniciando importación de proyectos");
+
+    var index = 1;
+    var batchSize = 0;
     int cambios = 0;
-    for (var proyecto : proyectos) {
-      var importado = (ProyectoLey) repositorio.get(proyecto.getId());
-      if (!proyecto.equals(importado)) {
-        cambios++;
-        var record = new ProducerRecord<>(topic, proyecto.getId(), proyecto);
-        producer.send(record, (recordMetadata, e) -> {
-          if (e != null) {
-            LOG.error("Error enviando proyecto {}", proyecto, e);
-            throw new IllegalStateException(e);
-          }
-        });
+
+    do {
+      var proyectosPorPagina = importador.importarPagina(proyectosUrl, index);
+
+      for (var proyecto : proyectosPorPagina) {
+        int cambio = importador.guardarProyecto(repositorio, proyecto);
+        cambios = cambios + cambio;
       }
-    }
+
+      batchSize = proyectosPorPagina.size();
+      index = index + batchSize;
+    } while (batchSize == 100);
 
     LOG.info("Proyectos guardados {}", cambios);
 
@@ -127,21 +127,20 @@ public class ImportadorProyecto {
     kafkaStreams.close();
   }
 
-  List<ProyectoLey> importarProyectos(String proyectosUrl) throws IOException {
-    var proyectos = new ArrayList<ProyectoLey>();
-
-    var index = 1;
-    var batchSize = 0;
-
-    do {
-      var proyectosPorPagina = importarPagina(proyectosUrl, index);
-      proyectos.addAll(proyectosPorPagina);
-
-      batchSize = proyectosPorPagina.size();
-      index = index + batchSize;
-    } while (batchSize == 100);
-
-    return proyectos;
+  int guardarProyecto(ReadOnlyKeyValueStore<Object, Object> repositorio, ProyectoLey proyecto) {
+    var importado = (ProyectoLey) repositorio.get(proyecto.getId());
+    int cambio = 0;
+    if (!proyecto.equals(importado)) {
+      var record = new ProducerRecord<>(topic, proyecto.getId(), proyecto);
+      producer.send(record, (recordMetadata, e) -> {
+        if (e != null) {
+          LOG.error("Error enviando proyecto {}", proyecto, e);
+          throw new IllegalStateException(e);
+        }
+      });
+      cambio = 1;
+    }
+    return cambio;
   }
 
   List<ProyectoLey> importarPagina(String proyectosUrl, int index) throws IOException {

@@ -130,13 +130,15 @@ public class ExportadorTwitter {
                   %s
                   """,
               fecha(seguimiento.getFecha()),
-              seguimiento.getTexto(),
+              titulo(seguimiento.getTexto()),
               urlHugo(proyectoLey)));
       statusUpdate.setInReplyToStatusId(idPrincipal);
       var status = factory.updateStatus(statusUpdate);
+      LOG.info("Tweet {}:{} publicado", status.getId(), status.getText());
+      Thread.sleep(1);
       return status.getId();
-    } catch (TwitterException e) {
-      LOG.error("Error tuiteando seguimiento {}", proyectoLey, e);
+    } catch (TwitterException | InterruptedException e) {
+      LOG.error("Error tuiteando seguimiento {}", proyectoLey.getId(), e);
       throw new RuntimeException(e);
     }
   }
@@ -147,18 +149,25 @@ public class ExportadorTwitter {
       var status = factory.updateStatus(new StatusUpdate(
           String.format("""
                   %s: "%s"
-                  publicado el %s
+                  publicado el %s 
+                  por %s %s
                                     
                   %s
                   """,
               proyectoLey.getDetalle().getNumeroUnico(),
               titulo(proyectoLey.getDetalle().getTitulo()),
               fecha(proyectoLey.getFechaPublicacion()),
+              proyectoLey.getDetalle().getProponente(),
+              proyectoLey.getDetalle().hasGrupoParlamentario() ?
+                  String.format("(%s)", proyectoLey.getDetalle().getGrupoParlamentario().getValue()) :
+                  "",
               urlHugo(proyectoLey))
       ));
+      LOG.info("Tweet {}:{} publicado", status.getId(), status.getText());
+      Thread.sleep(1);
       return status.getId();
-    } catch (TwitterException e) {
-      LOG.error("Error tuiteando {}", proyectoLey, e);
+    } catch (TwitterException | InterruptedException e) {
+      LOG.error("Error tuiteando {}", proyectoLey.getId(), e);
       throw new RuntimeException(e);
     }
   }

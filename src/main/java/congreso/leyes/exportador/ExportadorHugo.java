@@ -143,7 +143,7 @@ public class ExportadorHugo {
     var header =
         String.format("""
                 ---
-                title: "%s"
+                title: "%s - %s"
                 date: %s
                 %s
                 estados:
@@ -160,6 +160,7 @@ public class ExportadorHugo {
                 %s
                 ---
                 """,
+            proyectoLey.getDetalle().getNumeroUnico(),
             proyectoLey.getDetalle().getTitulo().isBlank() ?
                 proyectoLey.getExpediente().getSubtitulo().getValue().toUpperCase() :
                 proyectoLey.getDetalle().getTitulo(),
