@@ -2,4 +2,4 @@ volumes/
 target/
 public/
 resources/
-.env
+logs/

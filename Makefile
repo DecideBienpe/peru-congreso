@@ -1,8 +1,9 @@
-all:
+all: backend-run backend-deploy web-deploy
 
 build:
 	mvn clean package
 
+JAVA_HOME := ${JAVA15_HOME}
 KAFKA_BOOTSTRAP_SERVERS := localhost:39092
 PARTITIONS := 6
 
@@ -90,8 +91,12 @@ backend-run:
 	mvn compile exec:java -Dexec.mainClass="congreso.leyes.Main"
 
 backend-deploy:
-	git branch -D cambios
-	git checkout -b cambios
+	branch_name=cambios-$(date +"%Y-%m-%d-%H-%M")
+	git checkout -b ${branch_name}
 	git add content/ static/
-	git commit -m 'cambios de hoy'
+	git commit -m 'cambios en contenido'
 	git push -f origin cambios
+	gh pr create --title "Cambios al $(date +"%Y-%m-%d %H:%M")"
+
+cron:
+	crontab cron.txt
