@@ -95,7 +95,6 @@ backend-deploy:
 	git add content/ static/
 	git commit -m 'cambios en contenido'
 	git push -f origin cambios
-	gh pr create --title "Cambios a la fecha"
 	git switch trunk
 
 cron:
