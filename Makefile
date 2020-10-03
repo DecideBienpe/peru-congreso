@@ -91,12 +91,11 @@ backend-run:
 	mvn compile exec:java -Dexec.mainClass="congreso.leyes.Main"
 
 backend-deploy:
-	branch_name=cambios-$(date +"%Y-%m-%d-%H-%M")
-	git checkout -b ${branch_name}
+	git switch -c cambios
 	git add content/ static/
 	git commit -m 'cambios en contenido'
 	git push -f origin cambios
-	gh pr create --title "Cambios al $(date +"%Y-%m-%d %H:%M")"
+	gh pr create --title "Cambios a la fecha"
 
 cron:
 	crontab cron.txt
