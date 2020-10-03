@@ -91,11 +91,12 @@ backend-run:
 	mvn compile exec:java -Dexec.mainClass="congreso.leyes.Main"
 
 backend-deploy:
-	git switch -c cambios
+	git checkout -B cambios
 	git add content/ static/
 	git commit -m 'cambios en contenido'
 	git push -f origin cambios
 	gh pr create --title "Cambios a la fecha"
+	git switch trunk
 
 cron:
 	crontab cron.txt

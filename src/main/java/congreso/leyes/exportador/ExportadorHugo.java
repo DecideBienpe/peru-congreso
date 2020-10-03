@@ -155,6 +155,8 @@ public class ExportadorHugo {
                 - %s
                 periodos:
                 - %s
+                legislaturas:
+                - %s
                 proponentes:
                 - %s
                 grupos:
@@ -175,6 +177,7 @@ public class ExportadorHugo {
                 ""),
             proyectoLey.getEstado(),
             proyectoLey.getId().getPeriodo(),
+            proyectoLey.getDetalle().getLegislatura(),
             proyectoLey.getDetalle().getProponente(),
             proyectoLey.getDetalle().getGrupoParlamentario().getValue(),
             proyectoLey.getDetalle().getAutorList().stream()

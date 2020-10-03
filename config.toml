@@ -16,6 +16,7 @@ Paginate = 25
   autor = "autores"
   sector = "sectores"
   periodo = "periodos"
+  legislatura = "legislaturas"
 
 [params]
   BookMenuBundle = "/menu"
