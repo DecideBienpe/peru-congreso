@@ -69,7 +69,6 @@ exportacion-hugo:
 exportacion-csv:
 	mvn compile exec:java -Dexec.mainClass="congreso.leyes.exportador.ExportadorCsv"
 
-include .env
 exportacion-twitter:
 	mvn compile exec:java -Dexec.mainClass="congreso.leyes.exportador.ExportadorTwitter"
 
@@ -86,3 +85,13 @@ web-deploy-prepare:
 web-deploy: web-build
 	cd public && \
 		git add -A && git commit -m "publicar" && git push -f origin gh-pages
+
+backend-run:
+	mvn compile exec:java -Dexec.mainClass="congreso.leyes.Main"
+
+backend-deploy:
+	git branch -D cambios
+	git checkout -b cambios
+	git add content/ static/
+	git commit -m 'cambios de hoy'
+	git push -f origin cambios

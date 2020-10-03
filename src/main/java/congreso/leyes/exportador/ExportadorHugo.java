@@ -2,6 +2,7 @@ package congreso.leyes.exportador;
 
 import static java.lang.Thread.sleep;
 
+import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import congreso.leyes.Proyecto.Congresista;
 import congreso.leyes.Proyecto.ProyectoLey;
@@ -40,12 +41,14 @@ import org.slf4j.LoggerFactory;
 
 public class ExportadorHugo {
 
-  static final Logger LOG = LoggerFactory.getLogger(ExportadorCsv.class);
+  static final Logger LOG = LoggerFactory.getLogger(ExportadorHugo.class);
 
   public static void main(String[] args) throws InterruptedException {
-
     var config = ConfigFactory.load();
+    run(config);
+  }
 
+  public static void run(Config config) throws InterruptedException {
     var exportador = new ExportadorHugo();
 
     var kafkaBootstrapServers = config.getString("kafka.bootstrap-servers");
@@ -118,6 +121,8 @@ public class ExportadorHugo {
     } catch (IOException e) {
       LOG.error("Error procesando proyectos", e);
     }
+
+    LOG.info("Exportacion a Hugo completado");
 
     kafkaStreams.close();
   }

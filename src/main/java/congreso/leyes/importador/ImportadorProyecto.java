@@ -5,6 +5,7 @@ import static org.apache.kafka.clients.CommonClientConfigs.BOOTSTRAP_SERVERS_CON
 import static org.apache.kafka.streams.StreamsConfig.*;
 
 import com.google.protobuf.Int64Value;
+import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import congreso.leyes.Proyecto.ProyectoLey;
 import congreso.leyes.Proyecto.ProyectoLey.Enlaces;
@@ -52,9 +53,12 @@ public class ImportadorProyecto {
     this.topic = topic;
   }
 
-  public static void main(String[] args) throws IOException, InterruptedException {
+  public static void main(String[] args) throws InterruptedException, IOException {
     var config = ConfigFactory.load();
+    run(config);
+  }
 
+  public static void run(Config config) throws InterruptedException, IOException {
     var kafkaBootstrapServers = config.getString("kafka.bootstrap-servers");
     var topic = config.getString("kafka.topics.proyecto-importado");
 

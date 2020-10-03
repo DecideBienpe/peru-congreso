@@ -2,6 +2,7 @@ package congreso.leyes.exportador;
 
 import static java.lang.Thread.sleep;
 
+import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import congreso.leyes.Proyecto.ProyectoLey;
 import congreso.leyes.internal.ProyectoIdSerde;
@@ -40,7 +41,10 @@ public class ExportadorCsv {
 
   public static void main(String[] args) throws InterruptedException {
     var config = ConfigFactory.load();
+    run(config);
+  }
 
+  public static void run(Config config) throws InterruptedException {
     var kafkaBootstrapServers = config.getString("kafka.bootstrap-servers");
     var topic = config.getString("kafka.topics.seguimiento-importado");
 
@@ -110,6 +114,8 @@ public class ExportadorCsv {
     } catch (IOException e) {
       e.printStackTrace();
     }
+
+    LOG.info("Exportacion a CSV completado");
 
     kafkaStreams.close();
   }

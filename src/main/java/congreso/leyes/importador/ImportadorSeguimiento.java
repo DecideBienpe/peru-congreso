@@ -1,6 +1,7 @@
 package congreso.leyes.importador;
 
 import com.google.protobuf.StringValue;
+import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import congreso.leyes.Proyecto;
 import congreso.leyes.Proyecto.ProyectoLey;
@@ -10,6 +11,7 @@ import congreso.leyes.Proyecto.ProyectoLey.Ley;
 import congreso.leyes.Proyecto.ProyectoLey.Seguimiento;
 import congreso.leyes.internal.ProyectoIdSerde;
 import congreso.leyes.internal.ProyectoLeySerde;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -47,6 +49,8 @@ public class ImportadorSeguimiento {
   final String baseUrl;
   final String expedienteUrl;
 
+  static KafkaStreams kafkaStreams;
+
   public ImportadorSeguimiento(String baseUrl, String expedienteUrl) {
     this.baseUrl = baseUrl;
     this.expedienteUrl = expedienteUrl;
@@ -54,7 +58,10 @@ public class ImportadorSeguimiento {
 
   public static void main(String[] args) {
     var config = ConfigFactory.load();
+    run(config);
+  }
 
+  public static void run(Config config) {
     var baseUrl = config.getString("importador.base-url");
     var expedienteUrl = config.getString("importador.expedientes-url");
 
@@ -114,13 +121,17 @@ public class ImportadorSeguimiento {
     var overrides = config.getConfig("kafka.streams").entrySet().stream()
         .collect(Collectors.toMap(Entry::getKey, entry -> entry.getValue().unwrapped()));
     streamsConfig.putAll(overrides);
-    var kafkaStreams = new KafkaStreams(streamsBuilder.build(), streamsConfig);
+    kafkaStreams = new KafkaStreams(streamsBuilder.build(), streamsConfig);
 
     Runtime.getRuntime().addShutdownHook(new Thread(kafkaStreams::close));
 
     LOG.info("Iniciando importacion de seguimientos");
 
     kafkaStreams.start();
+  }
+
+  public static void close() {
+    if (kafkaStreams != null) kafkaStreams.close(Duration.ofSeconds(10));
   }
 
   ProyectoLey importarSeguimiento(ProyectoLey proyecto) {

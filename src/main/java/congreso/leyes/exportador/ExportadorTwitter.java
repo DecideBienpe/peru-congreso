@@ -1,5 +1,6 @@
 package congreso.leyes.exportador;
 
+import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import congreso.leyes.Proyecto.ProyectoLey;
 import congreso.leyes.Proyecto.ProyectoLey.Id;
@@ -41,6 +42,9 @@ public class ExportadorTwitter {
   public static void main(String[] args) {
     var config = ConfigFactory.load();
 
+  }
+
+  public static void run(Config config) {
     var exportador = new ExportadorTwitter();
 
     var kafkaBootstrapServers = config.getString("kafka.bootstrap-servers");

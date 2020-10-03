@@ -2,6 +2,7 @@ package congreso.leyes.importador;
 
 import com.google.protobuf.Int64Value;
 import com.google.protobuf.StringValue;
+import com.typesafe.config.Config;
 import com.typesafe.config.ConfigFactory;
 import congreso.leyes.Proyecto;
 import congreso.leyes.Proyecto.ProyectoLey;
@@ -9,6 +10,7 @@ import congreso.leyes.Proyecto.ProyectoLey.Expediente.Documento;
 import congreso.leyes.Proyecto.ProyectoLey.Id;
 import congreso.leyes.internal.ProyectoIdSerde;
 import congreso.leyes.internal.ProyectoLeySerde;
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
@@ -40,9 +42,14 @@ public class ImportadorExpediente {
 
   static final Logger LOG = LoggerFactory.getLogger(ImportadorExpediente.class);
 
+  static KafkaStreams kafkaStreams;
+
   public static void main(String[] args) {
     var config = ConfigFactory.load();
+    run(config);
+  }
 
+  public static void run(Config config) {
     var importador = new ImportadorExpediente();
 
     var kafkaBootstrapServers = config.getString("kafka.bootstrap-servers");
@@ -93,13 +100,17 @@ public class ImportadorExpediente {
         .collect(Collectors.toMap(Entry::getKey, entry -> entry.getValue().unwrapped()));
     streamsConfig.putAll(overrides);
 
-    var kafkaStreams = new KafkaStreams(streamsBuilder.build(), streamsConfig);
+    kafkaStreams = new KafkaStreams(streamsBuilder.build(), streamsConfig);
 
     Runtime.getRuntime().addShutdownHook(new Thread(kafkaStreams::close));
 
     LOG.info("Iniciando importacion de expedientes");
 
     kafkaStreams.start();
+  }
+
+  public static void close() {
+    kafkaStreams.close(Duration.ofSeconds(10));
   }
 
   ProyectoLey importarExpediente(ProyectoLey proyectoLey) {
@@ -323,7 +334,7 @@ public class ImportadorExpediente {
 
   private Long fecha(Element td) {
     if (td.text().isBlank()) {
-      LOG.error("Fecha vacia! {}", td.html());
+      LOG.warn("Fecha vacia! {}", td.html());
       return null;
     }
     //agregar cualquier condicion para arreglar inconsistencias en fechas
