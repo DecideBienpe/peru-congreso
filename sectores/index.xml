@@ -8,11 +8,29 @@
     <language>es-pe</language>
     <lastBuildDate>Thu, 01 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/sectores/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Agraria</title>
+      <link>https://jeqo.github.io/peru-congreso/sectores/agraria/</link>
+      <pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/sectores/agraria/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Constitución y Reglamento</title>
       <link>https://jeqo.github.io/peru-congreso/sectores/constituci%C3%B3n-y-reglamento/</link>
       <pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/sectores/constituci%C3%B3n-y-reglamento/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Defensa del Consumidor y Organismos Reguladores de los Servicios Públicos</title>
+      <link>https://jeqo.github.io/peru-congreso/sectores/defensa-del-consumidor-y-organismos-reguladores-de-los-servicios-p%C3%BAblicos/</link>
+      <pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/sectores/defensa-del-consumidor-y-organismos-reguladores-de-los-servicios-p%C3%BAblicos/</guid>
       <description></description>
     </item>
     
@@ -44,6 +62,15 @@
     </item>
     
     <item>
+      <title>Pueblos Andinos, Amazónicos y Afroperuanos, Ambiente y Ecología</title>
+      <link>https://jeqo.github.io/peru-congreso/sectores/pueblos-andinos-amaz%C3%B3nicos-y-afroperuanos-ambiente-y-ecolog%C3%ADa/</link>
+      <pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/sectores/pueblos-andinos-amaz%C3%B3nicos-y-afroperuanos-ambiente-y-ecolog%C3%ADa/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Salud y Población</title>
       <link>https://jeqo.github.io/peru-congreso/sectores/salud-y-poblaci%C3%B3n/</link>
       <pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate>
@@ -58,15 +85,6 @@
       <pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/sectores/transportes-y-comunicaciones/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Agraria</title>
-      <link>https://jeqo.github.io/peru-congreso/sectores/agraria/</link>
-      <pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/sectores/agraria/</guid>
       <description></description>
     </item>
     
@@ -152,15 +170,6 @@
     </item>
     
     <item>
-      <title>Pueblos Andinos, Amazónicos y Afroperuanos, Ambiente y Ecología</title>
-      <link>https://jeqo.github.io/peru-congreso/sectores/pueblos-andinos-amaz%C3%B3nicos-y-afroperuanos-ambiente-y-ecolog%C3%ADa/</link>
-      <pubDate>Mon, 21 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/sectores/pueblos-andinos-amaz%C3%B3nicos-y-afroperuanos-ambiente-y-ecolog%C3%ADa/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Vivienda y Construcción</title>
       <link>https://jeqo.github.io/peru-congreso/sectores/vivienda-y-construcci%C3%B3n/</link>
       <pubDate>Thu, 17 Sep 2020 00:00:00 +0000</pubDate>
@@ -175,15 +184,6 @@
       <pubDate>Wed, 16 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/sectores/energ%C3%ADa-y-minas/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Defensa del Consumidor y Organismos Reguladores de los Servicios Públicos</title>
-      <link>https://jeqo.github.io/peru-congreso/sectores/defensa-del-consumidor-y-organismos-reguladores-de-los-servicios-p%C3%BAblicos/</link>
-      <pubDate>Tue, 15 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/sectores/defensa-del-consumidor-y-organismos-reguladores-de-los-servicios-p%C3%BAblicos/</guid>
       <description></description>
     </item>
     

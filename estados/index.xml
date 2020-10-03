@@ -6,7 +6,16 @@
     <description>Recent content in Estados on Congreso Perú</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>es-pe</language>
-    <lastBuildDate>Thu, 01 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/estados/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 02 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/estados/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Presentado</title>
+      <link>https://jeqo.github.io/peru-congreso/estados/presentado/</link>
+      <pubDate>Fri, 02 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/estados/presentado/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>En comisión</title>
       <link>https://jeqo.github.io/peru-congreso/estados/en-comisi%C3%B3n/</link>
@@ -22,15 +31,6 @@
       <pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/estados/orden-del-d%C3%ADa/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Presentado</title>
-      <link>https://jeqo.github.io/peru-congreso/estados/presentado/</link>
-      <pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/estados/presentado/</guid>
       <description></description>
     </item>
     
@@ -80,6 +80,15 @@
     </item>
     
     <item>
+      <title>Aprobado en Primera Votación</title>
+      <link>https://jeqo.github.io/peru-congreso/estados/aprobado-en-primera-votaci%C3%B3n/</link>
+      <pubDate>Mon, 13 Jul 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/estados/aprobado-en-primera-votaci%C3%B3n/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Observado</title>
       <link>https://jeqo.github.io/peru-congreso/estados/observado/</link>
       <pubDate>Thu, 09 Jul 2020 00:00:00 +0000</pubDate>
@@ -94,15 +103,6 @@
       <pubDate>Sun, 05 Jul 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/estados/dispensado-2da.-votaci%C3%B3n/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Aprobado en Primera Votación</title>
-      <link>https://jeqo.github.io/peru-congreso/estados/aprobado-en-primera-votaci%C3%B3n/</link>
-      <pubDate>Fri, 19 Jun 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/estados/aprobado-en-primera-votaci%C3%B3n/</guid>
       <description></description>
     </item>
     
