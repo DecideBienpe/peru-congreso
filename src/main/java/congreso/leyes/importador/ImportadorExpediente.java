@@ -110,7 +110,7 @@ public class ImportadorExpediente {
   }
 
   public static void close() {
-    kafkaStreams.close(Duration.ofSeconds(10));
+    if (kafkaStreams != null) kafkaStreams.close(Duration.ofSeconds(10));
   }
 
   ProyectoLey importarExpediente(ProyectoLey proyectoLey) {
@@ -121,7 +121,7 @@ public class ImportadorExpediente {
       var doc = Jsoup.connect(urlExp).get();
       var tablas = doc.body().select("table[width=500]");
       if (tablas.size() != 1) {
-        LOG.error("Numero inesperado de tablas {}, url={}", tablas.size(), urlExp);
+        LOG.warn("Numero inesperado de tablas {}, url={}", tablas.size(), urlExp);
         return null;
       }
       //Ubicar contenido

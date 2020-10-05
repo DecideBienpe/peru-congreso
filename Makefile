@@ -1,4 +1,4 @@
-all: backend-run backend-deploy web-deploy
+all: build backend-run backend-deploy web-deploy
 
 build:
 	mvn clean package

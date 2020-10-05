@@ -61,9 +61,6 @@ public class Main {
     if (!main.procesamientoCompleto(grupoImportadorSeguimiento, topicProyectos)) {
       main.resetToEarliest(grupoImportadorSeguimiento, topicProyectos);
       ImportadorSeguimiento.run(config);
-    }
-
-    if (!main.procesamientoCompleto(grupoImportadorExpediente, topicSeguimientos)) {
       main.resetToEarliest(grupoImportadorExpediente, topicSeguimientos);
       ImportadorExpediente.run(config);
     }
@@ -71,13 +68,14 @@ public class Main {
     LOG.info("Importacion de Seguimiento y Expediente reseteados al inicio de la historia");
 
     int n = 0;
+    int timeoutMinutes = 15;
 
     while (!main.procesamientoCompleto(grupoImportadorSeguimiento, topicProyectos) ||
         !main.procesamientoCompleto(grupoImportadorExpediente, topicSeguimientos)) {
       LOG.info("Esperando que importaciones finalicen procesamiento");
       Thread.sleep(Duration.ofMinutes(1).toMillis());
       n++;
-      if (n == 10) {
+      if (n == timeoutMinutes) {
         LOG.warn("Reiniciando importadores ya que tomo mas de {} minutos en procesar", n);
         ImportadorSeguimiento.close();
         ImportadorExpediente.close();
