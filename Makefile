@@ -1,4 +1,4 @@
-all: build backend-run backend-deploy web-deploy
+all: build backend-run backend-deploy web-deploy exportacion-twitter
 
 build:
 	mvn clean package
