@@ -93,10 +93,9 @@ public class Main {
 
     var grupoTwitter =
         config.getString("kafka.consumer-groups.exportador-twitter");
-    var topicExpediente = config.getString("kafka.topics.expediente-importado");
 
     n = 0;
-    while (!main.procesamientoCompleto(grupoTwitter, topicExpediente)) {
+    while (!main.procesamientoCompleto(grupoTwitter, topicSeguimientos)) {
       LOG.info("Esperando que exportacion finalicen procesamiento");
       Thread.sleep(Duration.ofMinutes(1).toMillis());
       n++;

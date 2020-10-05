@@ -41,19 +41,19 @@ public class ExportadorTwitter {
 
   public static void main(String[] args) {
     var config = ConfigFactory.load();
-
+    run(config);
   }
 
   public static void run(Config config) {
     var exportador = new ExportadorTwitter();
 
     var kafkaBootstrapServers = config.getString("kafka.bootstrap-servers");
-    var inputTopic = config.getString("kafka.topics.expediente-importado");
+    var inputTopic = config.getString("kafka.topics.seguimiento-importado");
     var outputTopic = config.getString("kafka.topics.exportador-twitter");
 
     var streamsBuilder = new StreamsBuilder();
     streamsBuilder.addStateStore(Stores.keyValueStoreBuilder(
-        Stores.persistentKeyValueStore("tuits"),
+        Stores.persistentKeyValueStore("tuits-v1"),
         new ProyectoIdSerde(),
         new ProyectoTuitsSerde()
     ));
@@ -73,14 +73,20 @@ public class ExportadorTwitter {
             var found = store.get(proyectoLey.getId());
             if (found == null) {
               var idPrincipal = exportador.tuitPrincipal(proyectoLey);
+              if (idPrincipal == 0) {
+                LOG.warn("Descartando sub Tuit para este proyecto {}", proyectoLey.getId());
+                return null;
+              }
               var tuits = Tuits.newBuilder()
                   .setPrincipal(Tuit.newBuilder().setId(idPrincipal).build());
               store.put(proyectoLey.getId(), tuits.build());
               for (var seguimiento : proyectoLey.getSeguimientoList()) {
                 var idSeguimiento = exportador
                     .tuitSeguimiento(proyectoLey, seguimiento, idPrincipal);
-                tuits.addSeguimientos(Tuit.newBuilder().setId(idSeguimiento).build());
-                store.put(proyectoLey.getId(), tuits.build());
+                if (idSeguimiento != 0) {
+                  tuits.addSeguimientos(Tuit.newBuilder().setId(idSeguimiento).build());
+                  store.put(proyectoLey.getId(), tuits.build());
+                }
               }
               return tuits.build();
             } else {
@@ -91,10 +97,12 @@ public class ExportadorTwitter {
                 for (int i = found.getSeguimientosCount();
                     i < proyectoLey.getSeguimientoCount(); i++) {
                   var seguimiento = proyectoLey.getSeguimiento(i);
-                  var urlSeguimiento = exportador.tuitSeguimiento(proyectoLey, seguimiento,
+                  var idSeguimiento = exportador.tuitSeguimiento(proyectoLey, seguimiento,
                       found.getPrincipal().getId());
-                  tuits.addSeguimientos(Tuit.newBuilder().setId(urlSeguimiento).build());
-                  store.put(proyectoLey.getId(), tuits.build());
+                  if (idSeguimiento != 0) {
+                    tuits.addSeguimientos(Tuit.newBuilder().setId(idSeguimiento).build());
+                    store.put(proyectoLey.getId(), tuits.build());
+                  }
                 }
                 return tuits.build();
               }
@@ -141,7 +149,15 @@ public class ExportadorTwitter {
       LOG.info("Tweet {}:{} publicado", status.getId(), status.getText());
       Thread.sleep(1);
       return status.getId();
-    } catch (TwitterException | InterruptedException e) {
+    } catch (TwitterException e) {
+      if (e.getErrorCode() == 187) { //Tuit Duplicado
+        LOG.warn("Error, tuit duplicado {}", proyectoLey.getId());
+        return 0L;
+      } else {
+        LOG.error("Error tuiteando seguimiento {}", proyectoLey.getId(), e);
+        throw new RuntimeException(e);
+      }
+    } catch (InterruptedException e) {
       LOG.error("Error tuiteando seguimiento {}", proyectoLey.getId(), e);
       throw new RuntimeException(e);
     }
@@ -170,7 +186,15 @@ public class ExportadorTwitter {
       LOG.info("Tweet {}:{} publicado", status.getId(), status.getText());
       Thread.sleep(1);
       return status.getId();
-    } catch (TwitterException | InterruptedException e) {
+    } catch (TwitterException e) {
+      if (e.getErrorCode() == 187) { //Tuit Duplicado
+        LOG.warn("Error, tuit duplicado {}", proyectoLey.getId());
+        return 0L;
+      } else {
+        LOG.error("Error tuiteando seguimiento {}", proyectoLey.getId(), e);
+        throw new RuntimeException(e);
+      }
+    } catch (InterruptedException e) {
       LOG.error("Error tuiteando {}", proyectoLey.getId(), e);
       throw new RuntimeException(e);
     }

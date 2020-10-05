@@ -38,6 +38,10 @@ kafka-reset-offset-to-earliest:
 	${KAFKA_HOME}/bin/kafka-consumer-groups.sh --bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS} \
 		--reset-offsets --group ${KAFKA_CONSUMER_GROUP} --to-earliest --all-topics --execute
 
+kafka-reset-offset-to-latest:
+	${KAFKA_HOME}/bin/kafka-consumer-groups.sh --bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS} \
+		--reset-offsets --group ${KAFKA_CONSUMER_GROUP} --to-latest --topic ${KAFKA_TOPIC} --execute
+
 kafka-describe-offsets:
 	${KAFKA_HOME}/bin/kafka-consumer-groups.sh --bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS} \
 		--describe --group ${KAFKA_CONSUMER_GROUP}
@@ -53,6 +57,12 @@ kafka-offsets-reset-expediente:
 
 kafka-offsets-describe-expediente:
 	make KAFKA_CONSUMER_GROUP=congreso.leyes.expediente-v1 kafka-describe-offsets
+
+kafka-offsets-describe-twitter:
+	make KAFKA_CONSUMER_GROUP=congreso.leyes.exportador-twitter-v1 kafka-describe-offsets
+
+kafka-offsets-reset-twitter:
+	make KAFKA_CONSUMER_GROUP=congreso.leyes.exportador-twitter-v1 KAFKA_TOPIC=congreso.leyes.seguimiento-importado-v1 kafka-reset-offset-to-latest
 
 importacion-proyecto:
 	mvn compile exec:java -Dexec.mainClass="congreso.leyes.importador.ImportadorProyecto"
