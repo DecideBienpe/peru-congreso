@@ -150,9 +150,10 @@ public class ExportadorTwitter {
               urlHugo(proyectoLey)));
       statusUpdate.setInReplyToStatusId(idPrincipal);
       var status = factory.updateStatus(statusUpdate);
-      LOG.info("Tweet {}:{} publicado", status.getId(), status.getText());
-      Thread.sleep(Duration.ofSeconds(5).toMillis());
+      LOG.info("Tweet {} : {} publicado", status.getId(), status.getText());
+      Thread.sleep(Duration.ofSeconds(1).toMillis());
       total.incrementAndGet();
+      LOG.info("Total tuits: {}", total.get());
       return status.getId();
     } catch (TwitterException e) {
       if (e.getErrorCode() == 187) { //Tuit Duplicado
@@ -186,13 +187,13 @@ public class ExportadorTwitter {
               proyectoLey.getDetalle().getProponente(),
               proyectoLey.getDetalle().hasGrupoParlamentario() ?
                   String.format("(%s)", proyectoLey.getDetalle().getGrupoParlamentario().getValue())
-                  :
-                      "",
+                  : "",
               urlHugo(proyectoLey))
       ));
-      LOG.info("Tweet {}:{} publicado", status.getId(), status.getText());
+      LOG.info("Tweet {} : {} publicado", status.getId(), status.getText());
       total.incrementAndGet();
-      Thread.sleep(Duration.ofSeconds(10).toMillis());
+      LOG.info("Total tuits: {}", total.get());
+      Thread.sleep(Duration.ofSeconds(1).toMillis());
       return status.getId();
     } catch (TwitterException e) {
       if (e.getErrorCode() == 187) { //Tuit Duplicado

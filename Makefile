@@ -93,7 +93,7 @@ web-deploy-prepare:
 	rm -rf public/
 	git worktree add -B gh-pages public origin/gh-pages
 
-web-deploy: exportacion-hugo web-build
+web-deploy: web-build
 	cd public && \
 		git add -A && git commit -m "publicar" && git push -f origin gh-pages
 
@@ -103,16 +103,8 @@ backend-run:
 backend-deploy:
 	git checkout -B cambios
 	git add content/ static/
-	if [[ `git status --porcelain --untracked-files=no` ]]; then \
-		git commit -m 'cambios en contenido'; \
-		git push -f origin cambios; \
-		git switch trunk; \
-		git merge cambios; \
-		git push origin trunk; \
-    else \
-		git switch trunk; \
-    fi;
-
+	git commit -m 'cambios en contenido'
+	git push -f origin cambios
 
 cron:
 	crontab cron.txt
