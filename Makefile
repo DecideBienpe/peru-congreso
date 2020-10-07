@@ -1,4 +1,4 @@
-all: build backend-run backend-deploy web-deploy exportacion-twitter
+all: build backend-run backend-deploy web-deploy
 
 build:
 	mvn clean package
@@ -93,7 +93,7 @@ web-deploy-prepare:
 	rm -rf public/
 	git worktree add -B gh-pages public origin/gh-pages
 
-web-deploy: web-build
+web-deploy: exportacion-hugo web-build
 	cd public && \
 		git add -A && git commit -m "publicar" && git push -f origin gh-pages
 
@@ -103,9 +103,16 @@ backend-run:
 backend-deploy:
 	git checkout -B cambios
 	git add content/ static/
-	git commit -m 'cambios en contenido'
-	git push -f origin cambios
-	git switch trunk
+	if [[ `git status --porcelain --untracked-files=no` ]]; then \
+		git commit -m 'cambios en contenido'; \
+		git push -f origin cambios; \
+		git switch trunk; \
+		git merge cambios; \
+		git push origin trunk; \
+    else \
+		git switch trunk; \
+    fi;
+
 
 cron:
 	crontab cron.txt

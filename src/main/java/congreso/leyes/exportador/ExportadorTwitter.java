@@ -11,6 +11,7 @@ import congreso.leyes.importador.ImportadorExpediente;
 import congreso.leyes.internal.ProyectoIdSerde;
 import congreso.leyes.internal.ProyectoLeySerde;
 import congreso.leyes.internal.ProyectoTuitsSerde;
+import java.time.Duration;
 import java.time.Instant;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
@@ -18,6 +19,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 import org.apache.kafka.clients.CommonClientConfigs;
 import org.apache.kafka.streams.KafkaStreams;
@@ -38,6 +40,7 @@ import twitter4j.TwitterFactory;
 public class ExportadorTwitter {
 
   static final Logger LOG = LoggerFactory.getLogger(ImportadorExpediente.class);
+  static final AtomicInteger total = new AtomicInteger();
 
   public static void main(String[] args) {
     var config = ConfigFactory.load();
@@ -50,10 +53,11 @@ public class ExportadorTwitter {
     var kafkaBootstrapServers = config.getString("kafka.bootstrap-servers");
     var inputTopic = config.getString("kafka.topics.seguimiento-importado");
     var outputTopic = config.getString("kafka.topics.exportador-twitter");
+    var tuitsStoreName = "tuits-v1";
 
     var streamsBuilder = new StreamsBuilder();
     streamsBuilder.addStateStore(Stores.keyValueStoreBuilder(
-        Stores.persistentKeyValueStore("tuits-v1"),
+        Stores.persistentKeyValueStore(tuitsStoreName),
         new ProyectoIdSerde(),
         new ProyectoTuitsSerde()
     ));
@@ -65,7 +69,7 @@ public class ExportadorTwitter {
 
           @Override
           public void init(ProcessorContext context) {
-            store = (KeyValueStore<Id, Tuits>) context.getStateStore("tuits");
+            store = (KeyValueStore<Id, Tuits>) context.getStateStore(tuitsStoreName);
           }
 
           @Override
@@ -112,7 +116,7 @@ public class ExportadorTwitter {
           @Override
           public void close() {
           }
-        }, "tuits")
+        }, tuitsStoreName)
         .filterNot((id, tuits) -> Objects.isNull(tuits))
         .to(outputTopic, Produced.with(new ProyectoIdSerde(), new ProyectoTuitsSerde()));
 
@@ -147,18 +151,20 @@ public class ExportadorTwitter {
       statusUpdate.setInReplyToStatusId(idPrincipal);
       var status = factory.updateStatus(statusUpdate);
       LOG.info("Tweet {}:{} publicado", status.getId(), status.getText());
-      Thread.sleep(1);
+      Thread.sleep(Duration.ofSeconds(5).toMillis());
+      total.incrementAndGet();
       return status.getId();
     } catch (TwitterException e) {
       if (e.getErrorCode() == 187) { //Tuit Duplicado
         LOG.warn("Error, tuit duplicado {}", proyectoLey.getId());
         return 0L;
       } else {
-        LOG.error("Error tuiteando seguimiento {}", proyectoLey.getId(), e);
+        LOG.error("(Total = {}) Error tuiteando seguimiento {}", total.get(), proyectoLey.getId(),
+            e);
         throw new RuntimeException(e);
       }
     } catch (InterruptedException e) {
-      LOG.error("Error tuiteando seguimiento {}", proyectoLey.getId(), e);
+      LOG.error("(Total = {}) Error tuiteando seguimiento {}", total.get(), proyectoLey.getId(), e);
       throw new RuntimeException(e);
     }
   }
@@ -179,23 +185,26 @@ public class ExportadorTwitter {
               fecha(proyectoLey.getFechaPublicacion()),
               proyectoLey.getDetalle().getProponente(),
               proyectoLey.getDetalle().hasGrupoParlamentario() ?
-                  String.format("(%s)", proyectoLey.getDetalle().getGrupoParlamentario().getValue()) :
-                  "",
+                  String.format("(%s)", proyectoLey.getDetalle().getGrupoParlamentario().getValue())
+                  :
+                      "",
               urlHugo(proyectoLey))
       ));
       LOG.info("Tweet {}:{} publicado", status.getId(), status.getText());
-      Thread.sleep(1);
+      total.incrementAndGet();
+      Thread.sleep(Duration.ofSeconds(10).toMillis());
       return status.getId();
     } catch (TwitterException e) {
       if (e.getErrorCode() == 187) { //Tuit Duplicado
         LOG.warn("Error, tuit duplicado {}", proyectoLey.getId());
         return 0L;
       } else {
-        LOG.error("Error tuiteando seguimiento {}", proyectoLey.getId(), e);
+        LOG.error("(Total = {}) Error tuiteando seguimiento {}", total.get(), proyectoLey.getId(),
+            e);
         throw new RuntimeException(e);
       }
     } catch (InterruptedException e) {
-      LOG.error("Error tuiteando {}", proyectoLey.getId(), e);
+      LOG.error("(Total = {}) Error tuiteando {}", total.get(), proyectoLey.getId(), e);
       throw new RuntimeException(e);
     }
   }
