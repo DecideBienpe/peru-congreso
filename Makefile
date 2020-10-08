@@ -1,7 +1,7 @@
 all: build backend-run backend-deploy web-deploy
 
 build:
-	mvn clean package
+	mvn -q clean package
 
 JAVA_HOME := ${JAVA15_HOME}
 KAFKA_BOOTSTRAP_SERVERS := localhost:39092
@@ -65,23 +65,26 @@ kafka-offsets-reset-twitter:
 	make KAFKA_CONSUMER_GROUP=congreso.leyes.exportador-twitter-v1 KAFKA_TOPIC=congreso.leyes.seguimiento-importado-v1 kafka-reset-offset-to-latest
 
 importacion-proyecto:
-	mvn compile exec:java -Dexec.mainClass="congreso.leyes.importador.ImportadorProyecto"
+	mvn -q compile exec:java -Dexec.mainClass="congreso.leyes.importador.ImportadorProyecto"
 
 importacion-seguimiento: kafka-offsets-reset-seguimiento
-	mvn compile exec:java -Dexec.mainClass="congreso.leyes.importador.ImportadorSeguimiento"
+	mvn -q compile exec:java -Dexec.mainClass="congreso.leyes.importador.ImportadorSeguimiento"
 
 importacion-expediente: kafka-offsets-reset-expediente
-	mvn compile exec:java -Dexec.mainClass="congreso.leyes.importador.ImportadorExpediente"
+	mvn -q compile exec:java -Dexec.mainClass="congreso.leyes.importador.ImportadorExpediente"
 
 
 exportacion-hugo:
-	mvn compile exec:java -Dexec.mainClass="congreso.leyes.exportador.ExportadorHugo"
+	mvn -q compile exec:java -Dexec.mainClass="congreso.leyes.exportador.ExportadorHugo"
 
 exportacion-csv:
-	mvn compile exec:java -Dexec.mainClass="congreso.leyes.exportador.ExportadorCsv"
+	mvn -q compile exec:java -Dexec.mainClass="congreso.leyes.exportador.ExportadorCsv"
 
 exportacion-twitter:
-	mvn compile exec:java -Dexec.mainClass="congreso.leyes.exportador.ExportadorTwitter"
+	mvn -q compile exec:java -Dexec.mainClass="congreso.leyes.exportador.ExportadorTwitter"
+
+twitter-run:
+	make exportacion-twitter >> logs/twitter.log 2>&1
 
 web-run:
 	hugo serve
@@ -98,7 +101,7 @@ web-deploy: web-build
 		git add -A && git commit -m "publicar" && git push -f origin gh-pages
 
 backend-run:
-	mvn compile exec:java -Dexec.mainClass="congreso.leyes.Main"
+	mvn -q compile exec:java -Dexec.mainClass="congreso.leyes.Main"
 
 backend-deploy:
 	git checkout -B cambios

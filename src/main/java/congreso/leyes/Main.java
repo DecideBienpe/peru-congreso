@@ -5,7 +5,6 @@ import static java.util.stream.Collectors.toMap;
 import com.typesafe.config.ConfigFactory;
 import congreso.leyes.exportador.ExportadorCsv;
 import congreso.leyes.exportador.ExportadorHugo;
-import congreso.leyes.exportador.ExportadorTwitter;
 import congreso.leyes.importador.ImportadorExpediente;
 import congreso.leyes.importador.ImportadorProyecto;
 import congreso.leyes.importador.ImportadorSeguimiento;
@@ -89,22 +88,6 @@ public class Main {
     LOG.info("Iniciando exportaciones");
     ExportadorCsv.run(config);
     ExportadorHugo.run(config);
-    // POR EL MOMENTO REALIZAR ESTE PROCESO FUERA DE LINEA
-//    ExportadorTwitter.run(config);
-
-//    var grupoTwitter =
-//        config.getString("kafka.consumer-groups.exportador-twitter");
-//
-//    n = 0;
-//    while (!main.procesamientoCompleto(grupoTwitter, topicSeguimientos)) {
-//      LOG.info("Esperando que exportacion finalicen procesamiento");
-//      Thread.sleep(Duration.ofMinutes(1).toMillis());
-//      n++;
-//      if (n == 2) {
-//        LOG.error("Tweets no fueron exportados completamente. Esperando siguiente ejecucion.");
-//        System.exit(1);
-//      }
-//    }
 
     LOG.info("Exportaciones completadas");
     System.exit(0);
