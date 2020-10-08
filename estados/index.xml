@@ -17,15 +17,6 @@
     </item>
     
     <item>
-      <title>Autógrafa</title>
-      <link>https://jeqo.github.io/peru-congreso/estados/aut%C3%B3grafa/</link>
-      <pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/estados/aut%C3%B3grafa/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>En comisión</title>
       <link>https://jeqo.github.io/peru-congreso/estados/en-comisi%C3%B3n/</link>
       <pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate>
@@ -44,6 +35,15 @@
     </item>
     
     <item>
+      <title>Publicado El Peruano</title>
+      <link>https://jeqo.github.io/peru-congreso/estados/publicado-el-peruano/</link>
+      <pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/estados/publicado-el-peruano/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Dictamen</title>
       <link>https://jeqo.github.io/peru-congreso/estados/dictamen/</link>
       <pubDate>Wed, 09 Sep 2020 00:00:00 +0000</pubDate>
@@ -53,11 +53,11 @@
     </item>
     
     <item>
-      <title>Publicado El Peruano</title>
-      <link>https://jeqo.github.io/peru-congreso/estados/publicado-el-peruano/</link>
-      <pubDate>Fri, 21 Aug 2020 00:00:00 +0000</pubDate>
+      <title>Autógrafa</title>
+      <link>https://jeqo.github.io/peru-congreso/estados/aut%C3%B3grafa/</link>
+      <pubDate>Thu, 27 Aug 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jeqo.github.io/peru-congreso/estados/publicado-el-peruano/</guid>
+      <guid>https://jeqo.github.io/peru-congreso/estados/aut%C3%B3grafa/</guid>
       <description></description>
     </item>
     
