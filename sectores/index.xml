@@ -8,11 +8,65 @@
     <language>es-pe</language>
     <lastBuildDate>Fri, 02 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/sectores/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Constitución y Reglamento</title>
+      <link>https://jeqo.github.io/peru-congreso/sectores/constituci%C3%B3n-y-reglamento/</link>
+      <pubDate>Fri, 02 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/sectores/constituci%C3%B3n-y-reglamento/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Descentralización, Regionalización, Gobiernos Locales y Modernización de la Gestión del Estado</title>
+      <link>https://jeqo.github.io/peru-congreso/sectores/descentralizaci%C3%B3n-regionalizaci%C3%B3n-gobiernos-locales-y-modernizaci%C3%B3n-de-la-gesti%C3%B3n-del-estado/</link>
+      <pubDate>Fri, 02 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/sectores/descentralizaci%C3%B3n-regionalizaci%C3%B3n-gobiernos-locales-y-modernizaci%C3%B3n-de-la-gesti%C3%B3n-del-estado/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Economía, Banca, Finanzas e Inteligencia Financiera</title>
+      <link>https://jeqo.github.io/peru-congreso/sectores/econom%C3%ADa-banca-finanzas-e-inteligencia-financiera/</link>
+      <pubDate>Fri, 02 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/sectores/econom%C3%ADa-banca-finanzas-e-inteligencia-financiera/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Educación, Juventud y Deporte</title>
+      <link>https://jeqo.github.io/peru-congreso/sectores/educaci%C3%B3n-juventud-y-deporte/</link>
+      <pubDate>Fri, 02 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/sectores/educaci%C3%B3n-juventud-y-deporte/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Salud y Población</title>
       <link>https://jeqo.github.io/peru-congreso/sectores/salud-y-poblaci%C3%B3n/</link>
       <pubDate>Fri, 02 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/sectores/salud-y-poblaci%C3%B3n/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Transportes y Comunicaciones</title>
+      <link>https://jeqo.github.io/peru-congreso/sectores/transportes-y-comunicaciones/</link>
+      <pubDate>Fri, 02 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/sectores/transportes-y-comunicaciones/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Vivienda y Construcción</title>
+      <link>https://jeqo.github.io/peru-congreso/sectores/vivienda-y-construcci%C3%B3n/</link>
+      <pubDate>Fri, 02 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/sectores/vivienda-y-construcci%C3%B3n/</guid>
       <description></description>
     </item>
     
@@ -26,11 +80,11 @@
     </item>
     
     <item>
-      <title>Constitución y Reglamento</title>
-      <link>https://jeqo.github.io/peru-congreso/sectores/constituci%C3%B3n-y-reglamento/</link>
+      <title>Comercio Exterior y Turismo</title>
+      <link>https://jeqo.github.io/peru-congreso/sectores/comercio-exterior-y-turismo/</link>
       <pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jeqo.github.io/peru-congreso/sectores/constituci%C3%B3n-y-reglamento/</guid>
+      <guid>https://jeqo.github.io/peru-congreso/sectores/comercio-exterior-y-turismo/</guid>
       <description></description>
     </item>
     
@@ -49,33 +103,6 @@
       <pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/sectores/defensa-nacional-orden-interno-desarrollo-alternativo-y-lucha-contra-las-drogas/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Descentralización, Regionalización, Gobiernos Locales y Modernización de la Gestión del Estado</title>
-      <link>https://jeqo.github.io/peru-congreso/sectores/descentralizaci%C3%B3n-regionalizaci%C3%B3n-gobiernos-locales-y-modernizaci%C3%B3n-de-la-gesti%C3%B3n-del-estado/</link>
-      <pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/sectores/descentralizaci%C3%B3n-regionalizaci%C3%B3n-gobiernos-locales-y-modernizaci%C3%B3n-de-la-gesti%C3%B3n-del-estado/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Economía, Banca, Finanzas e Inteligencia Financiera</title>
-      <link>https://jeqo.github.io/peru-congreso/sectores/econom%C3%ADa-banca-finanzas-e-inteligencia-financiera/</link>
-      <pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/sectores/econom%C3%ADa-banca-finanzas-e-inteligencia-financiera/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Educación, Juventud y Deporte</title>
-      <link>https://jeqo.github.io/peru-congreso/sectores/educaci%C3%B3n-juventud-y-deporte/</link>
-      <pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/sectores/educaci%C3%B3n-juventud-y-deporte/</guid>
       <description></description>
     </item>
     
@@ -125,15 +152,6 @@
     </item>
     
     <item>
-      <title>Transportes y Comunicaciones</title>
-      <link>https://jeqo.github.io/peru-congreso/sectores/transportes-y-comunicaciones/</link>
-      <pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/sectores/transportes-y-comunicaciones/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Mujer y Familia</title>
       <link>https://jeqo.github.io/peru-congreso/sectores/mujer-y-familia/</link>
       <pubDate>Mon, 28 Sep 2020 00:00:00 +0000</pubDate>
@@ -161,29 +179,11 @@
     </item>
     
     <item>
-      <title>Comercio Exterior y Turismo</title>
-      <link>https://jeqo.github.io/peru-congreso/sectores/comercio-exterior-y-turismo/</link>
-      <pubDate>Wed, 23 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/sectores/comercio-exterior-y-turismo/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Fiscalización y Contraloría</title>
       <link>https://jeqo.github.io/peru-congreso/sectores/fiscalizaci%C3%B3n-y-contralor%C3%ADa/</link>
       <pubDate>Tue, 22 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/sectores/fiscalizaci%C3%B3n-y-contralor%C3%ADa/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Vivienda y Construcción</title>
-      <link>https://jeqo.github.io/peru-congreso/sectores/vivienda-y-construcci%C3%B3n/</link>
-      <pubDate>Thu, 17 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/sectores/vivienda-y-construcci%C3%B3n/</guid>
       <description></description>
     </item>
     
