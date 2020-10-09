@@ -6,7 +6,16 @@
     <description>Recent content in Sectores on Congreso Perú</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>es-pe</language>
-    <lastBuildDate>Fri, 02 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/sectores/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 06 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/sectores/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Trabajo y Seguridad Social</title>
+      <link>https://jeqo.github.io/peru-congreso/sectores/trabajo-y-seguridad-social/</link>
+      <pubDate>Tue, 06 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/sectores/trabajo-y-seguridad-social/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Constitución y Reglamento</title>
       <link>https://jeqo.github.io/peru-congreso/sectores/constituci%C3%B3n-y-reglamento/</link>
@@ -139,15 +148,6 @@
       <pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/sectores/pueblos-andinos-amaz%C3%B3nicos-y-afroperuanos-ambiente-y-ecolog%C3%ADa/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Trabajo y Seguridad Social</title>
-      <link>https://jeqo.github.io/peru-congreso/sectores/trabajo-y-seguridad-social/</link>
-      <pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/sectores/trabajo-y-seguridad-social/</guid>
       <description></description>
     </item>
     
