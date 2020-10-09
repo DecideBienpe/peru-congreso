@@ -26,15 +26,6 @@
     </item>
     
     <item>
-      <title>Orden del Día</title>
-      <link>https://jeqo.github.io/peru-congreso/estados/orden-del-d%C3%ADa/</link>
-      <pubDate>Tue, 06 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/estados/orden-del-d%C3%ADa/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Aprobado en Primera Votación</title>
       <link>https://jeqo.github.io/peru-congreso/estados/aprobado-en-primera-votaci%C3%B3n/</link>
       <pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate>
@@ -85,6 +76,15 @@
       <pubDate>Wed, 12 Aug 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/estados/insistencia/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Orden del Día</title>
+      <link>https://jeqo.github.io/peru-congreso/estados/orden-del-d%C3%ADa/</link>
+      <pubDate>Tue, 11 Aug 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/estados/orden-del-d%C3%ADa/</guid>
       <description></description>
     </item>
     
