@@ -182,7 +182,7 @@ public class ExportadorTwitter {
                   %s
                   """,
               proyectoLey.getDetalle().getNumeroUnico(),
-              titulo(proyectoLey.getDetalle().getTitulo()),
+              titulo(proyectoLey.getTitulo()),
               fecha(proyectoLey.getFechaPublicacion()),
               proyectoLey.getDetalle().getProponente(),
               proyectoLey.getDetalle().hasGrupoParlamentario() ?

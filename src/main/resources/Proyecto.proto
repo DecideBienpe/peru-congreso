@@ -16,6 +16,7 @@ message ProyectoLey {
   repeated Seguimiento seguimiento = 7;
   Expediente expediente = 8;
   Ley ley = 9;
+  string titulo = 10;
 
   message Id {
     string periodo = 1;

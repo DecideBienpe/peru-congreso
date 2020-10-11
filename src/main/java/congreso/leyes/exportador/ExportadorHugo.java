@@ -168,13 +168,11 @@ public class ExportadorHugo {
                 ---
                 """,
             proyectoLey.getDetalle().getNumeroUnico(),
-            proyectoLey.getDetalle().getTitulo().isBlank() ?
-                proyectoLey.getExpediente().getSubtitulo().getValue().toUpperCase() :
-                proyectoLey.getDetalle().getTitulo(),
+            proyectoLey.getTitulo(),
             fecha(proyectoLey.getFechaPublicacion()),
-            (proyectoLey.hasFechaActualizacion() ?
+            proyectoLey.hasFechaActualizacion() ?
                 "lastmod: " + fecha(proyectoLey.getFechaActualizacion().getValue()) :
-                ""),
+                "",
             proyectoLey.getEstado(),
             proyectoLey.getId().getPeriodo(),
             proyectoLey.getDetalle().getLegislatura(),

@@ -175,6 +175,7 @@ public class ImportadorProyecto {
         Optional.of(fecha(campos.get(1).text().trim()));
     var fechaPresentacion = fecha(campos.get(2).text().trim());
     var estado = campos.get(3).text();
+    var titulo = campos.get(4).text();
     var enlaceSeguimiento = baseUrl + campos.get(0).getElementsByTag("a").attr("href");
     var builder = ProyectoLey.newBuilder()
         .setId(Id.newBuilder()
@@ -184,6 +185,11 @@ public class ImportadorProyecto {
             .build())
         .setEstado(estado)
         .setFechaPublicacion(fechaPresentacion)
+        .setTitulo(titulo
+            .replaceAll("\"\"", "\"")
+            .replaceAll("\"", "'")
+            .replaceAll(",,", ",")
+            .replaceAll(":", ".-"))
         .setEnlaces(Enlaces.newBuilder().setSeguimiento(enlaceSeguimiento).build());
     fechaActualizacion.map(Int64Value::of).ifPresent(builder::setFechaActualizacion);
     return builder.build();
