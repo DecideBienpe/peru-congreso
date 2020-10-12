@@ -93,9 +93,7 @@ public class Main {
     System.exit(0);
   }
 
-  void resetToEarliest(String grupo,
-      String topic)
-      throws ExecutionException, InterruptedException {
+  void resetToEarliest(String grupo, String topic) throws ExecutionException, InterruptedException {
     var results = adminClient
         .listConsumerGroupOffsets(grupo)
         .partitionsToOffsetAndMetadata().get();

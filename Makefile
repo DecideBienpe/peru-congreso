@@ -36,7 +36,7 @@ kafka-topics:
 
 kafka-reset-offset-to-earliest:
 	${KAFKA_HOME}/bin/kafka-consumer-groups.sh --bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS} \
-		--reset-offsets --group ${KAFKA_CONSUMER_GROUP} --to-earliest --all-topics --execute
+		--reset-offsets --group ${KAFKA_CONSUMER_GROUP} --to-earliest --topic ${KAFKA_TOPIC} --execute
 
 kafka-reset-offset-to-latest:
 	${KAFKA_HOME}/bin/kafka-consumer-groups.sh --bootstrap-server ${KAFKA_BOOTSTRAP_SERVERS} \
@@ -47,13 +47,13 @@ kafka-describe-offsets:
 		--describe --group ${KAFKA_CONSUMER_GROUP}
 
 kafka-offsets-reset-seguimiento:
-	make KAFKA_CONSUMER_GROUP=congreso.leyes.seguimiento-v1 kafka-reset-offset-to-earliest
+	make KAFKA_CONSUMER_GROUP=congreso.leyes.seguimiento-v1 KAFKA_TOPIC=congreso.leyes.proyecto-importado-v1 kafka-reset-offset-to-earliest
 
 kafka-offsets-describe-seguimiento:
 	make KAFKA_CONSUMER_GROUP=congreso.leyes.seguimiento-v1 kafka-describe-offsets
 
 kafka-offsets-reset-expediente:
-	make KAFKA_CONSUMER_GROUP=congreso.leyes.expediente-v1 kafka-reset-offset-to-earliest
+	make KAFKA_CONSUMER_GROUP=congreso.leyes.expediente-v1 KAFKA_TOPIC=congreso.leyes.seguimiento-importado-v1 kafka-reset-offset-to-earliest
 
 kafka-offsets-describe-expediente:
 	make KAFKA_CONSUMER_GROUP=congreso.leyes.expediente-v1 kafka-describe-offsets

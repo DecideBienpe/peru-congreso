@@ -35,6 +35,7 @@ import org.apache.kafka.streams.kstream.ValueTransformer;
 import org.apache.kafka.streams.processor.ProcessorContext;
 import org.apache.kafka.streams.state.KeyValueStore;
 import org.apache.kafka.streams.state.Stores;
+import org.jsoup.HttpStatusException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.slf4j.Logger;
@@ -81,7 +82,8 @@ public class ImportadorSeguimiento {
 
     var proyectoStream = streamsBuilder
         .stream(inputTopic, Consumed.with(new ProyectoIdSerde(), new ProyectoLeySerde()))
-        .mapValues(importador::importarSeguimiento);
+        .mapValues(importador::importarSeguimiento)
+        .filterNot((k, v) -> Objects.isNull(v));
     proyectoStream
         .transformValues(() -> new ValueTransformer<ProyectoLey, ProyectoLey>() {
           KeyValueStore<Id, ProyectoLey> store;
@@ -246,6 +248,13 @@ public class ImportadorSeguimiento {
       builder.setLey(ley);
       builder.setDetalle(detalle);
       return builder.build();
+    } catch (HttpStatusException e) {
+      if (e.getStatusCode() == 404) {
+        LOG.error("Error procesando proyecto {} referencia {}. Pagina no existe!!!", proyecto.getId(), url);
+        return null;
+      }
+      LOG.error("Error procesando proyecto {} referencia {}", proyecto.getId(), url);
+      throw new RuntimeException(e);
     } catch (Throwable e) {
       LOG.error("Error procesando proyecto {} referencia {}", proyecto.getId(), url);
       throw new RuntimeException(e);
