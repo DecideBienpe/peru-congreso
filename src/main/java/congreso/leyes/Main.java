@@ -117,7 +117,7 @@ public class Main {
         var consumerOffset = results.get(entry.getKey());
         if (consumerOffset.offset() < entry.getValue().offset()) {
           done = false;
-          LOG.info("Grupo: {} at {} TopicPartition: {} at {} Lag: {}", grupo,
+          LOG.info("Grupo: {} en offset: {}\nTopicPartition: {} en offset: {}\nRetraso: {}", grupo,
               consumerOffset.offset(), entry.getKey(), entry.getValue().offset(),
               entry.getValue().offset() - consumerOffset.offset());
         }
