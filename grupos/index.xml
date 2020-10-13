@@ -8,6 +8,15 @@
     <language>es-pe</language>
     <lastBuildDate>Mon, 12 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/grupos/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Alianza Para el Progreso</title>
+      <link>https://jeqo.github.io/peru-congreso/grupos/alianza-para-el-progreso/</link>
+      <pubDate>Mon, 12 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/grupos/alianza-para-el-progreso/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Frente Popular Agrícola del Perú</title>
       <link>https://jeqo.github.io/peru-congreso/grupos/frente-popular-agr%C3%ADcola-del-per%C3%BA/</link>
       <pubDate>Mon, 12 Oct 2020 00:00:00 +0000</pubDate>
@@ -17,20 +26,38 @@
     </item>
     
     <item>
+      <title>Fuerza Popular</title>
+      <link>https://jeqo.github.io/peru-congreso/grupos/fuerza-popular/</link>
+      <pubDate>Mon, 12 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/grupos/fuerza-popular/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Multipartidario</title>
+      <link>https://jeqo.github.io/peru-congreso/grupos/multipartidario/</link>
+      <pubDate>Mon, 12 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/grupos/multipartidario/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Unión por el Perú</title>
+      <link>https://jeqo.github.io/peru-congreso/grupos/uni%C3%B3n-por-el-per%C3%BA/</link>
+      <pubDate>Mon, 12 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/grupos/uni%C3%B3n-por-el-per%C3%BA/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Acción Popular</title>
       <link>https://jeqo.github.io/peru-congreso/grupos/acci%C3%B3n-popular/</link>
       <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/grupos/acci%C3%B3n-popular/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Alianza Para el Progreso</title>
-      <link>https://jeqo.github.io/peru-congreso/grupos/alianza-para-el-progreso/</link>
-      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/grupos/alianza-para-el-progreso/</guid>
       <description></description>
     </item>
     
@@ -62,15 +89,6 @@
     </item>
     
     <item>
-      <title>Unión por el Perú</title>
-      <link>https://jeqo.github.io/peru-congreso/grupos/uni%C3%B3n-por-el-per%C3%BA/</link>
-      <pubDate>Fri, 09 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/grupos/uni%C3%B3n-por-el-per%C3%BA/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Frente Amplio por Justicia, Vida y Libertad</title>
       <link>https://jeqo.github.io/peru-congreso/grupos/frente-amplio-por-justicia-vida-y-libertad/</link>
       <pubDate>Thu, 08 Oct 2020 00:00:00 +0000</pubDate>
@@ -85,24 +103,6 @@
       <pubDate>Thu, 08 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/grupos/no-agrupados/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Fuerza Popular</title>
-      <link>https://jeqo.github.io/peru-congreso/grupos/fuerza-popular/</link>
-      <pubDate>Tue, 06 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/grupos/fuerza-popular/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Multipartidario</title>
-      <link>https://jeqo.github.io/peru-congreso/grupos/multipartidario/</link>
-      <pubDate>Mon, 21 Sep 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/grupos/multipartidario/</guid>
       <description></description>
     </item>
     
