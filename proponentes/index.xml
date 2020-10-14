@@ -6,13 +6,22 @@
     <description>Recent content in Proponentes on Congreso Perú</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>es-pe</language>
-    <lastBuildDate>Mon, 12 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/proponentes/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Tue, 13 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/proponentes/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Congreso</title>
       <link>https://jeqo.github.io/peru-congreso/proponentes/congreso/</link>
-      <pubDate>Mon, 12 Oct 2020 00:00:00 +0000</pubDate>
+      <pubDate>Tue, 13 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/proponentes/congreso/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Gobiernos Locales</title>
+      <link>https://jeqo.github.io/peru-congreso/proponentes/gobiernos-locales/</link>
+      <pubDate>Tue, 13 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/proponentes/gobiernos-locales/</guid>
       <description></description>
     </item>
     
@@ -31,15 +40,6 @@
       <pubDate>Mon, 14 Sep 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/proponentes/jurado-nacional-de-elecciones/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Gobiernos Locales</title>
-      <link>https://jeqo.github.io/peru-congreso/proponentes/gobiernos-locales/</link>
-      <pubDate>Mon, 31 Aug 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/proponentes/gobiernos-locales/</guid>
       <description></description>
     </item>
     
