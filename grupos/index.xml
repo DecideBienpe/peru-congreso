@@ -6,22 +6,31 @@
     <description>Recent content in Grupos on Congreso Perú</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>es-pe</language>
-    <lastBuildDate>Tue, 13 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/grupos/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Wed, 14 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/grupos/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Alianza Para el Progreso</title>
+      <link>https://jeqo.github.io/peru-congreso/grupos/alianza-para-el-progreso/</link>
+      <pubDate>Wed, 14 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/grupos/alianza-para-el-progreso/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Unión por el Perú</title>
+      <link>https://jeqo.github.io/peru-congreso/grupos/uni%C3%B3n-por-el-per%C3%BA/</link>
+      <pubDate>Wed, 14 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/grupos/uni%C3%B3n-por-el-per%C3%BA/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Acción Popular</title>
       <link>https://jeqo.github.io/peru-congreso/grupos/acci%C3%B3n-popular/</link>
       <pubDate>Tue, 13 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/grupos/acci%C3%B3n-popular/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Alianza Para el Progreso</title>
-      <link>https://jeqo.github.io/peru-congreso/grupos/alianza-para-el-progreso/</link>
-      <pubDate>Tue, 13 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/grupos/alianza-para-el-progreso/</guid>
       <description></description>
     </item>
     
@@ -40,15 +49,6 @@
       <pubDate>Mon, 12 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/grupos/fuerza-popular/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Unión por el Perú</title>
-      <link>https://jeqo.github.io/peru-congreso/grupos/uni%C3%B3n-por-el-per%C3%BA/</link>
-      <pubDate>Mon, 12 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/grupos/uni%C3%B3n-por-el-per%C3%BA/</guid>
       <description></description>
     </item>
     
