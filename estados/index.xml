@@ -26,11 +26,11 @@
     </item>
     
     <item>
-      <title>Dispensado 2da. votación</title>
-      <link>https://jeqo.github.io/peru-congreso/estados/dispensado-2da.-votaci%C3%B3n/</link>
+      <title>Publicado El Peruano</title>
+      <link>https://jeqo.github.io/peru-congreso/estados/publicado-el-peruano/</link>
       <pubDate>Tue, 06 Oct 2020 00:00:00 +0000</pubDate>
       
-      <guid>https://jeqo.github.io/peru-congreso/estados/dispensado-2da.-votaci%C3%B3n/</guid>
+      <guid>https://jeqo.github.io/peru-congreso/estados/publicado-el-peruano/</guid>
       <description></description>
     </item>
     
@@ -40,15 +40,6 @@
       <pubDate>Fri, 02 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/estados/aprobado-en-primera-votaci%C3%B3n/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Publicado El Peruano</title>
-      <link>https://jeqo.github.io/peru-congreso/estados/publicado-el-peruano/</link>
-      <pubDate>Thu, 01 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/estados/publicado-el-peruano/</guid>
       <description></description>
     </item>
     
@@ -121,6 +112,15 @@
       <pubDate>Wed, 06 May 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/estados/aprobado/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Dispensado 2da. votación</title>
+      <link>https://jeqo.github.io/peru-congreso/estados/dispensado-2da.-votaci%C3%B3n/</link>
+      <pubDate>Wed, 06 May 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/estados/dispensado-2da.-votaci%C3%B3n/</guid>
       <description></description>
     </item>
     
