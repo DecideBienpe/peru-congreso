@@ -88,6 +88,11 @@
   </url>
   
   <url>
+    <loc>https://jeqo.github.io/peru-congreso/estados/orden-del-d%C3%ADa/</loc>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
     <loc>https://jeqo.github.io/peru-congreso/periodos/</loc>
     <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
@@ -614,12 +619,12 @@
   
   <url>
     <loc>https://jeqo.github.io/peru-congreso/proyectos-ley/2016-2021/06400/06443/</loc>
-    <lastmod>2020-10-12T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://jeqo.github.io/peru-congreso/proyectos-ley/2016-2021/06400/06444/</loc>
-    <lastmod>2020-10-12T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -704,6 +709,11 @@
   
   <url>
     <loc>https://jeqo.github.io/peru-congreso/autores/vigo-guti%C3%A9rrez-widman-napole%C3%B3n/</loc>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>https://jeqo.github.io/peru-congreso/sectores/vivienda-y-construcci%C3%B3n/</loc>
     <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
@@ -944,7 +954,7 @@
   
   <url>
     <loc>https://jeqo.github.io/peru-congreso/proyectos-ley/2016-2021/06400/06405/</loc>
-    <lastmod>2020-10-14T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -1049,7 +1059,7 @@
   
   <url>
     <loc>https://jeqo.github.io/peru-congreso/autores/contreras-bautista-cindy-arlette/</loc>
-    <lastmod>2020-10-14T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -1094,7 +1104,7 @@
   
   <url>
     <loc>https://jeqo.github.io/peru-congreso/grupos/no-agrupados/</loc>
-    <lastmod>2020-10-14T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -1109,7 +1119,7 @@
   
   <url>
     <loc>https://jeqo.github.io/peru-congreso/sectores/producci%C3%B3n-micro-y-peque%C3%B1a-empresa-y-cooperativas/</loc>
-    <lastmod>2020-10-14T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -1124,7 +1134,7 @@
   
   <url>
     <loc>https://jeqo.github.io/peru-congreso/sectores/trabajo-y-seguridad-social/</loc>
-    <lastmod>2020-10-14T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -1333,13 +1343,8 @@
   </url>
   
   <url>
-    <loc>https://jeqo.github.io/peru-congreso/sectores/vivienda-y-construcci%C3%B3n/</loc>
-    <lastmod>2020-10-12T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
     <loc>https://jeqo.github.io/peru-congreso/autores/zarate-anton-edward-alexander/</loc>
-    <lastmod>2020-10-14T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -1689,7 +1694,7 @@
   
   <url>
     <loc>https://jeqo.github.io/peru-congreso/autores/huaman%C3%AD-machaca-nelly/</loc>
-    <lastmod>2020-10-14T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -3184,7 +3189,7 @@
   
   <url>
     <loc>https://jeqo.github.io/peru-congreso/proyectos-ley/2016-2021/06000/06022/</loc>
-    <lastmod>2020-10-14T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -3465,11 +3470,6 @@
   <url>
     <loc>https://jeqo.github.io/peru-congreso/estados/insistencia/</loc>
     <lastmod>2020-10-07T00:00:00+00:00</lastmod>
-  </url>
-  
-  <url>
-    <loc>https://jeqo.github.io/peru-congreso/estados/orden-del-d%C3%ADa/</loc>
-    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -4994,7 +4994,7 @@
   
   <url>
     <loc>https://jeqo.github.io/peru-congreso/autores/v%C3%A1squez-s%C3%A1nchez-c%C3%A9sar-henry/</loc>
-    <lastmod>2020-10-12T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -5374,7 +5374,7 @@
   
   <url>
     <loc>https://jeqo.github.io/peru-congreso/proyectos-ley/2016-2021/05500/05588/</loc>
-    <lastmod>2020-10-14T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -5454,12 +5454,12 @@
   
   <url>
     <loc>https://jeqo.github.io/peru-congreso/proyectos-ley/2016-2021/05500/05551/</loc>
-    <lastmod>2020-06-19T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
     <loc>https://jeqo.github.io/peru-congreso/proyectos-ley/2016-2021/05500/05552/</loc>
-    <lastmod>2020-06-19T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -6824,7 +6824,7 @@
   
   <url>
     <loc>https://jeqo.github.io/peru-congreso/proyectos-ley/2016-2021/05200/05295/</loc>
-    <lastmod>2020-10-14T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -7124,7 +7124,7 @@
   
   <url>
     <loc>https://jeqo.github.io/peru-congreso/autores/acu%C3%B1a-n%C3%BA%C3%B1ez-richard-frank/</loc>
-    <lastmod>2020-10-09T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -9304,7 +9304,7 @@
   
   <url>
     <loc>https://jeqo.github.io/peru-congreso/autores/miyashiro-arashiro-marco-enrique/</loc>
-    <lastmod>2020-10-13T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -9324,7 +9324,7 @@
   
   <url>
     <loc>https://jeqo.github.io/peru-congreso/autores/villanueva-ar%C3%A9valo-c%C3%A9sar/</loc>
-    <lastmod>2020-10-12T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -10034,7 +10034,7 @@
   
   <url>
     <loc>https://jeqo.github.io/peru-congreso/autores/galv%C3%A1n-vento-clayton-flavio/</loc>
-    <lastmod>2020-10-13T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -10334,7 +10334,7 @@
   
   <url>
     <loc>https://jeqo.github.io/peru-congreso/autores/echevarr%C3%ADa-huam%C3%A1n-sonia-rosario/</loc>
-    <lastmod>2020-10-14T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -11534,7 +11534,7 @@
   
   <url>
     <loc>https://jeqo.github.io/peru-congreso/proyectos-ley/2016-2021/04400/04493/</loc>
-    <lastmod>2020-10-14T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -12809,7 +12809,7 @@
   
   <url>
     <loc>https://jeqo.github.io/peru-congreso/autores/donayre-gotzch-edwin-alberto/</loc>
-    <lastmod>2020-10-12T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -18919,7 +18919,7 @@
   
   <url>
     <loc>https://jeqo.github.io/peru-congreso/proyectos-ley/2016-2021/03000/03020/</loc>
-    <lastmod>2020-10-01T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -20629,7 +20629,7 @@
   
   <url>
     <loc>https://jeqo.github.io/peru-congreso/autores/r%C3%ADos-ocsa-benicio/</loc>
-    <lastmod>2020-10-01T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -27454,7 +27454,7 @@
   
   <url>
     <loc>https://jeqo.github.io/peru-congreso/legislaturas/primera-legislatura-ordinaria-2016/</loc>
-    <lastmod>2020-10-13T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
@@ -29304,7 +29304,7 @@
   
   <url>
     <loc>https://jeqo.github.io/peru-congreso/proyectos-ley/2016-2021/00900/00969/</loc>
-    <lastmod>2020-10-01T00:00:00+00:00</lastmod>
+    <lastmod>2020-10-15T00:00:00+00:00</lastmod>
   </url>
   
   <url>
