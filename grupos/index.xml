@@ -8,6 +8,15 @@
     <language>es-pe</language>
     <lastBuildDate>Wed, 14 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/grupos/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Acción Popular</title>
+      <link>https://jeqo.github.io/peru-congreso/grupos/acci%C3%B3n-popular/</link>
+      <pubDate>Wed, 14 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/grupos/acci%C3%B3n-popular/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Alianza Para el Progreso</title>
       <link>https://jeqo.github.io/peru-congreso/grupos/alianza-para-el-progreso/</link>
       <pubDate>Wed, 14 Oct 2020 00:00:00 +0000</pubDate>
@@ -17,29 +26,20 @@
     </item>
     
     <item>
+      <title>Frente Popular Agrícola del Perú</title>
+      <link>https://jeqo.github.io/peru-congreso/grupos/frente-popular-agr%C3%ADcola-del-per%C3%BA/</link>
+      <pubDate>Wed, 14 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/grupos/frente-popular-agr%C3%ADcola-del-per%C3%BA/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Unión por el Perú</title>
       <link>https://jeqo.github.io/peru-congreso/grupos/uni%C3%B3n-por-el-per%C3%BA/</link>
       <pubDate>Wed, 14 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/grupos/uni%C3%B3n-por-el-per%C3%BA/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Acción Popular</title>
-      <link>https://jeqo.github.io/peru-congreso/grupos/acci%C3%B3n-popular/</link>
-      <pubDate>Tue, 13 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/grupos/acci%C3%B3n-popular/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Frente Popular Agrícola del Perú</title>
-      <link>https://jeqo.github.io/peru-congreso/grupos/frente-popular-agr%C3%ADcola-del-per%C3%BA/</link>
-      <pubDate>Tue, 13 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/grupos/frente-popular-agr%C3%ADcola-del-per%C3%BA/</guid>
       <description></description>
     </item>
     
