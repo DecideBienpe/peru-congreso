@@ -6,7 +6,16 @@
     <description>Recent content in Estados on Congreso Perú</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>es-pe</language>
-    <lastBuildDate>Thu, 15 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/estados/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 16 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/estados/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Presentado</title>
+      <link>https://jeqo.github.io/peru-congreso/estados/presentado/</link>
+      <pubDate>Fri, 16 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/estados/presentado/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Dispensado 2da. votación</title>
       <link>https://jeqo.github.io/peru-congreso/estados/dispensado-2da.-votaci%C3%B3n/</link>
@@ -22,15 +31,6 @@
       <pubDate>Thu, 15 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/estados/en-comisi%C3%B3n/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Presentado</title>
-      <link>https://jeqo.github.io/peru-congreso/estados/presentado/</link>
-      <pubDate>Thu, 15 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/estados/presentado/</guid>
       <description></description>
     </item>
     
@@ -53,6 +53,15 @@
     </item>
     
     <item>
+      <title>Orden del Día</title>
+      <link>https://jeqo.github.io/peru-congreso/estados/orden-del-d%C3%ADa/</link>
+      <pubDate>Wed, 30 Sep 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/estados/orden-del-d%C3%ADa/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Dictamen</title>
       <link>https://jeqo.github.io/peru-congreso/estados/dictamen/</link>
       <pubDate>Wed, 16 Sep 2020 00:00:00 +0000</pubDate>
@@ -67,15 +76,6 @@
       <pubDate>Thu, 27 Aug 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/estados/observado/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Orden del Día</title>
-      <link>https://jeqo.github.io/peru-congreso/estados/orden-del-d%C3%ADa/</link>
-      <pubDate>Mon, 17 Aug 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/estados/orden-del-d%C3%ADa/</guid>
       <description></description>
     </item>
     

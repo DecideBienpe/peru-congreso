@@ -6,7 +6,25 @@
     <description>Recent content in Grupos on Congreso Perú</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>es-pe</language>
-    <lastBuildDate>Thu, 15 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/grupos/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 16 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/grupos/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Fuerza Popular</title>
+      <link>https://jeqo.github.io/peru-congreso/grupos/fuerza-popular/</link>
+      <pubDate>Fri, 16 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/grupos/fuerza-popular/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Unión por el Perú</title>
+      <link>https://jeqo.github.io/peru-congreso/grupos/uni%C3%B3n-por-el-per%C3%BA/</link>
+      <pubDate>Fri, 16 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/grupos/uni%C3%B3n-por-el-per%C3%BA/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Acción Popular</title>
       <link>https://jeqo.github.io/peru-congreso/grupos/acci%C3%B3n-popular/</link>
@@ -53,29 +71,11 @@
     </item>
     
     <item>
-      <title>Unión por el Perú</title>
-      <link>https://jeqo.github.io/peru-congreso/grupos/uni%C3%B3n-por-el-per%C3%BA/</link>
-      <pubDate>Thu, 15 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/grupos/uni%C3%B3n-por-el-per%C3%BA/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>Frente Popular Agrícola del Perú</title>
       <link>https://jeqo.github.io/peru-congreso/grupos/frente-popular-agr%C3%ADcola-del-per%C3%BA/</link>
       <pubDate>Wed, 14 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/grupos/frente-popular-agr%C3%ADcola-del-per%C3%BA/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Fuerza Popular</title>
-      <link>https://jeqo.github.io/peru-congreso/grupos/fuerza-popular/</link>
-      <pubDate>Mon, 12 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/grupos/fuerza-popular/</guid>
       <description></description>
     </item>
     

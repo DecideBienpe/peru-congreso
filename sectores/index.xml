@@ -8,20 +8,20 @@
     <language>es-pe</language>
     <lastBuildDate>Thu, 15 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/sectores/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>Agraria</title>
+      <link>https://jeqo.github.io/peru-congreso/sectores/agraria/</link>
+      <pubDate>Thu, 15 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/sectores/agraria/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Educación, Juventud y Deporte</title>
       <link>https://jeqo.github.io/peru-congreso/sectores/educaci%C3%B3n-juventud-y-deporte/</link>
       <pubDate>Thu, 15 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/sectores/educaci%C3%B3n-juventud-y-deporte/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Agraria</title>
-      <link>https://jeqo.github.io/peru-congreso/sectores/agraria/</link>
-      <pubDate>Wed, 14 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/sectores/agraria/</guid>
       <description></description>
     </item>
     
