@@ -8,6 +8,15 @@
     <language>es-pe</language>
     <lastBuildDate>Thu, 15 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/estados/index.xml" rel="self" type="application/rss+xml" />
     <item>
+      <title>En comisión</title>
+      <link>https://jeqo.github.io/peru-congreso/estados/en-comisi%C3%B3n/</link>
+      <pubDate>Thu, 15 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/estados/en-comisi%C3%B3n/</guid>
+      <description></description>
+    </item>
+    
+    <item>
       <title>Orden del Día</title>
       <link>https://jeqo.github.io/peru-congreso/estados/orden-del-d%C3%ADa/</link>
       <pubDate>Thu, 15 Oct 2020 00:00:00 +0000</pubDate>
@@ -22,15 +31,6 @@
       <pubDate>Thu, 15 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/estados/presentado/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>En comisión</title>
-      <link>https://jeqo.github.io/peru-congreso/estados/en-comisi%C3%B3n/</link>
-      <pubDate>Wed, 14 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/estados/en-comisi%C3%B3n/</guid>
       <description></description>
     </item>
     
