@@ -6,13 +6,22 @@
     <description>Recent content in Sectores on Congreso Perú</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>es-pe</language>
-    <lastBuildDate>Thu, 15 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/sectores/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 16 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/sectores/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Agraria</title>
       <link>https://jeqo.github.io/peru-congreso/sectores/agraria/</link>
-      <pubDate>Thu, 15 Oct 2020 00:00:00 +0000</pubDate>
+      <pubDate>Fri, 16 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/sectores/agraria/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Descentralización, Regionalización, Gobiernos Locales y Modernización de la Gestión del Estado</title>
+      <link>https://jeqo.github.io/peru-congreso/sectores/descentralizaci%C3%B3n-regionalizaci%C3%B3n-gobiernos-locales-y-modernizaci%C3%B3n-de-la-gesti%C3%B3n-del-estado/</link>
+      <pubDate>Fri, 16 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/sectores/descentralizaci%C3%B3n-regionalizaci%C3%B3n-gobiernos-locales-y-modernizaci%C3%B3n-de-la-gesti%C3%B3n-del-estado/</guid>
       <description></description>
     </item>
     
@@ -22,15 +31,6 @@
       <pubDate>Thu, 15 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/sectores/cultura-y-patrimonio-cultural/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Descentralización, Regionalización, Gobiernos Locales y Modernización de la Gestión del Estado</title>
-      <link>https://jeqo.github.io/peru-congreso/sectores/descentralizaci%C3%B3n-regionalizaci%C3%B3n-gobiernos-locales-y-modernizaci%C3%B3n-de-la-gesti%C3%B3n-del-estado/</link>
-      <pubDate>Thu, 15 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/sectores/descentralizaci%C3%B3n-regionalizaci%C3%B3n-gobiernos-locales-y-modernizaci%C3%B3n-de-la-gesti%C3%B3n-del-estado/</guid>
       <description></description>
     </item>
     
