@@ -6,7 +6,34 @@
     <description>Recent content in Sectores on Congreso Perú</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>es-pe</language>
-    <lastBuildDate>Fri, 16 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/sectores/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 19 Oct 2020 00:00:00 +0000</lastBuildDate><atom:link href="https://jeqo.github.io/peru-congreso/sectores/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Cultura y Patrimonio Cultural</title>
+      <link>https://jeqo.github.io/peru-congreso/sectores/cultura-y-patrimonio-cultural/</link>
+      <pubDate>Mon, 19 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/sectores/cultura-y-patrimonio-cultural/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Educación, Juventud y Deporte</title>
+      <link>https://jeqo.github.io/peru-congreso/sectores/educaci%C3%B3n-juventud-y-deporte/</link>
+      <pubDate>Mon, 19 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/sectores/educaci%C3%B3n-juventud-y-deporte/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>Transportes y Comunicaciones</title>
+      <link>https://jeqo.github.io/peru-congreso/sectores/transportes-y-comunicaciones/</link>
+      <pubDate>Mon, 19 Oct 2020 00:00:00 +0000</pubDate>
+      
+      <guid>https://jeqo.github.io/peru-congreso/sectores/transportes-y-comunicaciones/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>Agraria</title>
       <link>https://jeqo.github.io/peru-congreso/sectores/agraria/</link>
@@ -31,24 +58,6 @@
       <pubDate>Fri, 16 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/sectores/trabajo-y-seguridad-social/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Cultura y Patrimonio Cultural</title>
-      <link>https://jeqo.github.io/peru-congreso/sectores/cultura-y-patrimonio-cultural/</link>
-      <pubDate>Thu, 15 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/sectores/cultura-y-patrimonio-cultural/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Educación, Juventud y Deporte</title>
-      <link>https://jeqo.github.io/peru-congreso/sectores/educaci%C3%B3n-juventud-y-deporte/</link>
-      <pubDate>Thu, 15 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/sectores/educaci%C3%B3n-juventud-y-deporte/</guid>
       <description></description>
     </item>
     
@@ -94,15 +103,6 @@
       <pubDate>Wed, 14 Oct 2020 00:00:00 +0000</pubDate>
       
       <guid>https://jeqo.github.io/peru-congreso/sectores/presupuesto-y-cuenta-general-de-la-rep%C3%BAblica/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>Transportes y Comunicaciones</title>
-      <link>https://jeqo.github.io/peru-congreso/sectores/transportes-y-comunicaciones/</link>
-      <pubDate>Wed, 14 Oct 2020 00:00:00 +0000</pubDate>
-      
-      <guid>https://jeqo.github.io/peru-congreso/sectores/transportes-y-comunicaciones/</guid>
       <description></description>
     </item>
     
