@@ -200,12 +200,17 @@ public class ImportadorCandidatos {
     }
 
     public static String csvHeaderSentencias() {
-      return "DNI,SENTENCIA_TIPO,SENTENCIA_ESTADO";
+      return "DNI,NOMBRE_COMPLETO,PARTIDO_POLITICO,REGION,SENTENCIA_TIPO,SENTENCIA_ESTADO";
     }
 
     public List<String> toCsvSentencias() {
       return this.sentencias.toCsv().stream()
-          .map(s -> resumen.dni + "," + s)
+          .map(s -> resumen.dni
+              + "," + nombreCompleto
+              + "," + resumen.partidoPolitico
+              + "," + resumen.region
+              + "," + s
+          )
           .collect(Collectors.toList());
     }
 
